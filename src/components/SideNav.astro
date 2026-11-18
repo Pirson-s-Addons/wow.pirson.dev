@@ -1,0 +1,480 @@
+---
+// Site navigation on every page. Desktop: a thin rail of icons and addon logos that expands over
+// the page into a full panel (with an addon filter). Phones: a floating button opens it as a drawer.
+// It replaces Starlight's sidebar (turned off in src/routeData.ts).
+import addons from '../data/addons.json';
+import { href } from '../lib/i18n';
+
+const { lang, entry, id } = Astro.locals.starlightRoute;
+const es = lang === 'es';
+const l = es ? 1 : 0;
+const path = id.replace(/^es\/?/, '');
+const home = es ? '/es/' : '/';
+
+const ICON = {
+	home: 'M3 11 12 4l9 7v9h-6v-6H9v6H3Z',
+	grid: 'M4 4h7v7H4Zm9 0h7v7h-7ZM4 13h7v7H4Zm9 0h7v7h-7Z',
+	install: 'M12 3v12m0 0-4-4m4 4 4-4M5 21h14',
+	blog: 'M5 4h10l4 4v12H5Zm10 0v4h4M8 12h8M8 16h6',
+	github: 'M9 19c-4 1.5-4-2-6-2.5m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1-.3-3.4 1.3a11.6 11.6 0 0 0-6 0C6.8 2.8 5.8 3.1 5.8 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4.4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21',
+	forge: 'M4 15h16l-2 5H6Zm3-4h10l1 4H6Zm2-6h6v6H9Z',
+};
+const links = [
+	{ key: 'home', label: es ? 'Inicio' : 'Home', url: home, on: path === '' || path === 'index' },
+	{ key: 'grid', label: es ? 'Biblioteca' : 'Library', url: `${home}#${es ? 'la-biblioteca' : 'the-library'}`, on: false },
+	{ key: 'install', label: es ? 'Cómo instalar' : 'How to install', url: href(lang, 'install'), on: path.startsWith('install') },
+	{ key: 'blog', label: 'Blog', url: es ? '/es/blog/' : '/blog/', on: path.startsWith('blog') },
+];
+---
+
+<button class="sn-fab" type="button" aria-controls="sidenav" aria-expanded="false" data-sn-open>
+	<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10" /></svg>
+	<span class="sr-only">{es ? 'Abrir menú' : 'Open menu'}</span>
+</button>
+<div class="sn-veil" data-sn-veil hidden></div>
+<div class="sn-tip" aria-hidden="true" data-sn-tip></div>
+
+<nav class="sn" id="sidenav" aria-label={es ? 'Navegación del sitio' : 'Site navigation'} data-sn>
+	<div class="sn-top">
+		<button class="sn-toggle" type="button" aria-controls="sidenav" aria-expanded="false" data-sn-toggle>
+			<svg viewBox="0 0 24 24" aria-hidden="true"><path class="sn-burger" d="M4 7h16M4 12h16M4 17h10" /><path class="sn-chev" d="m15 6-6 6 6 6" /></svg>
+			<span class="sr-only">{es ? 'Expandir o contraer el menú' : 'Expand or collapse the menu'}</span>
+		</button>
+		<span class="sn-brand sn-label">Pirson's Addons</span>
+	</div>
+
+	<ul class="sn-main">
+		{
+			links.map((k, i) => (
+				<li style={`--i:${i}`}>
+					<a href={k.url} aria-current={k.on ? 'page' : undefined} data-tip={k.label}>
+						<svg viewBox="0 0 24 24" aria-hidden="true">
+							<path d={ICON[k.key as keyof typeof ICON]} />
+						</svg>
+						<span class="sn-label">{k.label}</span>
+					</a>
+				</li>
+			))
+		}
+	</ul>
+
+	<div class="sn-head">
+		<span class="sn-label">Addons</span>
+		<input class="sn-filter" type="search" placeholder={es ? 'Filtrar addons…' : 'Filter addons…'} aria-label={es ? 'Filtrar addons' : 'Filter addons'} data-sn-filter />
+	</div>
+	<ul class="sn-addons" data-sn-list>
+		{
+			addons.map((a, i) => (
+				<li style={`--q:${a.color};--i:${i + 4}`} data-name={a.name.toLowerCase()}>
+					<a href={href(lang, `addons/${a.slug}`)} aria-current={entry.data.addon === a.id ? 'page' : undefined} data-tip={a.name}>
+						<img src={`/logos/${a.id}.webp`} alt="" width="34" height="34" loading="lazy" />
+						<span class="sn-label">
+							<span class="sn-name">{a.name}</span>
+							<span class="sn-cat">{a.cat[l]}</span>
+						</span>
+					</a>
+				</li>
+			))
+		}
+	</ul>
+
+	<ul class="sn-foot">
+		<li>
+			<a href="https://www.curseforge.com/members/pirson/projects" rel="noopener" data-tip="CurseForge">
+				<svg viewBox="0 0 24 24" aria-hidden="true"><path d={ICON.forge} /></svg>
+				<span class="sn-label">CurseForge</span>
+			</a>
+		</li>
+		<li>
+			<a href="https://github.com/Pirson-s-Addons" rel="noopener" data-tip="GitHub">
+				<svg viewBox="0 0 24 24" aria-hidden="true"><path d={ICON.github} /></svg>
+				<span class="sn-label">GitHub</span>
+			</a>
+		</li>
+	</ul>
+</nav>
+
+<script>
+	const nav = document.querySelector<HTMLElement>('[data-sn]');
+	if (nav) {
+		const root = document.documentElement;
+		const veil = document.querySelector<HTMLElement>('[data-sn-veil]')!;
+		const tip = document.querySelector<HTMLElement>('[data-sn-tip]')!;
+		const toggles = document.querySelectorAll<HTMLButtonElement>('[data-sn-toggle], [data-sn-open]');
+		const filter = nav.querySelector<HTMLInputElement>('[data-sn-filter]')!;
+		const items = [...nav.querySelectorAll<HTMLElement>('[data-sn-list] > li')];
+
+		const set = (open: boolean) => {
+			tip.classList.remove('is-on');
+			root.toggleAttribute('data-sn-open', open);
+			veil.hidden = !open;
+			toggles.forEach((t) => t.setAttribute('aria-expanded', String(open)));
+			if (open) nav.querySelector<HTMLElement>('[aria-current="page"]')?.scrollIntoView({ block: 'nearest' });
+		};
+		toggles.forEach((t) => t.addEventListener('click', () => set(!root.hasAttribute('data-sn-open'))));
+		veil.addEventListener('click', () => set(false));
+		addEventListener('keydown', (e) => e.key === 'Escape' && root.hasAttribute('data-sn-open') && set(false));
+		nav.addEventListener('click', (e) => (e.target as HTMLElement).closest('a') && set(false));
+
+		filter.addEventListener('input', () => {
+			const q = filter.value.trim().toLowerCase();
+			for (const it of items) it.hidden = !!q && !it.dataset.name!.includes(q);
+		});
+
+		// names beside the collapsed rail (one floating tip, so the scrolling list cannot clip it)
+		const show = (a: HTMLElement) => {
+			if (root.hasAttribute('data-sn-open') || matchMedia('(max-width: 50rem)').matches) return;
+			const r = a.getBoundingClientRect();
+			tip.textContent = a.dataset.tip!;
+			tip.style.top = `${r.top + r.height / 2}px`;
+			tip.style.left = `${nav.getBoundingClientRect().right + 12}px`;
+			tip.classList.add('is-on');
+		};
+		const hide = () => tip.classList.remove('is-on');
+		for (const a of nav.querySelectorAll<HTMLElement>('a[data-tip]')) {
+			a.addEventListener('pointerenter', () => show(a));
+			a.addEventListener('focus', () => show(a));
+			a.addEventListener('pointerleave', hide);
+			a.addEventListener('blur', hide);
+		}
+		nav.querySelector('[data-sn-list]')!.addEventListener('scroll', hide, { passive: true });
+
+		// keep the current addon in view in the collapsed rail
+		nav.querySelector<HTMLElement>('.sn-addons [aria-current="page"]')?.scrollIntoView({ block: 'center' });
+	}
+</script>
+
+<style>
+	.sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
+	}
+	.sn {
+		--rail: 4.25rem;
+		--open: 19rem;
+		--ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+		position: fixed;
+		z-index: 40;
+		top: var(--sl-nav-height);
+		bottom: 0;
+		left: 0;
+		width: var(--rail);
+		display: flex;
+		flex-direction: column;
+		gap: 0.35rem;
+		padding: 0.6rem 0.6rem 1rem;
+		background: rgb(9 9 14 / 0.86);
+		backdrop-filter: blur(16px) saturate(1.3);
+		border-right: 1px solid var(--glass-line);
+		transition:
+			width 0.42s var(--ease),
+			box-shadow 0.42s var(--ease);
+	}
+	:global(html[data-sn-open]) .sn {
+		width: var(--open);
+		box-shadow: 30px 0 60px rgb(0 0 0 / 0.55);
+	}
+
+	/* rows: icon/logo cell fixed at the rail width, label beside it */
+	.sn a,
+	.sn-toggle {
+		position: relative;
+		display: flex;
+		align-items: center;
+		gap: 0.85rem;
+		min-height: 2.75rem;
+		padding: 0 0.55rem;
+		color: var(--muted);
+		text-decoration: none;
+		border-radius: 12px;
+		transition:
+			color 0.2s,
+			background 0.2s;
+	}
+	.sn a:hover {
+		color: #fff;
+		background: rgb(255 255 255 / 0.05);
+	}
+	.sn svg {
+		flex-shrink: 0;
+		width: 1.35rem;
+		height: 1.35rem;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 1.8;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+	.sn-label {
+		white-space: nowrap;
+		opacity: 0;
+		translate: -8px 0;
+		transition:
+			opacity 0.25s,
+			translate 0.35s var(--ease);
+		pointer-events: none;
+	}
+	:global(html[data-sn-open]) .sn-label {
+		opacity: 1;
+		translate: 0 0;
+		transition-delay: calc(0.08s + min(var(--i, 0), 14) * 0.025s);
+		pointer-events: auto;
+	}
+
+	.sn-top {
+		display: flex;
+		align-items: center;
+		gap: 0.6rem;
+		margin-bottom: 0.4rem;
+	}
+	.sn-toggle {
+		width: 2.9rem;
+		flex-shrink: 0;
+		justify-content: center;
+		color: #fff;
+		background: rgb(196 127 243 / 0.12);
+		border: 1px solid rgb(196 127 243 / 0.3);
+		cursor: pointer;
+	}
+	.sn-toggle:hover {
+		background: rgb(196 127 243 / 0.22);
+	}
+	.sn-toggle path {
+		transition:
+			opacity 0.25s,
+			transform 0.35s var(--ease);
+		transform-origin: center;
+	}
+	.sn-chev {
+		opacity: 0;
+		transform: rotate(-90deg);
+	}
+	:global(html[data-sn-open]) .sn-burger {
+		opacity: 0;
+		transform: rotate(90deg);
+	}
+	:global(html[data-sn-open]) .sn-chev {
+		opacity: 1;
+		transform: none;
+	}
+	.sn-brand {
+		font-family: var(--display);
+		font-size: 1.15rem;
+		color: #fff;
+	}
+
+	.sn ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.sn li {
+		margin: 0;
+	}
+	.sn [aria-current='page'] {
+		color: #fff;
+		background: linear-gradient(90deg, rgb(196 127 243 / 0.22), transparent);
+	}
+	.sn [aria-current='page']::before {
+		content: '';
+		position: absolute;
+		left: -0.6rem;
+		top: 22%;
+		bottom: 22%;
+		width: 3px;
+		border-radius: 0 3px 3px 0;
+		background: var(--q, var(--arcane));
+		box-shadow: 0 0 12px var(--q, var(--arcane));
+	}
+
+	.sn-head {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		margin: 0.6rem 0 0;
+		padding: 0.6rem 0.55rem 0;
+		border-top: 1px solid var(--glass-line);
+		font-size: 0.75rem;
+		font-weight: 800;
+		letter-spacing: 0.06em;
+		color: var(--sl-color-gray-4);
+	}
+	.sn-filter {
+		width: 100%;
+		padding: 0.5rem 0.75rem;
+		font: inherit;
+		font-size: 0.88rem;
+		font-weight: 500;
+		letter-spacing: normal;
+		color: #fff;
+		background: rgb(255 255 255 / 0.05);
+		border: 1px solid var(--line);
+		border-radius: 10px;
+		opacity: 0;
+		visibility: hidden;
+		/* takes no room while the rail is collapsed */
+		max-height: 0;
+		padding-block: 0;
+		border-width: 0;
+		transition:
+			opacity 0.25s 0.15s,
+			max-height 0.35s var(--ease),
+			padding 0.35s var(--ease);
+	}
+	:global(html[data-sn-open]) .sn-filter {
+		opacity: 1;
+		visibility: visible;
+		max-height: 3rem;
+		padding-block: 0.5rem;
+		border-width: 1px;
+	}
+	.sn-filter:focus {
+		border-color: var(--arcane);
+		outline: none;
+	}
+
+	.sn-addons {
+		flex: 1;
+		min-height: 0;
+		overflow-y: auto;
+		overflow-x: hidden;
+		scrollbar-width: none;
+		mask-image: linear-gradient(transparent, #000 1rem, #000 calc(100% - 1.5rem), transparent);
+		padding-block: 0.4rem !important;
+	}
+	.sn-addons a {
+		padding-left: 0.4rem;
+	}
+	.sn-addons img {
+		flex-shrink: 0;
+		border-radius: 50%;
+		box-shadow: 0 0 0 2px color-mix(in srgb, var(--q) 70%, transparent);
+		transition:
+			transform 0.25s var(--ease),
+			box-shadow 0.25s;
+	}
+	.sn-addons a:hover img,
+	.sn-addons [aria-current='page'] img {
+		transform: scale(1.08);
+		box-shadow:
+			0 0 0 2px var(--q),
+			0 0 16px color-mix(in srgb, var(--q) 60%, transparent);
+	}
+	.sn-addons .sn-label {
+		display: flex;
+		flex-direction: column;
+		min-width: 0;
+	}
+	.sn-name {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		font-size: 0.92rem;
+		font-weight: 600;
+		color: #e8e6f2;
+	}
+	.sn-cat {
+		font-size: 0.75rem;
+		color: var(--sl-color-gray-4);
+	}
+
+	.sn-foot {
+		padding-top: 0.5rem !important;
+		border-top: 1px solid var(--glass-line);
+	}
+
+	/* names float beside the collapsed rail */
+	.sn-tip {
+		position: fixed;
+		z-index: 45;
+		padding: 0.35rem 0.7rem;
+		font-size: 0.82rem;
+		font-weight: 600;
+		white-space: nowrap;
+		color: #fff;
+		background: #1b1830;
+		border: 1px solid var(--glass-line);
+		border-radius: 8px;
+		box-shadow: 0 8px 20px rgb(0 0 0 / 0.5);
+		opacity: 0;
+		translate: -6px -50%;
+		pointer-events: none;
+		transition:
+			opacity 0.18s,
+			translate 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+	}
+	.sn-tip.is-on {
+		opacity: 1;
+		translate: 0 -50%;
+	}
+	.sn-veil {
+		position: fixed;
+		inset: 0;
+		z-index: 35;
+		background: rgb(4 4 8 / 0.55);
+		backdrop-filter: blur(3px);
+		animation: sn-fade 0.3s;
+	}
+	@keyframes sn-fade {
+		from {
+			opacity: 0;
+		}
+	}
+	.sn-fab {
+		display: none;
+	}
+
+	/* phones: the rail hides; a floating button opens the panel as a drawer */
+	@media (max-width: 50rem) {
+		.sn {
+			/* below the site header, which sits above the page content stack */
+			top: var(--sl-nav-height);
+			z-index: 60;
+			width: min(var(--open), 86vw);
+			translate: -105% 0;
+			transition: translate 0.42s var(--ease);
+		}
+		:global(html[data-sn-open]) .sn {
+			width: min(var(--open), 86vw);
+			translate: 0 0;
+		}
+		.sn-veil {
+			z-index: 55;
+		}
+		.sn-fab {
+			position: fixed;
+			z-index: 50;
+			left: 1rem;
+			bottom: 1.4rem;
+			display: grid;
+			place-items: center;
+			width: 3.4rem;
+			height: 3.4rem;
+			color: #fff;
+			background: linear-gradient(135deg, var(--arcane-deep), #8e4fd6);
+			border: 0;
+			border-radius: 50%;
+			box-shadow: 0 10px 30px rgb(109 59 184 / 0.55);
+			cursor: pointer;
+		}
+		.sn-fab svg {
+			width: 1.5rem;
+			fill: none;
+			stroke: currentColor;
+			stroke-width: 2;
+			stroke-linecap: round;
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.sn,
+		.sn-label,
+		.sn-toggle path,
+		.sn-veil {
+			transition: none;
+			animation: none;
+		}
+	}
+</style>

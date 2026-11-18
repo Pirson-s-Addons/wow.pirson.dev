@@ -2,6 +2,7 @@
 // Starlight's footer, then the site footer (top addons, help, disclaimer), the reading-progress
 // experience bar, and the gentle reveal of home sections as they scroll in.
 import Default from '@astrojs/starlight/components/Footer.astro';
+import SideNav from './SideNav.astro';
 import addons from '../data/addons.json';
 import { covers } from '../lib/covers';
 import { t, href } from '../lib/i18n';
@@ -19,6 +20,7 @@ const more = current
 	: [];
 ---
 
+<SideNav />
 <Default />
 
 {

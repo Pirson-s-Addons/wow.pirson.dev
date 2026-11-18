@@ -39,6 +39,7 @@
 html[data-has-hero] {
 	--sl-content-width: 78rem;
 }
+html,
 body {
 	overflow-x: clip;
 	background: var(--obsidian);
@@ -1225,4 +1226,28 @@ html:has(.ah) .meta {
 	.ah-viewer[open] {
 		animation: none;
 	}
+}
+
+/* ---------- room for the site navigation rail (src/components/SideNav.astro) ----------
+   The rail is 4.25rem wide on desktop. Content moves right by that much, and full-bleed
+   sections (which are centred on the content) get half of it back on each side so their
+   inner content stays clear of the rail and of the right edge. */
+:root {
+	--rail-half: 0rem;
+}
+@media (min-width: 50.0625rem) {
+	:root {
+		--rail-half: 2.125rem;
+	}
+	.main-frame {
+		padding-inline-start: 4.25rem;
+	}
+}
+.hx,
+.ph,
+.ah {
+	padding-inline: calc(max(1.25rem, calc(50vw - 39rem)) + var(--rail-half));
+}
+.ah-nav {
+	padding-inline: calc(max(1.25rem, calc(50vw - 39rem)) + var(--rail-half));
 }

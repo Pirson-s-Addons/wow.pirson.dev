@@ -5,8 +5,8 @@ import { defineRouteMiddleware } from '@astrojs/starlight/route-data';
 // Done here rather than in frontmatter because Keystatic rewrites the guides' frontmatter.
 export const onRequest = defineRouteMiddleware((context) => {
 	const route = context.locals.starlightRoute;
+	route.hasSidebar = false; // our SideNav replaces Starlight's sidebar on every page
 	if (!route.entry.data.addon) return;
-	route.hasSidebar = false;
 	route.toc = undefined;
 	route.entry.data.hero = { title: route.entry.data.title, actions: [] };
 });
