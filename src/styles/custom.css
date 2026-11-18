@@ -901,3 +901,52 @@ html[data-has-hero] .sl-markdown-content > h2 {
 		transition: none;
 	}
 }
+
+/* ---------- header of full-width pages other than home ---------- */
+.ph {
+	position: relative;
+	isolation: isolate;
+	margin-inline: calc(50% - 50vw);
+	margin-top: calc(-1 * var(--sl-content-pad-y, 2rem));
+	padding: clamp(3rem, 9vh, 6rem) max(1.25rem, calc(50vw - 39rem)) clamp(2rem, 5vh, 3.5rem);
+	text-align: center;
+	overflow: clip;
+}
+.ph::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	background:
+		radial-gradient(40rem 18rem at 50% 0%, rgb(196 127 243 / 0.28), transparent 70%),
+		radial-gradient(30rem 14rem at 80% 20%, rgb(242 196 103 / 0.12), transparent 70%);
+}
+.ph-title {
+	margin: 0 auto;
+	max-width: 52rem;
+	font-size: clamp(2.6rem, 6.5vw, 5.2rem);
+	line-height: 0.98;
+	color: transparent;
+	background: linear-gradient(100deg, #fff 0%, #f1e2ff 40%, #ffffff 48%, #c99bf5 56%, #f1e2ff 70%, #fff 100%);
+	background-size: 250% 100%;
+	-webkit-background-clip: text;
+	background-clip: text;
+	animation: shine 2.4s cubic-bezier(0.3, 0.7, 0.2, 1) 0.2s both;
+	text-wrap: balance;
+}
+.ph-tagline {
+	max-width: 36rem;
+	margin: 1.25rem auto 0;
+	font-size: 1.15rem;
+	line-height: 1.6;
+	color: #cfcde0;
+}
+.ph .hx-actions {
+	justify-content: center;
+}
+@media (prefers-reduced-motion: reduce) {
+	.ph-title {
+		animation: none;
+		background-position: 0 0;
+	}
+}

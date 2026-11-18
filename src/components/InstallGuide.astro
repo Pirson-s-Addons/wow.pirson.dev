@@ -1,0 +1,546 @@
+---
+// Install page: pick a method (CurseForge app or by hand) and follow its steps, find the exact
+// AddOns folder for your game version (with a copy button), then fix the usual problems.
+// Without JavaScript both methods show one after the other and the folder list is static.
+interface Props {
+	lang: 'en' | 'es';
+}
+const { lang } = Astro.props;
+const es = lang === 'es';
+
+const ICON = {
+	download: 'M12 3v12m0 0-4-4m4 4 4-4M5 21h14',
+	pick: 'M4 6h16M4 12h10M4 18h7',
+	search: 'M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14Zm9 16-4.3-4.3',
+	play: 'M7 4v16l13-8Z',
+	zip: 'M6 3h9l4 4v14H6Zm5 0v3m0 2v2m0 2v2m-2 2h4v3h-4Z',
+	folder: 'M3 6h6l2 2h10v11H3Z',
+	check: 'm5 12 5 5 9-10',
+};
+const T = es
+	? {
+			app: 'Con la app de CurseForge',
+			appNote: 'Recomendado: instala y actualiza solo.',
+			hand: 'A mano',
+			handNote: 'Sin programas, desde el zip.',
+			appSteps: [
+				['download', 'Descarga la app', 'Instala la app de CurseForge y elige World of Warcraft al abrirla.'],
+				['pick', 'Elige tu versión', 'Arriba, cambia a tu versión del juego: WoW Forever, MoP Classic, Retail…'],
+				['search', 'Busca el addon', 'Escribe su nombre y pulsa Install. Listo.'],
+				['play', 'Entra al juego', 'Si estaba abierto, sal y vuelve a entrar. La app lo mantendrá al día.'],
+			],
+			handSteps: [
+				['download', 'Descarga el zip', 'En la página del addon en CurseForge, pestaña Files, o en su release de GitHub.'],
+				['zip', 'Descomprímelo', 'Obtendrás una carpeta con el nombre del addon.'],
+				['folder', 'Muévela a AddOns', 'Llévala a la carpeta de tu versión del juego (búscala justo debajo).'],
+				['play', 'Entra al juego', 'En la selección de personaje, pulsa AddOns y comprueba que está activado.'],
+			],
+			whereTitle: '¿Dónde va la carpeta?',
+			whereText: 'Elige tu versión y copia la ruta. Si la carpeta Interface o AddOns no existe, créala.',
+			copy: 'Copiar ruta',
+			copied: 'Copiada',
+			fixTitle: '¿El addon no aparece?',
+			fixes: [
+				['Está dentro de otra carpeta', 'La carpeta del addon tiene que estar directamente en AddOns. AddOns/MiAddon/MiAddon/ no carga: sube la de dentro un nivel.'],
+				['Está desactivado', 'En la selección de personaje, pulsa AddOns abajo a la izquierda y márcalo.'],
+				['Sale como desactualizado', 'En esa misma ventana, marca la casilla para cargar addons desactualizados (Load out of date AddOns).'],
+				['Es para otra versión del juego', 'Cada addon solo carga en sus versiones. Las ves bajo el título de su guía.'],
+				['Lo acabas de actualizar', 'Sal del juego y vuelve a entrar en lugar de /reload, para que lea los archivos nuevos.'],
+			],
+			help: '¿Sigue sin funcionar? Escribe en la página del addon en CurseForge con tu versión del juego, el idioma del cliente y el texto del error.',
+			back: 'Volver a la biblioteca',
+		}
+	: {
+			app: 'With the CurseForge app',
+			appNote: 'Recommended: installs and updates by itself.',
+			hand: 'By hand',
+			handNote: 'No programs, straight from the zip.',
+			appSteps: [
+				['download', 'Get the app', 'Install the CurseForge app and pick World of Warcraft when it opens.'],
+				['pick', 'Pick your version', 'At the top, switch to your game version: WoW Forever, MoP Classic, Retail…'],
+				['search', 'Search the addon', 'Type its name and click Install. Done.'],
+				['play', 'Log in', 'If the game was open, log out and back in. The app keeps it updated.'],
+			],
+			handSteps: [
+				['download', 'Download the zip', "From the addon's CurseForge page, Files tab, or its GitHub release."],
+				['zip', 'Extract it', "You get a folder with the addon's name."],
+				['folder', 'Move it to AddOns', 'Into the folder of your game version (find it right below).'],
+				['play', 'Log in', 'On the character screen, click AddOns and check it is enabled.'],
+			],
+			whereTitle: 'Where does the folder go?',
+			whereText: "Pick your version and copy the path. If the Interface or AddOns folder doesn't exist, create it.",
+			copy: 'Copy path',
+			copied: 'Copied',
+			fixTitle: "The addon doesn't show up?",
+			fixes: [
+				["It's inside another folder", "The addon's folder must sit right in AddOns. AddOns/MyAddon/MyAddon/ doesn't load: move the inner one up a level."],
+				["It's disabled", 'On the character screen, click AddOns at the bottom left and tick it.'],
+				['It says out of date', 'In that same window, tick Load out of date AddOns.'],
+				["It's for another game version", 'Each addon only loads in its versions. They are listed under the title of its guide.'],
+				['You just updated it', 'Log out and back in instead of /reload, so the game reads the new files.'],
+			],
+			help: "Still stuck? Post on the addon's CurseForge page with your game version, client language and the error text.",
+			back: 'Back to the library',
+		};
+
+const FOLDERS = [
+	['WoW Forever', '_forever_'],
+	['MoP Classic', '_classic_'],
+	['Classic Era', '_classic_era_'],
+	['Retail', '_retail_'],
+];
+const methods = [
+	{ id: 'app', title: T.app, note: T.appNote, steps: T.appSteps },
+	{ id: 'hand', title: T.hand, note: T.handNote, steps: T.handSteps },
+];
+---
+
+<div class="ig not-content" data-ig>
+	<div class="ig-methods" role="tablist" aria-label={es ? 'Forma de instalar' : 'How to install'} hidden data-ig-tabs>
+		{
+			methods.map((m, i) => (
+				<button type="button" role="tab" id={`tab-${m.id}`} aria-controls={`panel-${m.id}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1} data-tab={m.id}>
+					<strong>{m.title}</strong>
+					<span>{m.note}</span>
+				</button>
+			))
+		}
+	</div>
+
+	{
+		methods.map((m, i) => (
+			<section class="ig-panel" role="tabpanel" id={`panel-${m.id}`} aria-labelledby={`tab-${m.id}`} data-panel={m.id} data-active={i === 0 ? '' : undefined}>
+				<h2 class="ig-nojs-title">{m.title}</h2>
+				<ol class="ig-steps">
+					{m.steps.map(([icon, title, text], n) => (
+						<li style={`--n:${n}`}>
+							<span class="ig-node" aria-hidden="true">
+								<svg viewBox="0 0 24 24">
+									<path d={ICON[icon as keyof typeof ICON]} />
+								</svg>
+							</span>
+							<span class="ig-num" aria-hidden="true">
+								{String(n + 1).padStart(2, '0')}
+							</span>
+							<h3>{title}</h3>
+							<p>{text}</p>
+						</li>
+					))}
+				</ol>
+			</section>
+		))
+	}
+
+	<section class="ig-where">
+		<div class="ig-where-copy">
+			<h2>{T.whereTitle}</h2>
+			<p>{T.whereText}</p>
+		</div>
+		<div class="ig-where-box">
+			<div class="ig-versions" role="radiogroup" aria-label={es ? 'Versión del juego' : 'Game version'}>
+				{
+					FOLDERS.map(([name, dir], i) => (
+						<button type="button" role="radio" aria-checked={i === 0 ? 'true' : 'false'} data-dir={dir}>
+							{name}
+						</button>
+					))
+				}
+			</div>
+			<div class="ig-path" aria-live="polite">
+				<svg class="ig-folder" viewBox="0 0 24 24" aria-hidden="true"><path d={ICON.folder} /></svg>
+				<span>World of Warcraft</span><i aria-hidden="true">›</i>
+				<span class="ig-dir" data-ig-dir>{FOLDERS[0][1]}</span><i aria-hidden="true">›</i>
+				<span>Interface</span><i aria-hidden="true">›</i>
+				<span class="ig-last">AddOns</span>
+			</div>
+			<button type="button" class="btn btn-glass ig-copy" data-ig-copy data-copied={T.copied} hidden>
+				{T.copy}
+			</button>
+			<noscript>
+				<ul>{FOLDERS.map(([name, dir]) => <li>{name}: World of Warcraft/{dir}/Interface/AddOns/</li>)}</ul>
+			</noscript>
+		</div>
+	</section>
+
+	<section class="ig-fix">
+		<h2>{T.fixTitle}</h2>
+		<div class="ig-fix-list">
+			{
+				T.fixes.map(([q, a]) => (
+					<details>
+						<summary>{q}</summary>
+						<p>{a}</p>
+					</details>
+				))
+			}
+		</div>
+		<p class="ig-help">{T.help}</p>
+		<a class="btn btn-gold" href={es ? '/es/#la-biblioteca' : '/#the-library'}>{T.back}</a>
+	</section>
+</div>
+
+<script>
+	for (const ig of document.querySelectorAll<HTMLElement>('[data-ig]')) {
+		// method tabs
+		const tablist = ig.querySelector<HTMLElement>('[data-ig-tabs]')!;
+		const tabs = [...tablist.querySelectorAll<HTMLButtonElement>('[data-tab]')];
+		const panels = [...ig.querySelectorAll<HTMLElement>('[data-panel]')];
+		tablist.hidden = false;
+		ig.classList.add('has-js');
+		const select = (tab: HTMLButtonElement) => {
+			for (const t of tabs) {
+				const on = t === tab;
+				t.setAttribute('aria-selected', String(on));
+				t.tabIndex = on ? 0 : -1;
+			}
+			for (const p of panels) p.toggleAttribute('data-active', p.dataset.panel === tab.dataset.tab);
+		};
+		tabs.forEach((t, i) => {
+			t.addEventListener('click', () => select(t));
+			t.addEventListener('keydown', (e) => {
+				if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+				const next = tabs[(i + (e.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length];
+				next.focus();
+				select(next);
+			});
+		});
+
+		// folder picker + copy
+		const dir = ig.querySelector<HTMLElement>('[data-ig-dir]')!;
+		const radios = [...ig.querySelectorAll<HTMLButtonElement>('[data-dir]')];
+		const copy = ig.querySelector<HTMLButtonElement>('[data-ig-copy]')!;
+		const label = copy.textContent!.trim();
+		copy.hidden = !navigator.clipboard;
+		radios.forEach((r) =>
+			r.addEventListener('click', () => {
+				for (const o of radios) o.setAttribute('aria-checked', String(o === r));
+				dir.textContent = r.dataset.dir!;
+				dir.classList.remove('is-new');
+				void dir.offsetWidth; // replay the highlight
+				dir.classList.add('is-new');
+			}),
+		);
+		copy.addEventListener('click', async () => {
+			await navigator.clipboard.writeText(`World of Warcraft\\${dir.textContent}\\Interface\\AddOns`);
+			copy.textContent = copy.dataset.copied!;
+			setTimeout(() => (copy.textContent = label), 1600);
+		});
+	}
+</script>
+
+<style>
+	.ig {
+		display: grid;
+		gap: 5rem;
+		margin-top: 1rem;
+	}
+	.ig h2 {
+		margin: 0 0 0.6rem;
+		font-family: var(--display);
+		font-weight: 400;
+		font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+		line-height: 1.05;
+		color: #f1e6ff;
+	}
+
+	/* method tabs: two big choices */
+	.ig-methods {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 0.5rem;
+		padding: 0.5rem;
+		margin-bottom: -3rem;
+		background: var(--night);
+		border: 1px solid var(--line);
+		border-radius: 22px;
+	}
+	.ig-methods button {
+		display: flex;
+		flex-direction: column;
+		gap: 0.2rem;
+		padding: 1rem 1.25rem;
+		text-align: start;
+		font: inherit;
+		color: var(--muted);
+		background: none;
+		border: 1px solid transparent;
+		border-radius: 16px;
+		cursor: pointer;
+		transition:
+			background 0.3s,
+			color 0.3s,
+			border-color 0.3s;
+	}
+	.ig-methods strong {
+		font-size: 1.1rem;
+		color: #fff;
+	}
+	.ig-methods button[aria-selected='true'] {
+		color: #e8d6ff;
+		background: linear-gradient(135deg, rgb(109 59 184 / 0.55), rgb(196 127 243 / 0.18));
+		border-color: rgb(196 127 243 / 0.45);
+		box-shadow: 0 10px 30px rgb(109 59 184 / 0.3);
+	}
+
+	.ig-nojs-title {
+		margin-bottom: 1.5rem !important;
+	}
+	.ig.has-js .ig-nojs-title {
+		display: none;
+	}
+	.ig.has-js .ig-panel:not([data-active]) {
+		display: none;
+	}
+
+	/* steps joined by a line that lights up */
+	.ig-steps {
+		position: relative;
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 1.25rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.ig-steps::before {
+		content: '';
+		position: absolute;
+		top: 1.75rem;
+		left: 1.75rem;
+		right: 1.75rem;
+		height: 2px;
+		background: linear-gradient(90deg, var(--arcane), var(--gold));
+		box-shadow: 0 0 12px rgb(196 127 243 / 0.6);
+		transform-origin: left;
+		animation: ig-line 1.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+	}
+	@keyframes ig-line {
+		from {
+			transform: scaleX(0);
+		}
+	}
+	.ig-steps li {
+		position: relative;
+		margin: 0;
+		padding: 0;
+		animation: ig-rise 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+		animation-delay: calc(0.15s + var(--n) * 0.18s);
+	}
+	@keyframes ig-rise {
+		from {
+			opacity: 0;
+			translate: 0 18px;
+		}
+	}
+	.ig-node {
+		position: relative;
+		display: grid;
+		place-items: center;
+		width: 3.5rem;
+		height: 3.5rem;
+		border-radius: 50%;
+		background: radial-gradient(circle at 35% 30%, #3a2460, #140f22);
+		border: 1px solid rgb(196 127 243 / 0.6);
+		box-shadow:
+			0 0 0 6px var(--obsidian),
+			0 0 24px rgb(196 127 243 / 0.45);
+	}
+	.ig-node svg {
+		width: 1.5rem;
+		fill: none;
+		stroke: #f1e2ff;
+		stroke-width: 1.8;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+	.ig-num {
+		display: block;
+		margin-top: 1.3rem;
+		font-size: 0.8rem;
+		font-weight: 800;
+		letter-spacing: 0.08em;
+		color: var(--arcane);
+	}
+	.ig-steps h3 {
+		margin: 0.2rem 0 0.4rem;
+		font-size: 1.15rem;
+		font-weight: 700;
+		color: #fff;
+	}
+	.ig-steps p {
+		margin: 0;
+		line-height: 1.55;
+		color: #c4c3d2;
+	}
+
+	/* folder finder */
+	.ig-where {
+		display: grid;
+		grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+		gap: 2.5rem;
+		align-items: center;
+		padding: clamp(1.5rem, 4vw, 3rem);
+		background:
+			radial-gradient(60% 80% at 100% 0%, rgb(242 196 103 / 0.12), transparent 70%),
+			linear-gradient(160deg, #15132a, var(--night));
+		border: 1px solid var(--line);
+		border-radius: 28px;
+	}
+	.ig-where-copy p {
+		margin: 0;
+		line-height: 1.6;
+		color: #c4c3d2;
+	}
+	.ig-where-box {
+		display: grid;
+		gap: 1rem;
+		justify-items: start;
+	}
+	.ig-versions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem;
+	}
+	.ig-versions button {
+		padding: 0.45rem 1rem;
+		font: inherit;
+		font-size: 0.9rem;
+		font-weight: 600;
+		color: var(--muted);
+		background: rgb(255 255 255 / 0.04);
+		border: 1px solid var(--line);
+		border-radius: 999px;
+		cursor: pointer;
+	}
+	.ig-versions button:hover {
+		color: #fff;
+	}
+	.ig-versions button[aria-checked='true'] {
+		color: #241600;
+		background: var(--gold);
+		border-color: var(--gold);
+	}
+	.ig-path {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.45rem;
+		width: 100%;
+		padding: 1rem 1.2rem;
+		font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+		font-size: clamp(0.85rem, 1.6vw, 1rem);
+		color: #d9d7e6;
+		background: #07070c;
+		border: 1px solid var(--line);
+		border-radius: 14px;
+	}
+	.ig-path i {
+		font-style: normal;
+		color: var(--sl-color-gray-4);
+	}
+	.ig-folder {
+		width: 1.2rem;
+		fill: rgb(242 196 103 / 0.2);
+		stroke: var(--gold);
+		stroke-width: 1.6;
+		stroke-linejoin: round;
+	}
+	.ig-dir {
+		padding: 0.1rem 0.45rem;
+		color: #241600;
+		background: var(--gold);
+		border-radius: 6px;
+		font-weight: 700;
+	}
+	.ig-dir.is-new {
+		animation: ig-pop 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+	}
+	@keyframes ig-pop {
+		from {
+			transform: scale(1.25);
+			box-shadow: 0 0 22px var(--gold);
+		}
+	}
+	.ig-last {
+		color: #fff;
+		font-weight: 700;
+	}
+
+	/* troubleshooting */
+	.ig-fix-list {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 0.75rem;
+		align-items: start;
+		margin-top: 1.25rem;
+	}
+	.ig-fix details {
+		background: var(--night);
+		border: 1px solid var(--line);
+		border-radius: 16px;
+		transition: border-color 0.3s;
+	}
+	.ig-fix details[open] {
+		border-color: rgb(196 127 243 / 0.5);
+	}
+	.ig-fix summary {
+		display: flex;
+		justify-content: space-between;
+		gap: 1rem;
+		padding: 1rem 1.2rem;
+		font-weight: 700;
+		color: #fff;
+		cursor: pointer;
+		list-style: none;
+	}
+	.ig-fix summary::-webkit-details-marker {
+		display: none;
+	}
+	.ig-fix summary::after {
+		content: '+';
+		font-size: 1.3rem;
+		line-height: 1;
+		color: var(--arcane);
+		transition: rotate 0.3s;
+	}
+	.ig-fix details[open] summary::after {
+		rotate: 45deg;
+	}
+	.ig-fix details p {
+		margin: 0;
+		padding: 0 1.2rem 1.1rem;
+		line-height: 1.55;
+		color: #c4c3d2;
+	}
+	.ig-help {
+		margin: 1.5rem 0 1.25rem;
+		color: var(--muted);
+	}
+
+	@media (max-width: 60rem) {
+		.ig-steps {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			row-gap: 2.5rem;
+		}
+		.ig-steps::before {
+			display: none;
+		}
+		.ig-where {
+			grid-template-columns: minmax(0, 1fr);
+		}
+	}
+	@media (max-width: 36rem) {
+		.ig-methods,
+		.ig-fix-list,
+		.ig-steps {
+			grid-template-columns: minmax(0, 1fr);
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.ig-steps::before,
+		.ig-steps li,
+		.ig-dir.is-new {
+			animation: none;
+		}
+	}
+</style>
