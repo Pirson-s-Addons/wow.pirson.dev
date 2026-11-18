@@ -3,21 +3,32 @@ title: Pirson's Addons
 description: "Guides for every World of Warcraft addon by Pirson. WoW Forever, MoP Classic, Retail and Classic: what each addon does, how to install it and every command."
 template: splash
 hero:
-  tagline: "Addons for WoW Forever, MoP Classic and every other version of World of Warcraft. Every guide, every command, in English and Spanish."
+  tagline: "Addons that fix what the game leaves out: dungeon quests, maps, unit frames, PvP and more. Each one with its guide, in English and Spanish."
   actions:
     - text: See the addons
-      link: '#addons'
+      link: '#all-addons'
     - text: How to install addons
       link: /install/
       variant: minimal
 ---
 
+import Featured from '../../components/Featured.astro';
 import AddonGrid from '../../components/AddonGrid.astro';
 
-## Addons
+## Most used
+
+<Featured lang="en" />
+
+## All addons
 
 <AddonGrid lang="en" />
 
----
+## Install in three steps
 
-<small>Fan-made addons. Not affiliated with or endorsed by Blizzard Entertainment. World of Warcraft and Warcraft are trademarks or registered trademarks of Blizzard Entertainment, Inc.</small>
+<ol class="steps not-content">
+	<li><strong>Get the CurseForge app</strong> and pick World of Warcraft and your game version.</li>
+	<li><strong>Search the addon</strong> by name and click Install.</li>
+	<li><strong>Log in to the game.</strong> The app keeps the addon updated from then on.</li>
+</ol>
+
+[Install by hand and fix common problems](/install/)

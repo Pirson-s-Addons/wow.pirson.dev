@@ -2,6 +2,7 @@
 title: "Map Fix Forever"
 description: "Fixes the green world map in non-English clients with the original map art."
 addon: mf
+cover: "/images/addons/map-fix-forever/mapfixed-png-c4b49f.webp"
 sidebar:
   order: 9
 ---

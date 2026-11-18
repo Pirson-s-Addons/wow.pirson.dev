@@ -1,36 +1,43 @@
 ---
-// Default Starlight title; on addon pages, the addon presented like an item tooltip
-// (quality-coloured icon and name, game versions, category, downloads) with the download button.
+// Default Starlight title; on addon pages a header over the addon's screenshot: logo, name,
+// what it does, game versions, downloads and the download button.
 import Default from '@astrojs/starlight/components/PageTitle.astro';
 import addons from '../data/addons.json';
+import { covers } from '../lib/covers';
 import { t } from '../lib/i18n';
 
 const { entry, lang } = Astro.locals.starlightRoute;
 const addon = entry.data.addon ? addons.find((a) => a.id === entry.data.addon) : undefined;
 const l = lang === 'es' ? 1 : 0;
+const cover = entry.data.cover ?? (addon && covers[addon.slug]);
 ---
 
 {
 	addon ? (
-		<div class="addon-head" style={`--q:${addon.color}`}>
-			<img class="item-icon" src={`/logos/${addon.id}.webp`} alt="" width="96" height="96" />
-			<div class="wow-tooltip addon-tip">
-				<Default />
-				<span class="tt-white">{addon.clients.map((c) => c[l]).join(', ')}</span>
-				<span class="tt-white">{addon.cat[l]}</span>
-				<span class="tt-use">
-					{lang === 'es' ? 'Uso: ' : 'Use: '}
-					{addon.one[l]}
-				</span>
-				<span class="tt-gold">
-					{addon.downloads.toLocaleString(lang)} {t(lang, 'downloads')}
-					{addon.version && ` (v${addon.version})`}
-				</span>
-				<a class="wow-button" href={addon.url} rel="noopener">
+		<header class="addon-hero" style={`--q:${addon.color}`}>
+			{cover && <img class="addon-hero-bg" src={cover} alt="" />}
+			<div class="addon-hero-body">
+				<img class="addon-hero-logo" src={`/logos/${addon.id}.webp`} alt="" width="88" height="88" />
+				<div>
+					<Default />
+					<p class="addon-hero-one">{addon.one[l]}</p>
+					<ul class="chips">
+						{addon.clients.map((c) => (
+							<li>{c[l]}</li>
+						))}
+					</ul>
+				</div>
+			</div>
+			<div class="addon-hero-foot">
+				<a class="btn btn-gold" href={addon.url} rel="noopener">
 					{t(lang, 'download')}
 				</a>
+				<p>
+					<strong>{addon.downloads.toLocaleString(lang)}</strong> {t(lang, 'downloads')}
+					{addon.version && <span class="addon-hero-v">v{addon.version}</span>}
+				</p>
 			</div>
-		</div>
+		</header>
 	) : (
 		<Default />
 	)

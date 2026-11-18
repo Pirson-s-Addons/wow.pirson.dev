@@ -27,6 +27,7 @@ const addonGuide = (label: string, path: string) =>
 				options: addons.map((a) => ({ label: a.name, value: a.id })),
 				defaultValue: addons[0].id,
 			}),
+			cover: fields.text({ label: 'Cover image path (empty = first image of the guide)' }),
 			sidebar: fields.object({ order: fields.integer({ label: 'Order in the sidebar', defaultValue: 99 }) }),
 			content: content('addons'),
 		},

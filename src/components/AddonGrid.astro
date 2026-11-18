@@ -1,31 +1,62 @@
 ---
-// Every addon as a bag of items, most downloaded first. `lang` comes from the page that embeds it.
+// The whole catalog as cards with their screenshot, filterable by game version.
+// Without JavaScript the filter buttons are hidden and every card shows.
 import addons from '../data/addons.json';
+import { covers } from '../lib/covers';
 import { t, href } from '../lib/i18n';
 
 interface Props {
 	lang: 'en' | 'es';
 }
 const { lang } = Astro.props;
-const l = lang === 'es' ? 1 : 0;
+const es = lang === 'es';
+const l = es ? 1 : 0;
+const versions = [...new Set(addons.flatMap((a) => a.clients.map((c) => c[l])))];
 ---
 
-<ul class="addon-grid not-content">
-	{
-		addons.map((a) => (
-			<li style={`--q:${a.color}`}>
-				<a href={href(lang, `addons/${a.slug}`)}>
-					<img class="item-icon" src={`/logos/${a.id}.webp`} alt="" width="56" height="56" loading="lazy" />
-					<span class="name">{a.name}</span>
-					<span class="one">{a.one[l]}</span>
-					<span class="meta">
-						{a.clients.length === 1 ? a.clients[0][l] : `${a.clients[0][l]} +${a.clients.length - 1}`}
-						<span class="dl">
-							{a.downloads.toLocaleString(lang)} {t(lang, 'downloads')}
+<div class="catalog not-content" data-catalog>
+	<div class="filters" role="group" aria-label={es ? 'Filtrar por versión del juego' : 'Filter by game version'} hidden data-filters>
+		<button type="button" aria-pressed="true" data-v="">{es ? 'Todas' : 'All'}</button>
+		{versions.map((v) => <button type="button" aria-pressed="false" data-v={v}>{v}</button>)}
+	</div>
+	<ul class="cards">
+		{
+			addons.map((a) => (
+				<li style={`--q:${a.color}`} data-versions={a.clients.map((c) => c[l]).join('|')} data-reveal>
+					<a href={href(lang, `addons/${a.slug}`)}>
+						<span class="card-media">
+							{covers[a.slug] ? <img src={covers[a.slug]} alt="" loading="lazy" /> : <span class="card-blank" />}
 						</span>
-					</span>
-				</a>
-			</li>
-		))
+						<span class="card-body">
+							<img class="card-logo" src={`/logos/${a.id}.webp`} alt="" width="52" height="52" loading="lazy" />
+							<span class="card-name">{a.name}</span>
+							<span class="card-one">{a.one[l]}</span>
+							<span class="card-meta">
+								<span>{a.clients.length === 1 ? a.clients[0][l] : `${a.clients[0][l]} +${a.clients.length - 1}`}</span>
+								<span>
+									{a.downloads.toLocaleString(lang)} {t(lang, 'downloads')}
+								</span>
+							</span>
+						</span>
+					</a>
+				</li>
+			))
+		}
+	</ul>
+</div>
+
+<script>
+	for (const cat of document.querySelectorAll<HTMLElement>('[data-catalog]')) {
+		const bar = cat.querySelector<HTMLElement>('[data-filters]')!;
+		const buttons = [...bar.querySelectorAll<HTMLButtonElement>('button')];
+		const cards = [...cat.querySelectorAll<HTMLElement>('[data-versions]')];
+		bar.hidden = false;
+		for (const b of buttons) {
+			b.addEventListener('click', () => {
+				for (const o of buttons) o.setAttribute('aria-pressed', String(o === b));
+				const v = b.dataset.v!;
+				for (const c of cards) c.hidden = !!v && !c.dataset.versions!.split('|').includes(v);
+			});
+		}
 	}
-</ul>
+</script>

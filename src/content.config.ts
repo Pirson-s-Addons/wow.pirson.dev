@@ -12,6 +12,8 @@ export const collections = {
 				blogSchema(context).extend({
 					// Addon pages: the catalog id (src/data/addons.json) that PageTitle uses for logo, clients and downloads.
 					addon: z.string().optional(),
+					// Addon pages: image for the header and the home cards (default: the first image of the guide).
+					cover: z.string().optional(),
 				}),
 		}),
 	}),
