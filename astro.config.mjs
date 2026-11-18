@@ -34,6 +34,8 @@ export default defineConfig({
 				PageTitle: './src/components/PageTitle.astro',
 				Hero: './src/components/Hero.astro',
 				Footer: './src/components/Footer.astro',
+				ThemeProvider: './src/components/ThemeProvider.astro',
+				ThemeSelect: './src/components/ThemeSelect.astro',
 			},
 			sidebar: [
 				{
@@ -49,6 +51,7 @@ export default defineConfig({
 			plugins: [
 				starlightBlog({
 					title: { en: 'Blog', es: 'Blog' },
+					navigation: 'none', // the link lives in our ThemeSelect override
 					authors: {
 						pirson: { name: 'Pirson', url: 'https://github.com/Pirson-s-Addons' },
 					},

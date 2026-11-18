@@ -1,12 +1,59 @@
 ---
-// Starlight footer + an experience bar fixed to the bottom of the screen: it fills as you read.
+// On every page: Starlight's footer, the room you are in (drawn behind the page), the zone text
+// that announces it when you walk into a different room, the zone plate that keeps saying where
+// you are, and the experience bar that fills as you read.
 import Default from '@astrojs/starlight/components/Footer.astro';
+import Hall, { type Room } from './Hall.astro';
+import addons from '../data/addons.json';
+
+const { id, lang, entry } = Astro.locals.starlightRoute;
+const es = lang === 'es';
+const path = id.replace(/^es\/?/, '');
+const splash = entry.data.template === 'splash';
+
+const ZONES: Record<Room, [string, string]> = {
+	heroes: ['Hall of Heroes', 'Salón de los Héroes'],
+	library: ["The Archivist's Library", 'Biblioteca del Archivero'],
+	forge: ['The Forge', 'La Forja'],
+	tavern: ["The Bard's Tavern", 'Taberna del Bardo'],
+};
+const room: Room = path.startsWith('addons/') ? 'library' : path.startsWith('blog') ? 'tavern' : path.startsWith('install') ? 'forge' : 'heroes';
+const zone = ZONES[room][es ? 1 : 0];
+const addon = entry.data.addon ? addons.find((a) => a.id === entry.data.addon) : undefined;
+const sub = addon?.name ?? (path ? entry.data.title : undefined);
 ---
 
 <Default />
+
+{
+	!splash && (
+		<div class="scene" aria-hidden="true">
+			<Hall room={room} />
+		</div>
+	)
+}
+
+<div class="zone-text" data-zone={room} aria-hidden="true">
+	<span class="zone-name">{zone}</span>
+	{sub && sub !== zone && <span class="zone-sub">{sub}</span>}
+</div>
+<p class="zone-plate" aria-label={es ? `Estás en: ${zone}` : `You are in: ${zone}`}>{zone}</p>
+
 <div class="xp-bar" aria-hidden="true"><span data-xp></span></div>
 
 <script>
+	// Zone text only plays when you enter a different room, like in the game.
+	const zone = document.querySelector<HTMLElement>('.zone-text');
+	if (zone) {
+		const room = zone.dataset.zone!;
+		let last: string | null = null;
+		try {
+			last = sessionStorage.getItem('zone');
+			sessionStorage.setItem('zone', room);
+		} catch {}
+		if (last !== room && !matchMedia('(prefers-reduced-motion: reduce)').matches) zone.classList.add('is-shown');
+	}
+
 	const fill = document.querySelector<HTMLElement>('[data-xp]');
 	if (fill) {
 		const update = () => {

@@ -1,0 +1,268 @@
+---
+// A stone hall drawn in perspective (pillars, pointed arches, a lit window at the back), with props
+// that tell each room apart: banners and braziers, bookshelves, a forge, lanterns.
+// Layers carry data-depth so the hall can sway with the pointer (see Scene / Hero scripts).
+export type Room = 'heroes' | 'library' | 'forge' | 'tavern';
+interface Props {
+	room: Room;
+	class?: string;
+}
+const { room, class: cls } = Astro.props;
+
+const ROOMS = {
+	heroes: { light: '#9fd4ff', glow: '#5aa8ff', stone: ['#2a3644', '#121a24'], accent: '#7a1414' },
+	library: { light: '#c8b6ff', glow: '#8f6bff', stone: ['#2c2a40', '#13121f'], accent: '#3b2a17' },
+	forge: { light: '#ffb25a', glow: '#ff6a1a', stone: ['#3a2a22', '#170f0b'], accent: '#5a1a08' },
+	tavern: { light: '#ffd58a', glow: '#ffae3a', stone: ['#3a2d20', '#17110b'], accent: '#4a2c14' },
+} as const;
+const c = ROOMS[room];
+
+// perspective: vanishing point (800, 360); depth k = 0 (front) .. 6 (back wall)
+const VX = 800, VY = 360;
+const s = (k: number) => 1 / (1 + k * 0.55);
+const px = (k: number, side: number) => VX + side * 660 * s(k);
+const top = (k: number) => VY - 470 * s(k);
+const bot = (k: number) => VY + 560 * s(k);
+const depths = [0.4, 1.4, 2.4, 3.4, 4.4, 5.4];
+const back = s(6.2);
+
+const pillars = depths.flatMap((k) =>
+	[-1, 1].map((side) => {
+		const w = 78 * s(k);
+		const x = px(k, side) - w / 2;
+		return { k, side, x, y: top(k), w, h: bot(k) - top(k) };
+	}),
+);
+// transverse pointed arch across the nave at depth k
+const arch = (k: number) => {
+	const l = px(k, -1), r = px(k, 1), y = top(k), apex = y - 240 * s(k);
+	return `M${l} ${y} Q${l} ${apex} ${VX} ${apex} Q${r} ${apex} ${r} ${y}`;
+};
+// back-wall window: tall pointed arch
+const ww = 210 * back * 4, wh = 380 * back * 4;
+const win = `M${VX - ww / 2} ${VY + 60 * back * 4} V${VY - wh / 2} Q${VX - ww / 2} ${VY - wh} ${VX} ${VY - wh - 40 * back * 4} Q${VX + ww / 2} ${VY - wh} ${VX + ww / 2} ${VY - wh / 2} V${VY + 60 * back * 4}Z`;
+const between = depths.slice(0, -1).map((k, i) => ({ a: k, b: depths[i + 1] }));
+---
+
+<svg class:list={['hall', `hall-${room}`, cls]} viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+	<defs>
+		<linearGradient id={`stone-${room}`} x1="0" x2="1">
+			<stop offset="0" stop-color={c.stone[1]} />
+			<stop offset="0.7" stop-color={c.stone[0]} />
+			<stop offset="1" stop-color={c.stone[1]} />
+		</linearGradient>
+		<radialGradient id={`win-${room}`} cy="0.35">
+			<stop offset="0" stop-color={c.light} />
+			<stop offset="0.6" stop-color={c.glow} stop-opacity="0.7" />
+			<stop offset="1" stop-color={c.glow} stop-opacity="0.1" />
+		</radialGradient>
+		<linearGradient id={`beam-${room}`} x1="0" y1="0" x2="0" y2="1">
+			<stop offset="0" stop-color={c.light} stop-opacity="0.35" />
+			<stop offset="1" stop-color={c.light} stop-opacity="0" />
+		</linearGradient>
+		<linearGradient id={`floor-${room}`} y1="0" y2="1">
+			<stop offset="0" stop-color={c.stone[1]} />
+			<stop offset="1" stop-color={c.stone[0]} />
+		</linearGradient>
+	</defs>
+
+	<!-- back wall, window and floor -->
+	<g data-depth="0.2">
+		<rect width="1600" height="900" fill={c.stone[1]} />
+		<rect x={px(6.2, -1)} y={top(6.2) - 60} width={px(6.2, 1) - px(6.2, -1)} height={bot(6.2) - top(6.2) + 60} fill={c.stone[0]} opacity="0.6" />
+		<path d={win} fill={`url(#win-${room})`} class="hall-window" />
+		<path d={win} fill="none" stroke={c.stone[1]} stroke-width="5" />
+		<path d={`M${VX} ${VY - wh - 40 * back * 4}V${VY + 60 * back * 4}M${VX - ww / 2} ${VY - wh / 4}H${VX + ww / 2}`} stroke={c.stone[1]} stroke-width="4" />
+		<path d={`M0 900 L${px(6.2, -1)} ${bot(6.2)} H${px(6.2, 1)} L1600 900Z`} fill={`url(#floor-${room})`} />
+		{
+			[-5, -3, -1, 1, 3, 5].map((i) => (
+				<path d={`M${VX + i * 30 * back * 4} ${bot(6.2)} L${VX + i * 330} 900`} stroke="#fff" stroke-opacity="0.05" stroke-width="2" />
+			))
+		}
+		{
+			depths.map((k) => (
+				<path d={`M${px(k, -1)} ${bot(k)} H${px(k, 1)}`} stroke="#fff" stroke-opacity="0.05" stroke-width={3 * s(k)} />
+			))
+		}
+		<path class="hall-beam" d={`M${VX - ww / 2} ${VY - wh / 2} L${VX - 520} 900 H${VX + 520} L${VX + ww / 2} ${VY - wh / 2}Z`} fill={`url(#beam-${room})`} />
+	</g>
+
+	<!-- room props between the pillars -->
+	<g data-depth="0.45">
+		{
+			room === 'library' &&
+				between.flatMap(({ a, b }) =>
+					[-1, 1].map((side) => {
+						const x1 = px(a, side), x2 = px(b, side);
+						const y1 = top(a) + 140 * s(a), y2 = top(b) + 140 * s(b);
+						const yb1 = bot(a) - 20 * s(a), yb2 = bot(b) - 20 * s(b);
+						const books = Array.from({ length: 14 }, (_, i) => i / 14);
+						return (
+							<g>
+								<path d={`M${x1} ${y1} L${x2} ${y2} V${yb2} L${x1} ${yb1}Z`} fill="#1a1426" stroke="#3b2a17" stroke-width="4" />
+								{[0.25, 0.5, 0.75].map((f) => (
+									<path d={`M${x1} ${y1 + (yb1 - y1) * f} L${x2} ${y2 + (yb2 - y2) * f}`} stroke="#3b2a17" stroke-width={5 * s(a)} />
+								))}
+								{books.map((f) => {
+									const x = x1 + (x2 - x1) * f;
+									const ya = y1 + (y2 - y1) * f, yb = yb1 + (yb2 - yb1) * f;
+									return [0, 0.25, 0.5, 0.75].map((r) => (
+										<path
+											d={`M${x} ${ya + (yb - ya) * (r + 0.04)} V${ya + (yb - ya) * (r + 0.22)}`}
+											stroke={['#5a2a3a', '#2a3a5a', '#3a4a2a', '#5a4a2a', '#4a2a5a'][Math.floor(f * 70 + r * 13) % 5]}
+											stroke-width={9 * s(a)}
+										/>
+									));
+								})}
+							</g>
+						);
+					}),
+				)
+		}
+		{
+			room === 'heroes' &&
+				depths.slice(0, 4).flatMap((k) =>
+					[-1, 1].map((side) => {
+						const w = 70 * s(k), x = px(k, side) - side * (w + 60 * s(k)), y = top(k) + 40 * s(k), h = 330 * s(k);
+						return (
+							<g class="hall-banner">
+								<path d={`M${x - w / 2} ${y} H${x + w / 2} V${y + h} L${x} ${y + h - 30 * s(k)} L${x - w / 2} ${y + h}Z`} fill={c.accent} />
+								<path d={`M${x - w / 2} ${y} H${x + w / 2} V${y + h} L${x} ${y + h - 30 * s(k)} L${x - w / 2} ${y + h}Z`} fill="none" stroke="#c9a24a" stroke-width={4 * s(k)} />
+								<circle cx={x} cy={y + h * 0.35} r={16 * s(k)} fill="none" stroke="#c9a24a" stroke-width={4 * s(k)} />
+							</g>
+						);
+					}),
+				)
+		}
+		{
+			room === 'tavern' &&
+				depths.slice(0, 5).map((k) => (
+					<g class="hall-lantern">
+						<path d={`M${VX} ${top(k) - 220 * s(k)} V${top(k) - 40 * s(k)}`} stroke="#2a1d10" stroke-width={4 * s(k)} />
+						<circle cx={VX} cy={top(k) - 20 * s(k)} r={60 * s(k)} fill={c.glow} opacity="0.25" />
+						<rect x={VX - 14 * s(k)} y={top(k) - 40 * s(k)} width={28 * s(k)} height={40 * s(k)} rx={6 * s(k)} fill={c.light} />
+					</g>
+				))
+		}
+		{
+			room === 'forge' && (
+				<g class="hall-forge">
+					<ellipse cx={VX} cy={bot(5.4)} rx={260 * s(5.4) * 2} ry={70 * s(5.4) * 2} fill={c.glow} opacity="0.35" />
+					<rect x={VX - 90} y={bot(4.4) - 120} width="180" height="120" rx="10" fill="#1a0f0a" stroke={c.glow} stroke-opacity="0.6" stroke-width="3" />
+					<path d={`M${VX - 60} ${bot(4.4) - 120} Q${VX} ${bot(4.4) - 200} ${VX + 60} ${bot(4.4) - 120}Z`} fill={c.glow} class="hall-fire" />
+				</g>
+			)
+		}
+	</g>
+
+	<!-- pillars and arches, back to front so near ones overlap far ones -->
+	<g data-depth="0.8">
+		{depths.slice().reverse().map((k) => <path d={arch(k)} fill="none" stroke={`url(#stone-${room})`} stroke-width={46 * s(k)} />)}
+		{
+			pillars
+				.slice()
+				.reverse()
+				.map((p) => (
+					<g>
+						<rect x={p.x} y={p.y} width={p.w} height={p.h} fill={`url(#stone-${room})`} />
+						<rect x={p.side < 0 ? p.x + p.w * 0.72 : p.x} y={p.y} width={p.w * 0.28} height={p.h} fill={c.light} opacity={0.12 / (1 + p.k * 0.3)} />
+						<rect x={p.x - p.w * 0.2} y={p.y - 14 * s(p.k)} width={p.w * 1.4} height={28 * s(p.k)} fill={c.stone[0]} />
+						<rect x={p.x - p.w * 0.2} y={p.y + p.h - 28 * s(p.k)} width={p.w * 1.4} height={28 * s(p.k)} fill={c.stone[0]} />
+					</g>
+				))
+		}
+	</g>
+
+	<!-- braziers at the front of the hall of heroes, the forge's front anvil -->
+	{
+		room === 'heroes' && (
+			<g data-depth="1">
+				{[-1, 1].map((side) => {
+					const x = VX + side * 330, y = 830;
+					return (
+						<g class="hall-brazier">
+							<ellipse cx={x} cy={y - 90} rx="120" ry="90" fill={c.glow} opacity="0" class="hall-halo" />
+							<path d={`M${x - 46} ${y} L${x - 30} ${y - 70} H${x + 30} L${x + 46} ${y}Z`} fill="#1a1f26" stroke="#c9a24a" stroke-width="3" />
+							{[-16, 0, 16].map((o, j) => (
+								<path d={`M${x + o - 22} ${y - 70} Q${x + o - 26} ${y - 120 - j * 8} ${x + o + (j - 1) * 6} ${y - 150 - (j === 1 ? 40 : 0)} Q${x + o + 24} ${y - 118} ${x + o + 22} ${y - 70}Z`} fill={j === 1 ? '#ff9a2a' : '#e8561a'} class="hall-flame" style={`animation-delay:${j * -0.3}s`} />
+							))}
+							<path d={`M${x - 18} ${y - 70} Q${x - 14} ${y - 115} ${x} ${y - 132} Q${x + 14} ${y - 115} ${x + 18} ${y - 70}Z`} fill="#ffe08a" class="hall-flame hall-flame-core" />
+						</g>
+					);
+				})}
+			</g>
+		)
+	}
+	<rect class="hall-vignette" width="1600" height="900" fill="url(#vig)" />
+	<defs>
+		<radialGradient id="vig" r="0.75">
+			<stop offset="0.45" stop-color="#000" stop-opacity="0" />
+			<stop offset="1" stop-color="#000" stop-opacity="0.85" />
+		</radialGradient>
+	</defs>
+</svg>
+
+<style>
+	.hall {
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+	.hall [data-depth] {
+		transition: transform 0.6s ease-out;
+	}
+	.hall-window {
+		animation: hall-shimmer 7s ease-in-out infinite;
+	}
+	.hall-beam {
+		mix-blend-mode: screen;
+		animation: hall-shimmer 9s ease-in-out infinite;
+	}
+	@keyframes hall-shimmer {
+		50% {
+			opacity: 0.75;
+		}
+	}
+	.hall-flame {
+		transform-box: fill-box;
+		transform-origin: 50% 100%;
+		animation: hall-flicker 0.9s ease-in-out infinite alternate;
+		filter: drop-shadow(0 0 18px #ff8a2a);
+	}
+	.hall-flame-core {
+		animation-duration: 0.6s;
+	}
+	.hall-halo {
+		animation: hall-halo 1.8s ease-in-out infinite alternate;
+	}
+	@keyframes hall-flicker {
+		from {
+			transform: scale(0.92, 0.88) skewX(-3deg);
+		}
+		to {
+			transform: scale(1.05, 1.1) skewX(3deg);
+		}
+	}
+	@keyframes hall-halo {
+		from {
+			opacity: 0.12;
+		}
+		to {
+			opacity: 0.22;
+		}
+	}
+	.hall-fire {
+		transform-box: fill-box;
+		transform-origin: 50% 100%;
+		animation: hall-flicker 0.8s ease-in-out infinite alternate;
+		filter: drop-shadow(0 0 30px #ff6a1a);
+	}
+	.hall-lantern circle {
+		animation: hall-halo 2.4s ease-in-out infinite alternate;
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.hall * {
+			animation: none !important;
+		}
+	}
+</style>

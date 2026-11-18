@@ -1,0 +1,18 @@
+---
+// The site is dark only (its rooms are night scenes), so the theme picker's slot holds the blog link.
+const { lang } = Astro.locals.starlightRoute;
+---
+
+<a class="nav-blog" href={lang === 'es' ? '/es/blog/' : '/blog/'}>Blog</a>
+
+<style>
+	.nav-blog {
+		font-family: var(--display);
+		font-size: 1.05rem;
+		color: var(--gold-bright);
+		text-decoration: none;
+	}
+	.nav-blog:hover {
+		color: #fff2a8;
+	}
+</style>
