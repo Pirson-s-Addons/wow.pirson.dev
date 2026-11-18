@@ -53,7 +53,11 @@ const blog = (label: string, path: string) =>
 	});
 
 export default config({
-	storage: import.meta.env.DEV ? { kind: 'local' } : { kind: 'github', repo: 'Pirson-s-Addons/wow.pirson.dev' },
+	// PUBLIC_KEYSTATIC_GITHUB=1 npm run dev: GitHub mode locally, needed once to create the GitHub App (setup only runs in dev)
+	storage:
+		import.meta.env.DEV && !import.meta.env.PUBLIC_KEYSTATIC_GITHUB
+			? { kind: 'local' }
+			: { kind: 'github', repo: 'Pirson-s-Addons/wow.pirson.dev' },
 	ui: { brand: { name: "Pirson's Addons" } },
 	collections: {
 		addonsEn: addonGuide('Addons (English)', 'src/content/docs/addons'),
