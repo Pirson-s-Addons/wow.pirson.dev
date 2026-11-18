@@ -1,0 +1,123 @@
+---
+// Addon guide header, store-page style: the addon's art full-bleed, logo, name, what it does,
+// game versions and actions, a glass bar with the numbers, and a section nav that sticks under
+// the site header. Its script also turns runs of screenshots in the guide into a gallery with
+// a full-screen viewer.
+import addons from '../data/addons.json';
+import { covers } from '../lib/covers';
+import { t } from '../lib/i18n';
+
+const PAGE_TITLE_ID = '_top'; // Starlight's page title id (not exported)
+const { entry, lang, headings } = Astro.locals.starlightRoute;
+const es = lang === 'es';
+const l = es ? 1 : 0;
+const a = addons.find((x) => x.id === entry.data.addon)!;
+const cover = entry.data.cover ?? covers[a.slug];
+const sections = headings.filter((h) => h.depth === 2);
+---
+
+<header class="ah" style={`--q:${a.color}`}>
+	{cover && <img class="ah-art" src={cover} alt="" data-ah-art />}
+	<div class="ah-inner">
+		<img class="ah-logo" src={`/logos/${a.id}.webp`} alt="" width="112" height="112" />
+		<div class="ah-copy">
+			<p class="ah-cat">{a.cat[l]}</p>
+			<h1 id={PAGE_TITLE_ID} data-page-title>{entry.data.title}</h1>
+			<p class="ah-one">{a[lang]}</p>
+			<ul class="chips">
+				{a.clients.map((c) => <li>{c[l]}</li>)}
+			</ul>
+			<div class="hx-actions">
+				<a class="btn btn-gold" href={a.url} rel="noopener">{t(lang, 'download')}</a>
+				{a.repo && <a class="btn btn-glass" href={`https://github.com/Pirson-s-Addons/${a.repo}`} rel="noopener">GitHub</a>}
+			</div>
+		</div>
+	</div>
+	<dl class="ah-stats glass">
+		<div><dd>{a.downloads.toLocaleString(lang)}</dd><dt>{t(lang, 'downloads')}</dt></div>
+		{a.version && <div><dd>v{a.version}</dd><dt>{es ? 'versión' : 'version'}</dt></div>}
+		<div><dd>{a.clients.length}</dd><dt>{a.clients.length === 1 ? (es ? 'versión del juego' : 'game version') : (es ? 'versiones del juego' : 'game versions')}</dt></div>
+		<div><dd>{es ? 'EN · ES' : 'EN · ES'}</dd><dt>{es ? 'guía' : 'guide'}</dt></div>
+	</dl>
+</header>
+
+{
+	sections.length > 1 && (
+		<nav class="ah-nav" aria-label={es ? 'Secciones de la guía' : 'Guide sections'} data-ah-nav>
+			<ul>
+				{sections.map((h) => (
+					<li>
+						<a href={`#${h.slug}`}>{h.text}</a>
+					</li>
+				))}
+			</ul>
+		</nav>
+	)
+}
+
+<dialog class="ah-viewer" data-ah-viewer>
+	<form method="dialog"><button class="ah-close" aria-label={es ? 'Cerrar' : 'Close'}>×</button></form>
+	<img alt="" data-ah-viewer-img />
+	<p data-ah-viewer-cap></p>
+</dialog>
+
+<script>
+	const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+	// art drifts slower than the page
+	const art = document.querySelector<HTMLElement>('[data-ah-art]');
+	if (art && !still) addEventListener('scroll', () => scrollY < innerHeight && (art.style.transform = `translate3d(0, ${scrollY * 0.3}px, 0) scale(1.05)`), { passive: true });
+
+	// section nav: highlight the section being read
+	const nav = document.querySelector<HTMLElement>('[data-ah-nav]');
+	if (nav) {
+		const links = [...nav.querySelectorAll<HTMLAnchorElement>('a')];
+		const targets = links.map((l) => document.getElementById(decodeURIComponent(l.hash.slice(1)))).filter(Boolean) as HTMLElement[];
+		const spy = new IntersectionObserver(
+			(entries) => {
+				for (const e of entries) {
+					if (!e.isIntersecting) continue;
+					for (const l of links) l.toggleAttribute('aria-current', l.hash === `#${e.target.id}`);
+					nav.querySelector('[aria-current]')?.scrollIntoView({ block: 'nearest', inline: 'center', behavior: still ? 'auto' : 'smooth' });
+				}
+			},
+			{ rootMargin: '-30% 0px -60% 0px' },
+		);
+		targets.forEach((t) => spy.observe(t));
+	}
+
+	// runs of screenshot paragraphs -> one horizontal gallery; any guide image opens the viewer
+	const md = document.querySelector('.sl-markdown-content');
+	if (md) {
+		const isShot = (el: Element | null) => el?.tagName === 'P' && el.children.length === 1 && el.firstElementChild!.tagName === 'IMG' && el.textContent!.trim() === '';
+		for (const p of [...md.querySelectorAll(':scope > p')]) {
+			if (!isShot(p) || isShot(p.previousElementSibling)) continue;
+			const run = [p];
+			while (isShot(run.at(-1)!.nextElementSibling)) run.push(run.at(-1)!.nextElementSibling!);
+			if (run.length < 2) continue;
+			const g = document.createElement('div');
+			g.className = 'ah-gallery not-content';
+			p.before(g);
+			for (const r of run) {
+				const fig = document.createElement('figure');
+				const img = r.firstElementChild as HTMLImageElement;
+				fig.append(img);
+				if (img.alt) fig.insertAdjacentHTML('beforeend', `<figcaption></figcaption>`), (fig.lastElementChild!.textContent = img.alt);
+				g.append(fig);
+				r.remove();
+			}
+		}
+		const viewer = document.querySelector<HTMLDialogElement>('[data-ah-viewer]')!;
+		const vImg = viewer.querySelector<HTMLImageElement>('[data-ah-viewer-img]')!;
+		const vCap = viewer.querySelector<HTMLElement>('[data-ah-viewer-cap]')!;
+		md.addEventListener('click', (e) => {
+			const img = (e.target as HTMLElement).closest('img');
+			if (!img || img.closest('a')) return;
+			vImg.src = img.src;
+			vImg.alt = img.alt;
+			vCap.textContent = img.alt;
+			viewer.showModal();
+		});
+		viewer.addEventListener('click', (e) => e.target === viewer && viewer.close());
+	}
+</script>

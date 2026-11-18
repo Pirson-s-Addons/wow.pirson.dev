@@ -30,8 +30,8 @@ export default defineConfig({
 			editLink: { baseUrl: 'https://github.com/Pirson-s-Addons/wow.pirson.dev/edit/main/' },
 			lastUpdated: true,
 			customCss: ['./src/styles/custom.css'],
+			routeMiddleware: './src/routeData.ts',
 			components: {
-				PageTitle: './src/components/PageTitle.astro',
 				Hero: './src/components/Hero.astro',
 				Footer: './src/components/Footer.astro',
 				ThemeProvider: './src/components/ThemeProvider.astro',

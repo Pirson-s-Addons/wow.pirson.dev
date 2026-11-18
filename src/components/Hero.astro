@@ -1,7 +1,8 @@
 ---
-// Pages with a `hero` in their frontmatter: the home gets the card deck, any other full-width page
-// (install, future landing pages) a compact header with its title, tagline and actions.
+// Pages with a hero: the home gets the card deck, addon guides the store-page header (their hero
+// comes from src/routeData.ts), any other full-width page (install…) a compact header.
 import HomeDeck from './HomeDeck.astro';
+import AddonHero from './AddonHero.astro';
 
 const PAGE_TITLE_ID = '_top'; // Starlight's page title id (not exported)
 const { entry, id } = Astro.locals.starlightRoute;
@@ -12,6 +13,8 @@ const { title = entry.data.title, tagline, actions = [] } = entry.data.hero || {
 {
 	home ? (
 		<HomeDeck />
+	) : entry.data.addon ? (
+		<AddonHero />
 	) : (
 		<header class="ph">
 			<h1 id={PAGE_TITLE_ID} data-page-title class="ph-title" set:html={title} />

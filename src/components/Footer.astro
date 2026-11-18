@@ -3,13 +3,51 @@
 // experience bar, and the gentle reveal of home sections as they scroll in.
 import Default from '@astrojs/starlight/components/Footer.astro';
 import addons from '../data/addons.json';
-import { href } from '../lib/i18n';
+import { covers } from '../lib/covers';
+import { t, href } from '../lib/i18n';
 
-const { lang } = Astro.locals.starlightRoute;
+const { lang, entry } = Astro.locals.starlightRoute;
 const es = lang === 'es';
+const l = es ? 1 : 0;
+// on addon guides: four more addons, same category first, then the most downloaded
+const current = entry.data.addon ? addons.find((a) => a.id === entry.data.addon) : undefined;
+const more = current
+	? addons
+			.filter((a) => a.id !== current.id)
+			.sort((a, b) => Number(b.cat[0] === current.cat[0]) - Number(a.cat[0] === current.cat[0]))
+			.slice(0, 4)
+	: [];
 ---
 
 <Default />
+
+{
+	more.length > 0 && (
+		<section class="more not-content">
+			<h2>{es ? 'Más addons' : 'More addons'}</h2>
+			<ul class="shelf">
+				{more.map((a) => (
+					<li data-reveal>
+						<a class="slot" href={href(lang, `addons/${a.slug}`)} style={`--q:${a.color}`} data-tilt>
+							{covers[a.slug] ? <img class="slot-art" src={covers[a.slug]} alt="" loading="lazy" /> : <span class="slot-art slot-blank" />}
+							<span class="slot-shade" />
+							<img class="slot-logo" src={`/logos/${a.id}.webp`} alt="" width="52" height="52" loading="lazy" />
+							<span class="slot-body">
+								<span class="slot-name">{a.name}</span>
+								<span class="slot-one">{a.one[l]}</span>
+								<span class="slot-meta">
+									<span>{a.cat[l]}</span>
+									<span>{a.downloads.toLocaleString(lang)} {t(lang, 'downloads')}</span>
+								</span>
+							</span>
+							<span class="tcg-glare" aria-hidden="true" />
+						</a>
+					</li>
+				))}
+			</ul>
+		</section>
+	)
+}
 
 <footer class="site-foot not-content">
 	<div class="site-foot-brand">
