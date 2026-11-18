@@ -1,0 +1,31 @@
+---
+// Every addon as a card, most downloaded first. `lang` comes from the page that embeds it.
+import addons from '../data/addons.json';
+import { t, href } from '../lib/i18n';
+
+interface Props {
+	lang: 'en' | 'es';
+}
+const { lang } = Astro.props;
+const l = lang === 'es' ? 1 : 0;
+const total = addons.reduce((s, a) => s + a.downloads, 0);
+---
+
+<p class="addon-total"><strong>{total.toLocaleString(lang)}</strong> {t(lang, 'total')}</p>
+<ul class="addon-grid not-content">
+	{
+		addons.map((a) => (
+			<li style={`--addon:${a.color}`}>
+				<a href={href(lang, `addons/${a.slug}`)}>
+					<img src={`/logos/${a.id}.webp`} alt="" width="56" height="56" loading="lazy" />
+					<span class="name">{a.name}</span>
+					<span class="one">{a.one[l]}</span>
+					<span class="meta">
+						{a.clients.length === 1 ? a.clients[0][l] : `${a.clients[0][l]} +${a.clients.length - 1}`} ·{' '}
+						{a.downloads.toLocaleString(lang)} {t(lang, 'downloads')}
+					</span>
+				</a>
+			</li>
+		))
+	}
+</ul>

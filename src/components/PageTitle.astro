@@ -1,0 +1,35 @@
+---
+// Default Starlight title, plus the addon header (logo, clients, downloads, CurseForge) on addon pages.
+import Default from '@astrojs/starlight/components/PageTitle.astro';
+import addons from '../data/addons.json';
+import { t } from '../lib/i18n';
+
+const { entry, lang } = Astro.locals.starlightRoute;
+const addon = entry.data.addon ? addons.find((a) => a.id === entry.data.addon) : undefined;
+const l = lang === 'es' ? 1 : 0;
+---
+
+{
+	addon ? (
+		<div class="addon-head" style={`--addon:${addon.color}`}>
+			<img src={`/logos/${addon.id}.webp`} alt="" width="96" height="96" />
+			<div>
+				<Default />
+				<p class="addon-meta">
+					{addon.cat[l]} · {addon.downloads.toLocaleString(lang)} {t(lang, 'downloads')}
+					{addon.version && ` · v${addon.version}`}
+				</p>
+				<ul class="addon-clients">
+					{addon.clients.map((c) => (
+						<li>{c[l]}</li>
+					))}
+				</ul>
+				<a class="addon-cta" href={addon.url} rel="noopener">
+					{t(lang, 'download')}
+				</a>
+			</div>
+		</div>
+	) : (
+		<Default />
+	)
+}

@@ -1,0 +1,694 @@
+[
+	{
+		"id": "wt",
+		"slug": "wow-translator",
+		"name": "WoW Translator",
+		"repo": "WoW-Translator",
+		"url": "https://www.curseforge.com/wow/addons/wow-translator",
+		"color": "#ff8000",
+		"cat": [
+			"Chat & Communication",
+			"Chat y comunicación"
+		],
+		"one": [
+			"Chat slang translated into 44 languages",
+			"Traduce la jerga del chat a 44 idiomas"
+		],
+		"en": "Translates WoW chat slang, abbreviations and dungeon names into 44 languages.",
+		"es": "Traduce la jerga, abreviaturas y mazmorras del chat de WoW a 44 idiomas.",
+		"clients": [
+			[
+				"Retail",
+				"Retail"
+			],
+			[
+				"WoW Forever",
+				"WoW Forever"
+			],
+			[
+				"MoP Classic",
+				"MoP Classic"
+			],
+			[
+				"Cataclysm Classic",
+				"Cataclysm Classic"
+			],
+			[
+				"Wrath Classic",
+				"Wrath Classic"
+			],
+			[
+				"TBC Classic",
+				"TBC Classic"
+			],
+			[
+				"Classic Era",
+				"Classic Era"
+			],
+			[
+				"Legacy (WoD to Shadowlands)",
+				"Legado (WoD a Shadowlands)"
+			]
+		],
+		"downloads": 72069,
+		"version": "2.15"
+	},
+	{
+		"id": "dq",
+		"slug": "dungeon-quest-atlas",
+		"name": "Dungeon Quest Atlas",
+		"repo": "DungeonQuestAtlas",
+		"url": "https://www.curseforge.com/wow/addons/dungeon-quest-atlas",
+		"color": "#ff8000",
+		"cat": [
+			"Quests",
+			"Misiones"
+		],
+		"one": [
+			"Quests, bosses and loot of every dungeon",
+			"Misiones, jefes y botín de cada mazmorra"
+		],
+		"en": "Every dungeon quest, boss and loot table in one journal, with chains and map pins.",
+		"es": "Misiones, jefes y botín de cada mazmorra en un diario, con cadenas y pines.",
+		"clients": [
+			[
+				"WoW Forever",
+				"WoW Forever"
+			]
+		],
+		"downloads": 40946,
+		"version": "3.06"
+	},
+	{
+		"id": "hn",
+		"slug": "handynotes-dungeon-raid-locations-forever",
+		"name": "HandyNotes: Dungeon & Raid Locations",
+		"repo": "HandyNotes_DungeonRaidLocations-Forever",
+		"url": "https://www.curseforge.com/wow/addons/handynotes-dungeon-raid-locations-forever",
+		"color": "#ff8000",
+		"cat": [
+			"Map",
+			"Mapa"
+		],
+		"one": [
+			"Dungeon and raid entrances on your map",
+			"Entradas de mazmorras y bandas en el mapa"
+		],
+		"en": "Every dungeon and raid entrance on the zone map, continent map and minimap.",
+		"es": "Todas las entradas de mazmorras y bandas en el mapa de zona, continente y minimapa.",
+		"clients": [
+			[
+				"WoW Forever",
+				"WoW Forever"
+			]
+		],
+		"downloads": 26355,
+		"version": "1.03"
+	},
+	{
+		"id": "hb",
+		"slug": "health-bar-text-forever",
+		"name": "Health Bar Text Forever",
+		"repo": "HealthBarTextForever",
+		"url": "https://www.curseforge.com/wow/addons/health-bar-text-forever",
+		"color": "#c77dff",
+		"cat": [
+			"Interface",
+			"Interfaz"
+		],
+		"one": [
+			"Health and power text on unit frames",
+			"Texto de salud y poder en los marcos"
+		],
+		"en": "Always-visible health and power text on player, target, focus and target of target.",
+		"es": "Texto de salud y poder siempre visible en jugador, objetivo, foco y su objetivo.",
+		"clients": [
+			[
+				"WoW Forever",
+				"WoW Forever"
+			]
+		],
+		"downloads": 18924,
+		"version": "1.08"
+	},
+	{
+		"id": "st",
+		"slug": "seal-timers-forever",
+		"name": "Seal Timers Forever",
+		"repo": "SealTimersForever",
+		"url": "https://www.curseforge.com/wow/addons/seal-timers-forever",
+		"color": "#c77dff",
+		"cat": [
+			"Interface",
+			"Interfaz"
+		],
+		"one": [
+			"Your paladin seal and its timer on screen",
+			"Tu sello de paladín y su tiempo en pantalla"
+		],
+		"en": "Your active paladin seal on screen with its remaining time. Movable and resizable.",
+		"es": "Tu sello de paladín activo en pantalla con su tiempo restante. Movible y escalable.",
+		"clients": [
+			[
+				"WoW Forever",
+				"WoW Forever"
+			]
+		],
+		"downloads": 12175,
+		"version": "1.11"
+	},
+	{
+		"id": "rq",
+		"slug": "remove-questie",
+		"name": "Remove Questie",
+		"repo": "RemoveQuestie",
+		"url": "https://www.curseforge.com/wow/addons/remove-questie",
+		"color": "#c77dff",
+		"cat": [
+			"Gameplay",
+			"Jugabilidad"
+		],
+		"one": [
+			"Abandon quests in bulk, in one click",
+			"Abandona misiones en bloque con un clic"
+		],
+		"en": "Abandon all quests, or only the ones you tick, from the quest log in one click.",
+		"es": "Abandona todas las misiones, o solo las que marques, desde el registro en un clic.",
+		"clients": [
+			[
+				"WoW Forever",
+				"WoW Forever"
+			],
+			[
+				"MoP Classic",
+				"MoP Classic"
+			],
+			[
+				"TBC Classic",
+				"TBC Classic"
+			]
+		],
+		"downloads": 7822,
+		"version": "1.13"
+	},
+	{
+		"id": "gr",
+		"slug": "gather-radar",
+		"name": "Gather Radar",
+		"repo": "GatherRadar",
+		"url": "https://www.curseforge.com/wow/addons/gather-radar",
+		"color": "#c77dff",
+		"cat": [
+			"Professions",
+			"Profesiones"
+		],
+		"one": [
+			"Herbs, ore and treasure on your maps",
+			"Hierbas, minerales y tesoros en tus mapas"
+		],
+		"en": "Herbs, ore, treasure and fishing pools on the minimap and world map, with icons.",
+		"es": "Hierbas, minerales, tesoros y bancos de peces en el minimapa y el mapa del mundo.",
+		"clients": [
+			[
+				"WoW Forever",
+				"WoW Forever"
+			]
+		],
+		"downloads": 6466,
+		"version": "1.04"
+	},
+	{
+		"id": "tk",
+		"slug": "handynotes-trove-of-the-thunder-king",
+		"name": "HandyNotes: Trove of the Thunder King",
+		"repo": "HandyNotes_Trove-Thunder-King",
+		"url": "https://www.curseforge.com/wow/addons/handynotes-trove-of-the-thunder-king",
+		"color": "#c77dff",
+		"cat": [
+			"Map",
+			"Mapa"
+		],
+		"one": [
+			"Every Thunder King trove on the map",
+			"Todos los tesoros del Rey del Trueno"
+		],
+		"en": "Every Trove of the Thunder King treasure on the Isle of Thunder map.",
+		"es": "Cada tesoro Trove of the Thunder King en el mapa de la Isla del Trueno.",
+		"clients": [
+			[
+				"MoP Classic",
+				"MoP Classic"
+			]
+		],
+		"downloads": 5945,
+		"version": "1.05"
+	},
+	{
+		"id": "mf",
+		"slug": "map-fix-forever",
+		"name": "Map Fix Forever",
+		"repo": "MapFixForever",
+		"url": "https://www.curseforge.com/wow/addons/map-fix-forever",
+		"color": "#4aa3ff",
+		"cat": [
+			"Map",
+			"Mapa"
+		],
+		"one": [
+			"Fixes the green world map",
+			"Arregla el mapa del mundo verde"
+		],
+		"en": "Fixes the green world map in non-English clients with the original map art.",
+		"es": "Arregla el mapa del mundo verde en clientes no ingleses con el arte original.",
+		"clients": [
+			[
+				"WoW Forever",
+				"WoW Forever"
+			]
+		],
+		"downloads": 2364,
+		"version": "1.02"
+	},
+	{
+		"id": "dr",
+		"slug": "dr-tracker-forever",
+		"name": "DR Tracker Forever",
+		"repo": "DRTrackerForever",
+		"url": "https://www.curseforge.com/wow/addons/dr-tracker-forever",
+		"color": "#4aa3ff",
+		"cat": [
+			"PvP",
+			"JcJ"
+		],
+		"one": [
+			"How long the next crowd control lasts",
+			"Cuánto dura el próximo control de masas"
+		],
+		"en": "How long the next crowd control lasts on your target, your focus and you.",
+		"es": "Cuánto dura el siguiente control de masas en tu objetivo, tu foco y en ti.",
+		"clients": [
+			[
+				"WoW Forever",
+				"WoW Forever"
+			]
+		],
+		"downloads": 1830,
+		"version": "1.02"
+	},
+	{
+		"id": "cg",
+		"slug": "cursor-glow-rgb",
+		"name": "Cursor Glow RGB",
+		"repo": "Cursor-Glow-RGB",
+		"url": "https://www.curseforge.com/wow/addons/cursor-glow-rgb",
+		"color": "#4aa3ff",
+		"cat": [
+			"Interface",
+			"Interfaz"
+		],
+		"one": [
+			"A glowing RGB aura around your cursor",
+			"Un aura RGB brillante en tu cursor"
+		],
+		"en": "A glowing RGB aura around your cursor, with shapes, colors and animations.",
+		"es": "Un aura RGB brillante alrededor del cursor, con formas, colores y animaciones.",
+		"clients": [
+			[
+				"Retail",
+				"Retail"
+			],
+			[
+				"WoW Forever",
+				"WoW Forever"
+			],
+			[
+				"MoP Classic",
+				"MoP Classic"
+			],
+			[
+				"Cataclysm Classic",
+				"Cataclysm Classic"
+			],
+			[
+				"Wrath Classic",
+				"Wrath Classic"
+			],
+			[
+				"TBC Classic",
+				"TBC Classic"
+			],
+			[
+				"Classic Era",
+				"Classic Era"
+			],
+			[
+				"Legacy (WoD to Shadowlands)",
+				"Legado (WoD a Shadowlands)"
+			]
+		],
+		"downloads": 1173,
+		"version": "1.06"
+	},
+	{
+		"id": "ph",
+		"slug": "prospect-helper",
+		"name": "Prospect Helper",
+		"repo": "ProspectHelper",
+		"url": "https://www.curseforge.com/wow/addons/prospect-helper",
+		"color": "#4aa3ff",
+		"cat": [
+			"Professions",
+			"Profesiones"
+		],
+		"one": [
+			"Prospect ores in one click",
+			"Prospecta minerales en un clic"
+		],
+		"en": "Prospect ores in one click for Jewelcrafting. Lists the ores in your bags.",
+		"es": "Prospecta minerales en un clic para Joyería. Lista los minerales de tus bolsas.",
+		"clients": [
+			[
+				"MoP Classic",
+				"MoP Classic"
+			],
+			[
+				"Cataclysm Classic",
+				"Cataclysm Classic"
+			],
+			[
+				"Wrath Classic",
+				"Wrath Classic"
+			],
+			[
+				"TBC Classic",
+				"TBC Classic"
+			]
+		],
+		"downloads": 1039,
+		"version": "1.08"
+	},
+	{
+		"id": "mh",
+		"slug": "mill-helper",
+		"name": "Mill Helper",
+		"repo": "MillHelper",
+		"url": "https://www.curseforge.com/wow/addons/mill-helper",
+		"color": "#1eff00",
+		"cat": [
+			"Professions",
+			"Profesiones"
+		],
+		"one": [
+			"Mill herbs in one click",
+			"Muele hierbas en un clic"
+		],
+		"en": "Mill herbs in one click for Inscription. Lists the millable herbs in your bags.",
+		"es": "Muele hierbas en un clic para Inscripción. Lista las hierbas de tus bolsas.",
+		"clients": [
+			[
+				"MoP Classic",
+				"MoP Classic"
+			],
+			[
+				"Cataclysm Classic",
+				"Cataclysm Classic"
+			],
+			[
+				"Wrath Classic",
+				"Wrath Classic"
+			]
+		],
+		"downloads": 723,
+		"version": "1.08"
+	},
+	{
+		"id": "ea",
+		"slug": "move-extra-action-button",
+		"name": "Move Extra Action Button",
+		"repo": "MoveExtraActionButton",
+		"url": "https://www.curseforge.com/wow/addons/move-extra-action-button",
+		"color": "#1eff00",
+		"cat": [
+			"Interface",
+			"Interfaz"
+		],
+		"one": [
+			"Move the Extra Action Button anywhere",
+			"Mueve el botón de acción extra"
+		],
+		"en": "Move the Extra Action Button and the alternate power bar anywhere on screen.",
+		"es": "Mueve el botón de acción extra y la barra de poder alternativo donde quieras.",
+		"clients": [
+			[
+				"MoP Classic",
+				"MoP Classic"
+			],
+			[
+				"TBC Classic",
+				"TBC Classic"
+			]
+		],
+		"downloads": 666,
+		"version": "1.03"
+	},
+	{
+		"id": "vf",
+		"slug": "vendor-item-filter",
+		"name": "Vendor Item Filter",
+		"repo": "VendorItemFilter",
+		"url": "https://www.curseforge.com/wow/addons/vendor-item-filter",
+		"color": "#1eff00",
+		"cat": [
+			"Utility",
+			"Utilidad"
+		],
+		"one": [
+			"Filter vendor items by type and slot",
+			"Filtra objetos del vendedor por tipo"
+		],
+		"en": "Filter vendor items by armor type, slot, weapon type, jewelry and more.",
+		"es": "Filtra los objetos del vendedor por armadura, ranura, tipo de arma, joyería y más.",
+		"clients": [
+			[
+				"WoW Forever",
+				"WoW Forever"
+			],
+			[
+				"MoP Classic",
+				"MoP Classic"
+			]
+		],
+		"downloads": 663,
+		"version": "1.07"
+	},
+	{
+		"id": "lg",
+		"slug": "leave-instance-group",
+		"name": "Leave Instance Group",
+		"repo": "LeaveInstanceGroup",
+		"url": "https://www.curseforge.com/wow/addons/leave-instance-group",
+		"color": "#1eff00",
+		"cat": [
+			"Utility",
+			"Utilidad"
+		],
+		"one": [
+			"Leave instance groups from your portrait",
+			"Sal del grupo de instancia desde el retrato"
+		],
+		"en": "Adds the missing Leave Instance Group option to your portrait menu.",
+		"es": "Añade la opción que falta para salir del grupo de instancia en tu retrato.",
+		"clients": [
+			[
+				"MoP Classic",
+				"MoP Classic"
+			]
+		],
+		"downloads": 277,
+		"version": "1.05"
+	},
+	{
+		"id": "er",
+		"slug": "emoji-react",
+		"name": "Emoji & React",
+		"repo": "EmojiReact",
+		"url": "https://www.curseforge.com/wow/addons/emoji-react",
+		"color": "#1eff00",
+		"cat": [
+			"Chat & Communication",
+			"Chat y comunicación"
+		],
+		"one": [
+			"Emojis and a reaction wheel in chat",
+			"Emojis y rueda de reacciones en el chat"
+		],
+		"en": "Emojis in chat and speech bubbles, plus a reaction wheel above your character.",
+		"es": "Emojis en el chat y los bocadillos, y una rueda de reacciones sobre tu personaje.",
+		"clients": [
+			[
+				"WoW Forever",
+				"WoW Forever"
+			]
+		],
+		"downloads": 187,
+		"version": "1.04"
+	},
+	{
+		"id": "lr",
+		"slug": "loot-a-rang-classic",
+		"name": "Loot-A-Rang Classic",
+		"repo": "Loot-A-Rang-Classic",
+		"url": "https://www.curseforge.com/wow/addons/loot-a-rang-classic",
+		"color": "#1eff00",
+		"cat": [
+			"Quality of Life",
+			"Calidad de vida"
+		],
+		"one": [
+			"Loot-A-Rang with a double right-click",
+			"Loot-A-Rang con doble clic derecho"
+		],
+		"en": "Double right-click to use the Loot-A-Rang and loot from a distance. No bar slot.",
+		"es": "Doble clic derecho para usar el Loot-A-Rang y despojar a distancia. Sin ranura.",
+		"clients": [
+			[
+				"MoP Classic",
+				"MoP Classic"
+			]
+		],
+		"downloads": 182,
+		"version": "1.06"
+	},
+	{
+		"id": "tt",
+		"slug": "azeroth-tic-tac-toe",
+		"name": "Azeroth Tic-Tac-Toe",
+		"repo": "AzerothTicTacToe",
+		"url": "https://www.curseforge.com/wow/addons/azeroth-tic-tac-toe",
+		"color": "#1eff00",
+		"cat": [
+			"Games",
+			"Juegos"
+		],
+		"one": [
+			"Tic-Tac-Toe with gold bets",
+			"Tres en raya apostando oro"
+		],
+		"en": "Play Tic-Tac-Toe against another player betting gold, with ranking and ledger.",
+		"es": "Juega al tres en raya contra otro jugador apostando oro, con ranking e historial.",
+		"clients": [
+			[
+				"WoW Forever",
+				"WoW Forever"
+			]
+		],
+		"downloads": 137,
+		"version": "1.04"
+	},
+	{
+		"id": "ai",
+		"slug": "azeroth-ai",
+		"name": "Azeroth AI",
+		"repo": null,
+		"url": "https://www.curseforge.com/wow/addons/azeroth-ai",
+		"color": "#1eff00",
+		"cat": [
+			"Assistant",
+			"Asistente"
+		],
+		"one": [
+			"Ask an AI without leaving the game",
+			"Pregunta a una IA sin salir del juego"
+		],
+		"en": "An in-game chatbot for WoW Forever: ask about the game without alt-tabbing.",
+		"es": "Un chatbot dentro del juego para WoW Forever: pregunta sin salir del juego.",
+		"clients": [
+			[
+				"WoW Forever",
+				"WoW Forever"
+			]
+		],
+		"downloads": 71,
+		"version": "1.02"
+	},
+	{
+		"id": "cx",
+		"slug": "chocolate-xp-bar",
+		"name": "Chocolate XP Bar",
+		"repo": "ChocolateXPBar",
+		"url": "https://www.curseforge.com/wow/addons/chocolate-xp-bar",
+		"color": "#1eff00",
+		"cat": [
+			"Interface",
+			"Interfaz"
+		],
+		"one": [
+			"A chocolate bar as your XP bar",
+			"Una tableta de chocolate como barra de XP"
+		],
+		"en": "Just a chocolate bar for your experience bar, in five flavors.",
+		"es": "Una tableta de chocolate como barra de experiencia, en cinco sabores.",
+		"clients": [
+			[
+				"Retail",
+				"Retail"
+			],
+			[
+				"WoW Forever",
+				"WoW Forever"
+			],
+			[
+				"MoP Classic",
+				"MoP Classic"
+			],
+			[
+				"Cataclysm Classic",
+				"Cataclysm Classic"
+			],
+			[
+				"Wrath Classic",
+				"Wrath Classic"
+			],
+			[
+				"TBC Classic",
+				"TBC Classic"
+			],
+			[
+				"Classic Era",
+				"Classic Era"
+			],
+			[
+				"Legacy (WoD to Shadowlands)",
+				"Legado (WoD a Shadowlands)"
+			]
+		],
+		"downloads": 49,
+		"version": "1.00"
+	},
+	{
+		"id": "rg",
+		"slug": "rotation-guide",
+		"name": "Rotation Guide",
+		"repo": "RotationGuide",
+		"url": "https://www.curseforge.com/wow/addons/rotation-guide",
+		"color": "#1eff00",
+		"cat": [
+			"Combat",
+			"Combate"
+		],
+		"one": [
+			"Your class rotation, all 27 specs",
+			"La rotación de tu clase, 27 especializaciones"
+		],
+		"en": "Your class rotation on WoW Forever, for all 27 specs.",
+		"es": "La rotación de tu clase en WoW Forever, para las 27 especializaciones.",
+		"clients": [
+			[
+				"WoW Forever",
+				"WoW Forever"
+			]
+		],
+		"downloads": 24,
+		"version": "1.01"
+	}
+]

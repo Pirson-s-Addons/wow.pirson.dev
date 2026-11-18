@@ -1,0 +1,70 @@
+---
+title: "Seal Timers Forever"
+description: "Tu sello de paladín activo en pantalla con su tiempo restante. Movible y escalable."
+addon: st
+sidebar:
+  order: 5
+---
+
+## Capturas
+
+![Barra del sello](/images/addons/seal-timers-forever/screenshot_1-png-10bc47.webp)
+
+![Opciones](/images/addons/seal-timers-forever/opcions-menu-seal-timers-forever-png-a0a391.webp)
+
+## Qué hace
+
+**Seal Timers Forever** muestra tu sello de paladín activo como un icono con cuenta atrás, para que sepas siempre cuánto le queda, en combate y fuera de él.
+
+Funciona con **todos los sellos de WoW Forever**: Sello de Furia, de Orden, de Rectitud, del Cruzado, de Sabiduría, de Luz, de Justicia... y cualquier sello nuevo que aprendas, en cualquier idioma del cliente.
+
+## Funciones
+
+- Icono del sello activo con su **tiempo restante**, actualizado en combate y fuera de él.
+- **Relanzar** un sello reinicia su tiempo; **cambiar** de sello sustituye el icono (en Forever solo hay un sello activo).
+- Detecta todos los sellos de tu libro de hechizos, incluidos los nuevos de Forever como el **Sello de Furia**.
+- **Aviso al acabarse**: el icono se ilumina en los últimos segundos del sello (5 s por defecto) para que lo renueves a tiempo. Eliges el tipo de aviso (brillo rojo que late, brillo rojo fijo, icono que parpadea o el destello de Blizzard), su intensidad y cuándo empieza, con vista previa en vivo.
+- **Borde**: borde opcional alrededor de los iconos, con su grosor (1–6 px) y su color.
+- Se puede **mover** a cualquier parte de la pantalla y **cambiar de tamaño** del 50 % al 300 %: iconos de sellos, barra de golpe, icono de golpe e icono del Eco, cada uno por separado.
+- Solo se activa en paladines. Ligero, sin librerías. Los ajustes están en el panel del propio juego: **Opciones → AddOns**.
+
+## Uso
+
+- `/stf` abre los ajustes: **Bloquear posición** (desmárcalo para arrastrar los iconos) y **Tamaño**, una pestaña **Aviso** para el aviso al acabarse, una pestaña **Borde** y una pestaña **Posición** con deslizadores y muestra en vivo.
+- `/stf check` lista los sellos de tu libro de hechizos y cómo se sigue cada uno en combate.
+- `/stf debug` escribe en el chat cada lanzamiento de sello, cambio de auras, el daño que recibe tu objetivo y tus Ecos (para reportar fallos).
+- `/stf reset` borra las duraciones de sellos aprendidas.
+
+## Instalación
+
+1. Descarga el zip de la [última release](https://github.com/Pirson-s-Addons/SealTimersForever/releases/latest).
+2. Extrae la carpeta `SealTimersForever` en `World of Warcraft/_forever_/Interface/AddOns/`.
+3. Reinicia el juego y activa el addon.
+
+Solo se carga en WoW Forever: su único `.toc` es `SealTimersForever_Camelot.toc` (`Camelot` es el game type de Forever), así que ningún otro cliente lo muestra.
+
+## Notas
+
+En WoW Forever los datos de las auras son **secretos** para los addons en combate, así que el addon no puede leer sin más el bufo del sello. En su lugar sigue **tus propios lanzamientos de sello**, que nunca son secretos, y cuenta la duración del sello (30 s en Forever) desde que lo lanzas. Cuando el juego deja leer la duración real del aura, se usa esa.
+
+**Autor**: Pirson · [GitHub](https://github.com/Pirson-s-Addons) · [CurseForge](https://www.curseforge.com/members/pirson/projects) · Licencia MIT
+
+## Para autores de addons
+
+### API pública
+
+De solo lectura y con versión. Añade `## OptionalDeps: SealTimersForever` a tu TOC.
+
+```lua
+local api = SealTimersForeverAPI
+if api and api.version == 1 then
+    local seal = api.GetActiveSeal() -- { name, texture, castAt, duration, expiresAt, canTwist } o nil
+    if seal and seal.expiresAt then
+        print(seal.name, seal.expiresAt - GetTime()) -- segundos que le quedan
+    end
+    api.GetKnownSeals()              -- { { spellID, name }, ... }
+    api.IsSeal("Sello de orden")     -- true (idioma del cliente)
+end
+```
+
+`expiresAt` (en tiempo de `GetTime()`) solo se da cuando se vio el lanzamiento. Tras un `/reload` el tiempo sale del aura, que Forever puede mantener secreta, así que va a `nil` aunque el icono lo pinte.

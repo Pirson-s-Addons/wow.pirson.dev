@@ -1,0 +1,79 @@
+---
+title: "WoW Translator"
+description: "Traduce la jerga, abreviaturas y mazmorras del chat de WoW a 44 idiomas."
+addon: wt
+sidebar:
+  order: 1
+---
+
+## Capturas
+
+![Cómo se usa WoW Translator v2.00](/images/addons/wow-translator/maxresdefault-25793e.webp)
+
+[▶ Cómo se usa WoW Translator v2.00](https://www.youtube.com/watch?v=DmyrbF9iDdQ)
+
+![Todos los idiomas en el chat, en tiempo real](/images/addons/wow-translator/languajes-png-130a70.webp)
+
+## Qué hace
+
+WoW Translator lee los mensajes que llegan al chat y añade junto a cada término de la jerga de WoW su significado, en el color que elijas. Un mensaje como `LFM ICC HC 25m Need Tank and Healer` conserva el texto original, con la traducción de cada acrónimo o palabra reconocida entre paréntesis. No envía nada por ti: solo anota lo que recibes.
+
+## Funciones
+
+- Traduce acrónimos de mazmorras y bandas, jerga, clases, roles, estadísticas, profesiones y términos de combate, comercio, grupos, hermandad y estados.
+- 44 idiomas de destino; por defecto, el idioma de tu cliente.
+- Frases completas: los mensajes típicos (buscar grupo, reclutar, comercio, artesanos, portales, reclutamiento de hermandad) muestran además la frase entera en una línea debajo, en la voz del que escribe, en 20 idiomas.
+- Nombres de zonas, conjuntos de objetos y razas de LibBabble, en el idioma de tu cliente y cada uno con su propio color.
+- Activa o desactiva cada categoría y los nombres de instancia de cada expansión (de Classic a Midnight).
+- Elige qué canales de chat se traducen: decir, gritar, emociones, canales globales, susurros, Battle.net, hermandad, grupo, banda, instancia, campo de batalla y comunidades.
+- Lista de palabras ignoradas que nunca se traducen.
+- `/wt en` convierte un texto escrito en tu idioma de destino a los términos de WoW en inglés y lo deja en la caja de chat para que lo revises y lo envíes tú.
+- Beta: también reconoce jerga de WoW escrita en coreano y chino simplificado (desactivado por defecto).
+- Botón en el minimapa y panel de opciones traducido a 20 idiomas.
+
+## Uso
+
+- `/wt config` — abre el panel de opciones (también desde el botón del minimapa).
+- `/wt on` / `/wt off` — activa o desactiva las traducciones.
+- `/wt test` — hace una prueba de traducción en el chat.
+- `/wt search <palabra>` — busca una traducción directamente.
+- `/wt en <texto>` — redacta un mensaje en inglés.
+- `/wt` — muestra la lista de comandos.
+
+El panel de opciones tiene General (activar, color, idioma de destino, jerga en otros idiomas, botones de prueba y de valores por defecto), Categorías, Expansiones, Canales de chat, Palabras ignoradas y Ayuda.
+
+## Instalación
+
+1. Descarga el zip de la [última release](https://github.com/Pirson-s-Addons/WoW-Translator/releases/latest) o de [CurseForge](https://www.curseforge.com/wow/addons/wow-translator).
+2. Extrae la carpeta `WoWTranslator` en la carpeta `Interface/AddOns/` de tu versión del juego:
+   - Retail: `World of Warcraft/_retail_/Interface/AddOns/`
+   - Mists of Pandaria Classic: `World of Warcraft/_classic_/Interface/AddOns/`
+   - Classic Era: `World of Warcraft/_classic_era_/Interface/AddOns/`
+   - Anniversary: `World of Warcraft/_anniversary_/Interface/AddOns/`
+   - WoW Forever: `World of Warcraft/_forever_/Interface/AddOns/`
+3. Reinicia WoW y activa el addon.
+
+## Notas
+
+- Además de los clientes actuales, incluye TOC para clientes antiguos (2.4.3, 3.3.5, 4.3, 5.4, WoD 6.2, Legion 7.3, BfA 8.3 y Shadowlands 9.2), como los que se usan en servidores privados.
+- Los ajustes se guardan para toda la cuenta en `WoWTranslatorDB`.
+- Parte de la jerga (sry, ez, o7, w2w, brez, m+, ksm, touch grass...) viene de [BabelChat](https://github.com/Yumash/BabelChat), de Andrey Yumashev, con su permiso (MIT).
+
+**Autor**: Pirson · [GitHub](https://github.com/Pirson-s-Addons) · [CurseForge](https://www.curseforge.com/members/pirson/projects) · Licencia MIT
+
+## Para autores de addons
+
+### API pública
+
+De solo lectura y con versión. Lee el diccionario entero, no solo las categorías que el jugador tiene activadas. Añade `## OptionalDeps: WoWTranslator` a tu TOC.
+
+```lua
+local api = WoWTranslatorAPI
+if api and api.version == 1 then
+    api.Lookup("lfm")            -- traducción en el idioma del cliente, categoría ("GruposDict"...)
+    api.Lookup("ty", "deDE")     -- "Danke"
+    api.GetTranslations("ty")    -- { esES = "Gracias", enUS = "Thank you", ... } (copia)
+    api.GetTerms()               -- { { term, category, multiword }, ... } para detectar jerga en un texto
+    api.GetCategories()          -- { "SocialDict", "GruposDict", ... }
+end
+```
