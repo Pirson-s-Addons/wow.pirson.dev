@@ -1,52 +1,40 @@
 ---
-// The most used addons, one band each: screenshot on one side, what it does on the other, alternating.
+// Bento of WoW Forever addons that are not already in the hero deck: one large tile, four smaller,
+// text over the art. `skip` = how many top addons the hero deck shows.
 import addons from '../data/addons.json';
 import { covers } from '../lib/covers';
 import { t, href } from '../lib/i18n';
 
 interface Props {
 	lang: 'en' | 'es';
-	count?: number;
+	skip?: number;
 }
-const { lang, count = 4 } = Astro.props;
-const es = lang === 'es';
-const l = es ? 1 : 0;
-const list = addons.filter((a) => covers[a.slug]).slice(0, count);
+const { lang, skip = 3 } = Astro.props;
+const l = lang === 'es' ? 1 : 0;
+const inDeck = new Set(addons.filter((a) => covers[a.slug]).slice(0, skip).map((a) => a.id));
+const list = addons
+	.filter((a) => covers[a.slug] && !inDeck.has(a.id) && a.clients.some((c) => c[0] === 'WoW Forever'))
+	.slice(0, 5);
 ---
 
-<div class="featured not-content">
+<div class="bento not-content">
 	{
 		list.map((a, i) => (
-			<article class:list={['feat', i % 2 === 1 && 'feat-flip']} style={`--q:${a.color}`} data-reveal>
-				<a class="feat-media" href={href(lang, `addons/${a.slug}`)} tabindex="-1" aria-hidden="true">
-					<img src={covers[a.slug]} alt="" loading="lazy" />
-				</a>
-				<div class="feat-body">
-					<div class="feat-head">
-						<img src={`/logos/${a.id}.webp`} alt="" width="56" height="56" loading="lazy" />
-						<div>
-							<h3>{a.name}</h3>
-							<p class="feat-cat">{a.cat[l]}</p>
-						</div>
-					</div>
-					<p class="feat-text">{a[lang]}</p>
-					<ul class="chips">
-						{a.clients.slice(0, 4).map((c) => <li>{c[l]}</li>)}
-						{a.clients.length > 4 && <li>+{a.clients.length - 4}</li>}
-					</ul>
-					<p class="feat-dl">
-						<strong>{a.downloads.toLocaleString(lang)}</strong> {t(lang, 'downloads')}
-					</p>
-					<div class="feat-actions">
-						<a class="btn btn-gold" href={href(lang, `addons/${a.slug}`)}>
-							{t(lang, 'guide')}
-						</a>
-						<a class="btn btn-ghost" href={a.url} rel="noopener">
-							CurseForge
-						</a>
-					</div>
-				</div>
-			</article>
+			<a class:list={['tile', i === 0 && 'tile-big']} href={href(lang, `addons/${a.slug}`)} style={`--q:${a.color}`} data-tilt data-reveal>
+				<img class="tile-art" src={covers[a.slug]} alt="" loading="lazy" />
+				<span class="tile-shade" />
+				<span class="tile-body">
+					<span class="tile-head">
+						<img src={`/logos/${a.id}.webp`} alt="" width="48" height="48" loading="lazy" />
+						<span class="tile-name">{a.name}</span>
+					</span>
+					<span class="tile-text">{i === 0 ? a[lang] : a.one[l]}</span>
+					<span class="tile-meta">
+						{a.downloads.toLocaleString(lang)} {t(lang, 'downloads')}
+					</span>
+				</span>
+				<span class="tcg-glare" aria-hidden="true" />
+			</a>
 		))
 	}
 </div>

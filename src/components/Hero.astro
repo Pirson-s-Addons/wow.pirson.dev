@@ -1,6 +1,7 @@
 ---
-// Home hero: who this is and what to do, next to a showcase of real screenshots of the most used
-// addons that crossfades every few seconds (paused on hover, still with reduced motion).
+// Home hero: a deck of collectible cards (the most used addons, with their real art) over a blurred,
+// parallax backdrop of the card in front. The deck turns every few seconds, fans out on hover and a
+// click on a back card brings it forward. Under it, a glass bar with the numbers.
 import addons from '../data/addons.json';
 import { covers } from '../lib/covers';
 import { t, href } from '../lib/i18n';
@@ -11,93 +12,104 @@ const { title = entry.data.title, tagline, actions = [] } = entry.data.hero || {
 const es = lang === 'es';
 const l = es ? 1 : 0;
 const total = addons.reduce((s, a) => s + a.downloads, 0);
-const forever = addons.filter((a) => a.clients.some((c) => c[0] === 'WoW Forever')).length;
-const shows = addons.filter((a) => covers[a.slug]).slice(0, 5);
+const versions = new Set(addons.flatMap((a) => a.clients.map((c) => c[0]))).size;
+const deck = addons.filter((a) => covers[a.slug]).slice(0, 3);
 ---
 
-<section class="hero-x" data-hero>
-	<div class="hero-copy">
-		<p class="hero-kicker">{es ? 'Addons de World of Warcraft' : 'World of Warcraft addons'}</p>
-		<h1 id={PAGE_TITLE_ID} data-page-title set:html={title} />
-		{tagline && <p class="hero-tagline" set:html={tagline} />}
-		<div class="hero-actions">
-			{
-				actions.map(({ link, text, variant }) => (
-					<a href={link} class:list={['btn', variant === 'minimal' ? 'btn-ghost' : 'btn-gold']}>
-						{text}
-					</a>
-				))
-			}
-		</div>
-		<dl class="hero-stats">
-			<div><dt>{t(lang, 'downloads')}</dt><dd>{total.toLocaleString(lang)}</dd></div>
-			<div><dt>Addons</dt><dd>{addons.length}</dd></div>
-			<div><dt>{es ? 'Para WoW Forever' : 'For WoW Forever'}</dt><dd>{forever}</dd></div>
-		</dl>
+<section class="hx" data-hx>
+	<div class="hx-bg" aria-hidden="true" data-hx-bg>
+		{deck.map((a, i) => <img src={covers[a.slug]} alt="" class:list={[i === 0 && 'is-on']} />)}
 	</div>
 
-	<div class="hero-show" data-show>
-		<div class="hero-frame">
+	<div class="hx-inner">
+		<div class="hx-copy">
+			<h1 id={PAGE_TITLE_ID} data-page-title class="hx-title" set:html={title} />
+			{tagline && <p class="hx-tagline" set:html={tagline} />}
+			<div class="hx-actions">
+				{
+					actions.map(({ link, text, variant }) => (
+						<a href={link} class:list={['btn', variant === 'minimal' ? 'btn-glass' : 'btn-gold']}>
+							{text}
+						</a>
+					))
+				}
+			</div>
+		</div>
+
+		<div class="deck" data-deck aria-label={es ? 'Addons destacados' : 'Featured addons'} role="group">
 			{
-				shows.map((a, i) => (
-					<a class:list={['hero-slide', i === 0 && 'is-on']} href={href(lang, `addons/${a.slug}`)} tabindex={i === 0 ? 0 : -1} aria-hidden={i === 0 ? undefined : 'true'}>
-						<img src={covers[a.slug]} alt={`${a.name}: ${a.one[l]}`} loading={i === 0 ? 'eager' : 'lazy'} />
-						<span class="hero-cap" style={`--q:${a.color}`}>
-							<img src={`/logos/${a.id}.webp`} alt="" width="40" height="40" />
-							<span>
-								<strong>{a.name}</strong>
-								<span>{a.one[l]}</span>
+				deck.map((a, i) => (
+					<a class="tcg" href={href(lang, `addons/${a.slug}`)} style={`--q:${a.color}`} data-pos={i} data-tilt>
+						<span class="tcg-art">
+							<img src={covers[a.slug]} alt="" loading="eager" />
+						</span>
+						<span class="tcg-body">
+							<img class="tcg-logo" src={`/logos/${a.id}.webp`} alt="" width="64" height="64" />
+							<span class="tcg-name">{a.name}</span>
+							<span class="tcg-one">{a.one[l]}</span>
+							<span class="tcg-foot">
+								<span>{a.cat[l]}</span>
+								<span>{a.downloads.toLocaleString(lang)}</span>
 							</span>
 						</span>
+						<span class="tcg-glare" aria-hidden="true" />
 					</a>
 				))
 			}
 		</div>
-		<ol class="hero-dots" aria-label={es ? 'Elegir captura' : 'Choose screenshot'}>
-			{
-				shows.map((a, i) => (
-					<li>
-						<button type="button" data-dot={i} aria-label={a.name} aria-current={i === 0 ? 'true' : undefined} />
-					</li>
-				))
-			}
-		</ol>
-		<img class="hero-badge" src={`/logos/${shows[0].id}.webp`} alt="" width="120" height="120" data-badge />
 	</div>
+
+	<dl class="hx-stats glass">
+		<div><dd data-count={total}>{total.toLocaleString(lang)}</dd><dt>{t(lang, 'downloads')}</dt></div>
+		<div><dd data-count={addons.length}>{addons.length}</dd><dt>Addons</dt></div>
+		<div><dd data-count={versions}>{versions}</dd><dt>{es ? 'versiones del juego' : 'game versions'}</dt></div>
+	</dl>
 </section>
 
 <script>
-	const show = document.querySelector<HTMLElement>('[data-show]');
-	if (show) {
-		const slides = [...show.querySelectorAll<HTMLAnchorElement>('.hero-slide')];
-		const dots = [...show.querySelectorAll<HTMLButtonElement>('[data-dot]')];
-		const badge = show.querySelector<HTMLImageElement>('[data-badge]')!;
+	const hx = document.querySelector<HTMLElement>('[data-hx]');
+	if (hx) {
 		const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
-		let i = 0;
-		const go = (n: number) => {
-			slides[i].classList.remove('is-on');
-			slides[i].tabIndex = -1;
-			slides[i].setAttribute('aria-hidden', 'true');
-			dots[i].removeAttribute('aria-current');
-			i = (n + slides.length) % slides.length;
-			slides[i].classList.add('is-on');
-			slides[i].tabIndex = 0;
-			slides[i].removeAttribute('aria-hidden');
-			dots[i].setAttribute('aria-current', 'true');
-			badge.src = slides[i].querySelector<HTMLImageElement>('.hero-cap img')!.src;
+		const deck = hx.querySelector<HTMLElement>('[data-deck]')!;
+		const cards = [...deck.querySelectorAll<HTMLElement>('.tcg')];
+		const bgs = [...hx.querySelectorAll<HTMLImageElement>('[data-hx-bg] img')];
+		let order = cards.map((_, i) => i); // order[0] is the card in front
+
+		const layout = () => {
+			order.forEach((c, pos) => {
+				cards[c].dataset.pos = String(pos);
+				cards[c].tabIndex = pos === 0 ? 0 : -1;
+			});
+			bgs.forEach((b, i) => b.classList.toggle('is-on', i === order[0]));
 		};
-		dots.forEach((d) => d.addEventListener('click', () => go(Number(d.dataset.dot))));
+		const bringFront = (c: number) => {
+			order = [c, ...order.filter((x) => x !== c)];
+			layout();
+		};
+		cards.forEach((card, c) =>
+			card.addEventListener('click', (e) => {
+				if (order[0] !== c) {
+					e.preventDefault();
+					bringFront(c);
+				}
+			}),
+		);
+		layout();
+
 		if (!still) {
 			let paused = false;
-			show.addEventListener('pointerenter', () => (paused = true));
-			show.addEventListener('pointerleave', () => (paused = false));
-			show.addEventListener('focusin', () => (paused = true));
-			setInterval(() => !paused && !document.hidden && go(i + 1), 6000);
-			// the badge floats a little against the pointer
-			show.addEventListener('pointermove', (e) => {
-				const r = show.getBoundingClientRect();
-				badge.style.translate = `${((e.clientX - r.left) / r.width - 0.5) * -14}px ${((e.clientY - r.top) / r.height - 0.5) * -14}px`;
-			});
+			deck.addEventListener('pointerenter', () => (paused = true));
+			deck.addEventListener('pointerleave', () => (paused = false));
+			deck.addEventListener('focusin', () => (paused = true));
+			setInterval(() => {
+				if (paused || document.hidden) return;
+				order = [...order.slice(1), order[0]];
+				layout();
+			}, 5000);
+
+			// backdrop drifts slower than the page
+			const bg = hx.querySelector<HTMLElement>('[data-hx-bg]')!;
+			addEventListener('scroll', () => scrollY < innerHeight && (bg.style.transform = `translate3d(0, ${scrollY * 0.35}px, 0) scale(1.15)`), { passive: true });
 		}
 	}
 </script>
