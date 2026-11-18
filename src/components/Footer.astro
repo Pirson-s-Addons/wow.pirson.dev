@@ -1,0 +1,20 @@
+---
+// Starlight footer + an experience bar fixed to the bottom of the screen: it fills as you read.
+import Default from '@astrojs/starlight/components/Footer.astro';
+---
+
+<Default />
+<div class="xp-bar" aria-hidden="true"><span data-xp></span></div>
+
+<script>
+	const fill = document.querySelector<HTMLElement>('[data-xp]');
+	if (fill) {
+		const update = () => {
+			const max = document.documentElement.scrollHeight - innerHeight;
+			fill.style.transform = `scaleX(${max > 0 ? Math.min(1, scrollY / max) : 0})`;
+		};
+		addEventListener('scroll', update, { passive: true });
+		addEventListener('resize', update);
+		update();
+	}
+</script>

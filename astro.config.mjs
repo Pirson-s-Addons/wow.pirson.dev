@@ -30,7 +30,11 @@ export default defineConfig({
 			editLink: { baseUrl: 'https://github.com/Pirson-s-Addons/wow.pirson.dev/edit/main/' },
 			lastUpdated: true,
 			customCss: ['./src/styles/custom.css'],
-			components: { PageTitle: './src/components/PageTitle.astro' },
+			components: {
+				PageTitle: './src/components/PageTitle.astro',
+				Hero: './src/components/Hero.astro',
+				Footer: './src/components/Footer.astro',
+			},
 			sidebar: [
 				{
 					label: 'Start here',

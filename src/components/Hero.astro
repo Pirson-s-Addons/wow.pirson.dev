@@ -1,0 +1,154 @@
+---
+// Home hero: the catalog as a minimap. You are the arrow in the middle; each addon is a tracked
+// node, and the more downloads it has the closer it sits to you. Hover or focus shows its tooltip.
+const PAGE_TITLE_ID = '_top'; // Starlight's page title id (not exported)
+import addons from '../data/addons.json';
+import { t, href } from '../lib/i18n';
+
+const { entry, lang } = Astro.locals.starlightRoute;
+const { title = entry.data.title, tagline, actions = [] } = entry.data.hero || {};
+const l = lang === 'es' ? 1 : 0;
+const total = addons.reduce((s, a) => s + a.downloads, 0);
+
+// addons.json is sorted by downloads: inner ring = top 6, then 8 and 8.
+const RINGS = [
+	{ from: 0, to: 6, r: 0.31, turn: -90 },
+	{ from: 6, to: 14, r: 0.58, turn: -68 },
+	{ from: 14, to: 22, r: 0.84, turn: -112 },
+];
+const nodes = addons.map((a, i) => {
+	const ring = RINGS.find((g) => i >= g.from && i < g.to) ?? RINGS[2];
+	const n = Math.min(ring.to, addons.length) - ring.from;
+	const deg = ring.turn + ((i - ring.from) * 360) / n;
+	const x = Math.cos((deg * Math.PI) / 180) * ring.r;
+	const y = Math.sin((deg * Math.PI) / 180) * ring.r;
+	return { a, x, y, inner: ring.from === 0, tipLeft: x > 0.05, tipUp: y > 0.35 };
+});
+---
+
+<section class="mm-hero not-content" data-mm-hero>
+	<div class="mm-sky" data-depth="0.15" aria-hidden="true"></div>
+	<svg class="mm-ridge mm-ridge-far" data-depth="0.3" viewBox="0 0 1440 220" preserveAspectRatio="none" aria-hidden="true">
+		<path d="M0 220V150l90-38 70 22 110-70 80 46 60-30 120 60 90-52 130 74 100-40 140 36 90-58 110 50 90-30 160 54V220Z" />
+	</svg>
+	<svg class="mm-ridge mm-ridge-near" data-depth="0.5" viewBox="0 0 1440 220" preserveAspectRatio="none" aria-hidden="true">
+		<path d="M0 220V182l120-34 90 26 140-58 120 52 100-22 150 40 120-46 130 30 110-18 140 34 100-26 120 30V220Z" />
+	</svg>
+	<canvas class="mm-embers" aria-hidden="true"></canvas>
+
+	<div class="mm-inner">
+		<div class="mm-copy">
+			<h1 id={PAGE_TITLE_ID} data-page-title set:html={title} />
+			{tagline && <p class="mm-tagline" set:html={tagline} />}
+			<p class="mm-total">
+				<strong>{total.toLocaleString(lang)}</strong> {t(lang, 'total')}
+			</p>
+			<div class="mm-actions">
+				{
+					actions.map(({ link, text, variant }) => (
+						<a href={link} class:list={['wow-button', variant === 'minimal' && 'wow-button-quiet']}>
+							{text}
+						</a>
+					))
+				}
+			</div>
+		</div>
+
+		<nav class="mm-wrap" aria-label={lang === 'es' ? 'Mapa de addons' : 'Addon map'}>
+			<div class="mm" data-mm>
+				<div class="mm-face" aria-hidden="true"></div>
+				<div class="mm-sweep" aria-hidden="true"></div>
+				<svg class="mm-player" data-mm-player viewBox="0 0 32 32" aria-hidden="true">
+					<path d="M16 2 27 29 16 22 5 29Z" />
+				</svg>
+				<ul>
+					{
+						nodes.map(({ a, x, y, inner, tipLeft, tipUp }) => (
+							<li
+								class:list={['mm-node', inner && 'mm-node-inner', tipLeft && 'tip-left', tipUp && 'tip-up']}
+								style={`--x:${x.toFixed(3)};--y:${y.toFixed(3)};--q:${a.color}`}
+							>
+								<a href={href(lang, `addons/${a.slug}`)} aria-describedby={`tip-${a.id}`}>
+									<img src={`/logos/${a.id}.webp`} alt={a.name} width="64" height="64" loading="eager" />
+								</a>
+								<div class="wow-tooltip" id={`tip-${a.id}`} role="tooltip">
+									<span class="tt-name">{a.name}</span>
+									<span class="tt-white">{a.clients.length === 1 ? a.clients[0][l] : a.clients.map((c) => c[l]).join(', ')}</span>
+									<span class="tt-white">{a.cat[l]}</span>
+									<span class="tt-use">
+										{lang === 'es' ? 'Uso: ' : 'Use: '}
+										{a.one[l]}
+									</span>
+									<span class="tt-gold">
+										{a.downloads.toLocaleString(lang)} {t(lang, 'downloads')}
+									</span>
+								</div>
+							</li>
+						))
+					}
+				</ul>
+			</div>
+			<p class="mm-legend">{lang === 'es' ? 'Cuanto más cerca de la flecha, más jugadores lo usan.' : 'The closer to the arrow, the more players use it.'}</p>
+		</nav>
+	</div>
+</section>
+
+<script>
+	// Parallax, pointer tilt, the arrow that faces your cursor, and rising embers.
+	// All of it stays off when the reader asks for reduced motion.
+	const hero = document.querySelector<HTMLElement>('[data-mm-hero]');
+	const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+	if (hero && !still) {
+		const layers = [...hero.querySelectorAll<HTMLElement>('[data-depth]')];
+		const map = hero.querySelector<HTMLElement>('[data-mm]')!;
+		const player = hero.querySelector<SVGElement>('[data-mm-player]')!;
+		let visible = true;
+		new IntersectionObserver(([e]) => (visible = e.isIntersecting)).observe(hero);
+
+		addEventListener(
+			'scroll',
+			() => {
+				if (!visible) return;
+				const y = scrollY;
+				for (const el of layers) el.style.transform = `translate3d(0, ${y * Number(el.dataset.depth)}px, 0)`;
+			},
+			{ passive: true },
+		);
+
+		hero.addEventListener('pointermove', (e) => {
+			const r = map.getBoundingClientRect();
+			const dx = e.clientX - (r.left + r.width / 2);
+			const dy = e.clientY - (r.top + r.height / 2);
+			map.style.setProperty('--tilt-x', `${(-dy / innerHeight) * 10}deg`);
+			map.style.setProperty('--tilt-y', `${(dx / innerWidth) * 10}deg`);
+			player.style.transform = `rotate(${(Math.atan2(dy, dx) * 180) / Math.PI + 90}deg)`;
+		});
+
+		const canvas = hero.querySelector<HTMLCanvasElement>('.mm-embers')!;
+		const ctx = canvas.getContext('2d')!;
+		const embers = Array.from({ length: 46 }, () => ({ x: Math.random(), y: Math.random(), s: 0.6 + Math.random() * 1.8, v: 0.0006 + Math.random() * 0.0014, d: Math.random() * 6.28 }));
+		const size = () => {
+			canvas.width = hero.clientWidth * devicePixelRatio;
+			canvas.height = hero.clientHeight * devicePixelRatio;
+		};
+		size();
+		addEventListener('resize', size);
+		const tick = (time: number) => {
+			if (visible && !document.hidden) {
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				for (const p of embers) {
+					p.y -= p.v;
+					if (p.y < -0.02) Object.assign(p, { y: 1.02, x: Math.random() });
+					const x = (p.x + Math.sin(time / 1800 + p.d) * 0.008) * canvas.width;
+					const a = Math.min(1, p.y * 2) * (0.35 + 0.35 * Math.sin(time / 400 + p.d));
+					ctx.fillStyle = `rgba(255, 196, 92, ${a})`;
+					ctx.beginPath();
+					ctx.arc(x, p.y * canvas.height, p.s * devicePixelRatio, 0, 6.28);
+					ctx.fill();
+				}
+			}
+			requestAnimationFrame(tick);
+		};
+		requestAnimationFrame(tick);
+	}
+</script>
