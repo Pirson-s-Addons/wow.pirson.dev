@@ -19,8 +19,8 @@ const clips = [
 ];
 const games = [
 	['forever', 'WoW Forever'],
-	['mop-classic', 'Mists of Pandaria Classic'],
-	['wow', 'World of Warcraft'],
+	['mop', 'Mists of Pandaria Classic'],
+	['midnight', 'World of Warcraft: Midnight'],
 ];
 ---
 
@@ -57,7 +57,7 @@ const games = [
 				))
 			}
 		</div>
-		<p class="hx-games">{games.map(([g, alt]) => <img src={`/media/games/${g}.webp`} alt={alt} height="48" loading="eager" />)}</p>
+		<p class="hx-games">{games.map(([g, alt]) => <img src={`/media/eras/${g}.webp`} alt={alt} height="48" loading="eager" />)}</p>
 		<p class="mono hx-meta">{es ? 'Gratis · 20 idiomas · Guías en inglés y español' : 'Free · 20 languages · Guides in English & Español'}</p>
 	</div>
 

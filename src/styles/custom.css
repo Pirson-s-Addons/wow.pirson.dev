@@ -558,6 +558,115 @@ h2,
 		0 0 2px #000;
 }
 
+/* 02 · era timeline: every expansion's logo, oldest first; each filters the lineup */
+.eras {
+	position: relative;
+	display: flex;
+	gap: 0.4rem;
+	/* full-bleed strip, starting where the content starts */
+	margin: 0 calc(50% - 50vw) 2rem;
+	padding: 0.5rem calc(max(1.25rem, calc(50vw - 39rem)) + var(--rail-half)) 1rem;
+	scroll-padding-inline: calc(max(1.25rem, calc(50vw - 39rem)) + var(--rail-half));
+	overflow-x: auto;
+	scroll-snap-type: x proximity;
+	scrollbar-width: thin;
+	scrollbar-color: #5b4a26 transparent;
+}
+.eras[hidden] {
+	display: none;
+}
+.era {
+	position: relative;
+	flex: 0 0 9.5rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.25rem;
+	padding: 0.7rem 0.5rem 0.8rem;
+	font: inherit;
+	color: var(--text);
+	text-align: center;
+	background: none;
+	border: 1px solid transparent;
+	border-radius: 12px;
+	cursor: pointer;
+	scroll-snap-align: start;
+	transition:
+		background 0.25s,
+		border-color 0.25s,
+		transform 0.25s;
+}
+/* gold timeline running under the years */
+.era::after {
+	content: '';
+	position: absolute;
+	left: 0;
+	right: -0.4rem;
+	top: 6.45rem;
+	height: 1px;
+	background: rgb(242 196 103 / 0.35);
+	z-index: -1;
+}
+.era img {
+	height: 5.1rem;
+	width: 100%;
+	object-fit: contain;
+	filter: drop-shadow(0 6px 14px rgb(0 0 0 / 0.6));
+	transition:
+		transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+		filter 0.3s;
+}
+.era-year {
+	padding: 0 0.4rem;
+	font-size: 0.7rem;
+	color: var(--gold);
+	background: var(--obsidian);
+}
+.era-name {
+	font-size: 0.78rem;
+	font-weight: 700;
+	line-height: 1.25;
+	color: #d8d6e6;
+}
+.era-n {
+	position: absolute;
+	top: 0.35rem;
+	right: 0.45rem;
+	min-width: 1.4rem;
+	padding: 0.05rem 0.35rem;
+	font-size: 0.72rem;
+	font-weight: 800;
+	color: #241600;
+	background: var(--gold);
+	border-radius: 999px;
+}
+button.era:hover img,
+button.era:focus-visible img {
+	transform: translateY(-4px) scale(1.06);
+	filter: drop-shadow(0 10px 20px rgb(0 0 0 / 0.7)) drop-shadow(0 0 14px rgb(242 196 103 / 0.35));
+}
+.era[aria-pressed='true'] {
+	background: linear-gradient(rgb(242 196 103 / 0.12), rgb(242 196 103 / 0.02));
+	border-color: rgb(242 196 103 / 0.55);
+}
+.era.is-off {
+	cursor: default;
+	opacity: 0.35;
+	filter: grayscale(0.7);
+}
+.era-all {
+	justify-content: center;
+	flex-basis: 6.5rem;
+}
+.era-all-n {
+	display: grid;
+	place-items: center;
+	height: 5.1rem;
+	font-family: var(--display);
+	font-size: 2.6rem;
+	color: var(--gold);
+}
+
 /* 02 · lineup: every addon as an item tooltip */
 .lineup {
 	display: grid;
