@@ -546,23 +546,16 @@ h2,
 
 /* 02 · game version filter: one card per version, with its expansion logo */
 .eras {
-	/* "All" tall on the left, the eight versions in a 4 × 2 grid */
+	/* "All" first, then every expansion in release order */
 	display: grid;
-	grid-template-columns: minmax(0, 0.8fr) repeat(4, minmax(0, 1fr));
+	grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
 	gap: 0.6rem;
 	margin: 0 0 2.2rem;
 }
-.eras > :first-child {
-	grid-row: span 2;
-	justify-content: center;
-}
-@media (max-width: 48rem) {
+@media (min-width: 80rem) {
+	/* 16 cards: two even rows of 8 */
 	.eras {
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-	}
-	.eras > :first-child {
-		grid-row: auto;
-		grid-column: 1 / -1;
+		grid-template-columns: repeat(8, minmax(0, 1fr));
 	}
 }
 .eras[hidden] {
@@ -606,6 +599,10 @@ h2,
 	font-size: 2.6rem;
 	color: var(--gold);
 }
+.era-year {
+	font-size: 0.68rem;
+	color: var(--gold);
+}
 .era-name {
 	font-size: 0.82rem;
 	font-weight: 700;
@@ -629,6 +626,18 @@ h2,
 }
 .era[aria-pressed='true'] .era-n {
 	color: var(--gold);
+}
+.era.is-off {
+	cursor: default;
+	opacity: 0.4;
+	filter: grayscale(0.8);
+}
+.era.is-off:hover {
+	border-color: var(--line);
+	background: rgb(255 255 255 / 0.02);
+}
+.era.is-off:hover .era-art img {
+	transform: none;
 }
 
 /* 02 · lineup: every addon as an item tooltip */
