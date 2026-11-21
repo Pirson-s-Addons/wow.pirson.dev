@@ -170,6 +170,30 @@ h2,
 	text-transform: uppercase;
 	color: var(--gold);
 }
+/* Icons drawn inside Goodmountain (it maps them to emoji code points): forced to the font's
+   monochrome glyph, never the system's colour emoji. */
+.glyph {
+	font-family: 'Goodmountain', serif;
+	font-style: normal;
+	font-variant-emoji: text;
+	line-height: 1;
+	color: var(--gold);
+}
+.eyebrow .glyph {
+	margin-right: 0.15rem;
+	font-size: 1.35rem;
+	text-shadow: 0 0 12px rgb(242 196 103 / 0.45);
+}
+.cta-title {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: clamp(0.8rem, 3vw, 2rem);
+}
+.cta-title .glyph {
+	font-size: clamp(3rem, 8vw, 5.5rem);
+	filter: drop-shadow(0 0.05em 0 #4a2c08) drop-shadow(0 0 18px rgb(242 196 103 / 0.35));
+}
 .eyebrow span {
 	color: #fff;
 }
@@ -449,6 +473,10 @@ h2,
 	color: transparent;
 	background: var(--bevel, linear-gradient(180deg, #ffffff 0%, #efe6ff 47%, #9f88bd 50%, #d3c3e8 100%));
 	background-size: 100% 1lh;
+	/* room above the line for accents (Ú, É...): the tiles start at the content box and repeat
+	   upwards into the padding, so the gradient still splits every line in its middle */
+	padding-top: 0.2em;
+	background-origin: content-box;
 	-webkit-background-clip: text;
 	background-clip: text;
 	-webkit-text-stroke: 0.018em var(--bevel-edge, #2a1838);

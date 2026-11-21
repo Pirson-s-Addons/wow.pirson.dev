@@ -88,7 +88,7 @@ const principles = [
 	<!-- 01 · action bar -->
 	<section class="chapter" data-reveal>
 		<header class="sec-head">
-			<p class="eyebrow"><span>01</span> / {w('The armory', 'La armería')}</p>
+			<p class="eyebrow"><i class="glyph" aria-hidden="true">&#x2694;</i><span>01</span> / {w('The armory', 'La armería')}</p>
 			<p class="mono">{addons.length} addons · {versions.length} {w('game versions', 'versiones del juego')} · {totalDownloads} {t(lang, 'downloads')}</p>
 			<h2>{w(`${addons.length} addons. One Azeroth.`, `${addons.length} addons. Un Azeroth.`)}</h2>
 			<p class="lead">
@@ -113,7 +113,7 @@ const principles = [
 	<!-- 02 · lineup -->
 	<section class="chapter" id="the-library" data-catalog>
 		<header class="sec-head">
-			<p class="eyebrow"><span>02</span> / {w('The lineup', 'El catálogo')}</p>
+			<p class="eyebrow"><i class="glyph" aria-hidden="true">&#x1F48E;</i><span>02</span> / {w('The lineup', 'El catálogo')}</p>
 			<h2>{w('Pick your loot.', 'Elige tu botín.')}</h2>
 		</header>
 		<div class="eras" role="group" aria-label={w('Filter by game version', 'Filtrar por versión del juego')} hidden data-filters>
@@ -181,7 +181,7 @@ const principles = [
 	<!-- 03 · videos and screenshots -->
 	<section class="chapter" data-reveal>
 		<header class="sec-head">
-			<p class="eyebrow"><span>03</span> / {w('In action', 'En acción')}</p>
+			<p class="eyebrow"><i class="glyph" aria-hidden="true">&#x1F4DC;</i><span>03</span> / {w('In action', 'En acción')}</p>
 			<h2>{w('See them in the game.', 'Míralos en el juego.')}</h2>
 		</header>
 		<div class="videos">
@@ -218,7 +218,7 @@ const principles = [
 	<section class="chapter vband" data-zone-src data-music="ashenvale">
 		<video class="vband-bg" src="/media/bg/vallefresno-4.mp4" poster="/media/bg/vallefresno-4.webp" muted loop playsinline preload="none" aria-hidden="true" />
 		<header class="sec-head">
-			<p class="eyebrow"><span>04</span> / {w('Principles', 'Principios')}</p>
+			<p class="eyebrow"><i class="glyph" aria-hidden="true">&#x1F4D6;</i><span>04</span> / {w('Principles', 'Principios')}</p>
 			<h2>{w('Forged the hard way.', 'Forjados a la antigua.')}</h2>
 		</header>
 		<ol class="principles">
@@ -237,7 +237,7 @@ const principles = [
 	<!-- 05 · install -->
 	<section class="chapter" data-reveal>
 		<header class="sec-head">
-			<p class="eyebrow"><span>05</span> / {w('Install', 'Instalar')}</p>
+			<p class="eyebrow"><i class="glyph" aria-hidden="true">&#x1F528;</i><span>05</span> / {w('Install', 'Instalar')}</p>
 			<h2>{w('Ready in three steps.', 'Listo en tres pasos.')}</h2>
 		</header>
 		<ol class="steps">
@@ -259,7 +259,11 @@ const principles = [
 	<!-- closing band -->
 	<section class="cta-band vband" data-zone-src data-music="orgrimmar">
 		<video class="vband-bg" src="/media/bg/orgrimmar-2.mp4" poster="/media/bg/orgrimmar-2.webp" muted loop playsinline preload="none" aria-hidden="true" />
-		<h2>{w('Join the raid.', 'Únete a la banda.')}</h2>
+		<div class="cta-title">
+			<i class="glyph" aria-hidden="true">&#x2694;</i>
+			<h2>{w('Join the raid.', 'Únete a la banda.')}</h2>
+			<i class="glyph" aria-hidden="true">&#x2694;</i>
+		</div>
 		<p>{w('Report a bug, ask for a feature or just say hi.', 'Avisa de un fallo, pide una función o simplemente saluda.')}</p>
 		<div class="hx-actions">
 			<a class="btn btn-gold" href="https://www.curseforge.com/members/pirson/projects" rel="noopener">CurseForge</a>
