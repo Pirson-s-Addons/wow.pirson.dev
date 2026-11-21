@@ -1,4 +1,11 @@
 @import '@fontsource/marcellus/400.css';
+/* Goodmountain by Hermann S Designs (display type inspired by Warcraft): served unmodified, its
+   licence sits next to the file (public/fonts/goodmountain/LICENSE.md). Marcellus stays as fallback. */
+@font-face {
+	font-family: 'Goodmountain';
+	src: url('/fonts/goodmountain/Goodmountain-Regular.woff2') format('woff2');
+	font-display: swap;
+}
 @import '@fontsource-variable/manrope/wght.css';
 
 /* ---------- tokens ----------
@@ -17,7 +24,7 @@
 	--gold: #f2c467;
 	--text: #ecebf3;
 	--muted: #9c9bb0;
-	--display: 'Marcellus', serif;
+	--display: 'Goodmountain', 'Marcellus', serif;
 	--sl-font: 'Manrope Variable', system-ui, sans-serif;
 	--sl-text-base: 1rem;
 }
