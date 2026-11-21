@@ -17,11 +17,6 @@ const clips = [
 	['orgrimmar-1', 'orgrimmar', 'Orgrimmar'],
 	['ocean', 'jade-forest', es ? 'La Gran Mar' : 'The Great Sea'],
 ];
-const games = [
-	['forever', 'WoW Forever'],
-	['mop', 'Mists of Pandaria Classic'],
-	['midnight', 'World of Warcraft: Midnight'],
-];
 ---
 
 <section class="hx" data-zone-src data-music={clips[0][1]}>
@@ -57,7 +52,6 @@ const games = [
 				))
 			}
 		</div>
-		<p class="hx-games">{games.map(([g, alt]) => <img src={`/media/eras/${g}.webp`} alt={alt} height="48" loading="eager" />)}</p>
 		<p class="mono hx-meta">{es ? 'Gratis · 20 idiomas · Guías en inglés y español' : 'Free · 20 languages · Guides in English & Español'}</p>
 	</div>
 

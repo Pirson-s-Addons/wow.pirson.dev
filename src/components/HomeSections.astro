@@ -1,6 +1,6 @@
 ---
 // Home page body, in numbered chapters: the action bar of every addon, the lineup (each addon as a
-// WoW item tooltip, filtered from a timeline of every expansion's logo), videos (silent preview on hover) and a screenshot
+// WoW item tooltip, filtered by game version with expansion logos), videos (silent preview on hover) and a screenshot
 // marquee, principles and the closing band over in-game footage, install steps. Without JavaScript
 // the era filter stays hidden.
 // Sound: a floating button plays the music of the zone on screen (the hero's current clip, or a band's
@@ -20,26 +20,18 @@ const w = (en: string, sp: string) => (es ? sp : en);
 const total = addons.reduce((s, a) => s + a.downloads, 0);
 const versions = [...new Set(addons.flatMap((a) => a.clients.map((c) => c[0])))];
 const count = (v: string) => addons.filter((a) => a.clients.some((c) => c[0] === v)).length;
-// Every expansion, oldest first, with the game version (English client name) its addons run on.
-// Eras no client covers (past Retail expansions, the next one) show dimmed.
-const eras: [string, string, string, string | null][] = [
-	['forever', 'WoW Forever', '', 'WoW Forever'],
-	['classic', 'World of Warcraft', '2004', 'Classic Era'],
-	['tbc', 'The Burning Crusade', '2007', 'TBC Classic'],
-	['wrath', 'Wrath of the Lich King', '2008', 'Wrath Classic'],
-	['cata', 'Cataclysm', '2010', 'Cataclysm Classic'],
-	['mop', 'Mists of Pandaria', '2012', 'MoP Classic'],
-	['wod', 'Warlords of Draenor', '2014', 'Legacy (WoD to Shadowlands)'],
-	['legion', 'Legion', '2016', 'Legacy (WoD to Shadowlands)'],
-	['bfa', 'Battle for Azeroth', '2018', 'Legacy (WoD to Shadowlands)'],
-	['sl', 'Shadowlands', '2020', 'Legacy (WoD to Shadowlands)'],
-	['df', 'Dragonflight', '2022', null],
-	['tww', 'The War Within', '2024', null],
-	['midnight', 'Midnight', '2026', 'Retail'],
-	['titan', 'The Last Titan', w('Next', 'Próxima'), null],
+// One filter per game version, with the logo of its expansion (Legacy: the first one it covers).
+const eras: [string, string][] = [
+	['forever', 'WoW Forever'],
+	['classic', 'Classic Era'],
+	['tbc', 'TBC Classic'],
+	['wrath', 'Wrath Classic'],
+	['cata', 'Cataclysm Classic'],
+	['mop', 'MoP Classic'],
+	['wod', 'Legacy (WoD to Shadowlands)'],
+	['midnight', 'Retail'],
 ];
-// 'Legacy (WoD to Shadowlands)' shows as 'Legacy': the four logos already say which expansions.
-const clientName = (v: string) => addons.flatMap((a) => a.clients).find((c) => c[0] === v)![l].replace(/ \(.*\)$/, '');
+const clientName = (v: string) => addons.flatMap((a) => a.clients).find((c) => c[0] === v)![l];
 const quality: Record<string, [string, string]> = {
 	'#ff8000': ['Legendary', 'Legendario'],
 	'#c77dff': ['Epic', 'Épico'],
@@ -117,27 +109,22 @@ const principles = [
 			<h2>{w('Pick your loot.', 'Elige tu botín.')}</h2>
 		</header>
 		<div class="eras" role="group" aria-label={w('Filter by game version', 'Filtrar por versión del juego')} hidden data-filters>
-			<button type="button" class="era era-all" aria-pressed="true" data-v="">
-				<span class="era-all-n">{addons.length}</span>
-				<span class="era-name">{w('All addons', 'Todos')}</span>
+			<button type="button" class="era" aria-pressed="true" data-v="">
+				<span class="era-art era-all">{addons.length}</span>
+				<span class="era-name">{w('All', 'Todas')}</span>
 			</button>
 			{
-				eras.map(([file, name, year, v]) =>
-					v ? (
-						<button type="button" class="era" aria-pressed="false" data-v={v} title={`${name} · ${clientName(v)}`}>
-							<img src={`/media/eras/${file}.webp`} alt={name} loading="lazy" />
-							<span class="era-year mono">{year || 'Forever'}</span>
-							<span class="era-name">{clientName(v)}</span>
-							<span class="era-n">{count(v)}</span>
-						</button>
-					) : (
-						<span class="era is-off" title={w(`${name}: no addons yet`, `${name}: aún sin addons`)}>
-							<img src={`/media/eras/${file}.webp`} alt={name} loading="lazy" />
-							<span class="era-year mono">{year}</span>
-							<span class="era-name">—</span>
+				eras.map(([file, v]) => (
+					<button type="button" class="era" aria-pressed="false" data-v={v}>
+						<span class="era-art">
+							<img src={`/media/eras/${file}.webp`} alt="" loading="lazy" />
 						</span>
-					),
-				)
+						<span class="era-name">{clientName(v)}</span>
+						<span class="era-n">
+							{count(v)} addons
+						</span>
+					</button>
+				))
 			}
 		</div>
 		<ol class="lineup">
