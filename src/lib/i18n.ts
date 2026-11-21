@@ -15,4 +15,5 @@ export const href = (lang: string | undefined, path: string) => (lang === 'es' ?
 
 // Total downloads as a round figure that only moves every 100K ("+200K"), so the copy does not age.
 const sum = addons.reduce((s, a) => s + a.downloads, 0);
-export const totalDownloads = sum >= 1e5 ? `+${Math.floor(sum / 1e5) * 100}K` : `+${Math.floor(sum / 1e3)}K`;
+export const downloadsK = sum >= 1e5 ? Math.floor(sum / 1e5) * 100 : Math.floor(sum / 1e3);
+export const totalDownloads = `+${downloadsK}K`;

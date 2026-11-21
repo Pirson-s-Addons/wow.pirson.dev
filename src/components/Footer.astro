@@ -118,7 +118,7 @@ const more = current
 				const el = e.target as HTMLElement, end = Number(el.dataset.count), t0 = performance.now();
 				const step = (now: number) => {
 					const p = Math.min(1, (now - t0) / 1400);
-					el.textContent = fmt.format(Math.round(end * (1 - Math.pow(1 - p, 3))));
+					el.textContent = (el.dataset.prefix ?? '') + fmt.format(Math.round(end * (1 - Math.pow(1 - p, 3)))) + (el.dataset.suffix ?? '');
 					if (p < 1) requestAnimationFrame(step);
 				};
 				requestAnimationFrame(step);

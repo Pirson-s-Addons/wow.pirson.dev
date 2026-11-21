@@ -3,7 +3,7 @@
 // behind a centred, gilded title, with the zone's name in a corner. Each clip names its zone's
 // music (data-music), which src/components/HomeSections.astro plays when the visitor turns sound on.
 import addons from '../data/addons.json';
-import { t, totalDownloads } from '../lib/i18n';
+import { t, totalDownloads, downloadsK } from '../lib/i18n';
 
 const PAGE_TITLE_ID = '_top'; // Starlight's page title id (not exported)
 const { entry, lang } = Astro.locals.starlightRoute;
@@ -55,7 +55,7 @@ const clips = [
 	</div>
 
 	<dl class="hx-stats glass">
-		<div><dd>{totalDownloads}</dd><dt>{t(lang, 'downloads')}</dt></div>
+		<div><dd data-count={downloadsK} data-prefix="+" data-suffix="K">{totalDownloads}</dd><dt>{t(lang, 'downloads')}</dt></div>
 		<div><dd data-count={addons.length}>{addons.length}</dd><dt>Addons</dt></div>
 		<div><dd data-count={versions}>{versions}</dd><dt>{es ? 'versiones del juego' : 'game versions'}</dt></div>
 	</dl>
