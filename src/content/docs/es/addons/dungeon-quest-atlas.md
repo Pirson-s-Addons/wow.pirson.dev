@@ -12,13 +12,15 @@ sidebar:
 
 [▶ Cómo usar Dungeon Quest Atlas](https://www.youtube.com/watch?v=AYYhYFyfzfY)
 
-![Todas las mazmorras, como la Guía de aventuras](/images/addons/dungeon-quest-atlas/screenshot_4-png-877e1e.webp)
+![También con mando (Xbox, PlayStation...)](/images/addons/dungeon-quest-atlas/mando-navegacion-curseforge-gif-98f9b3.webp)
 
-![Misiones, cadenas y recompensas](/images/addons/dungeon-quest-atlas/screenshot_7-png-428486.webp)
+![Todas las mazmorras, como la Guía de aventuras](/images/addons/dungeon-quest-atlas/dungeons-dungeon-png-5250e0.webp)
 
-![Jefes, mapa, entrada y ruta](/images/addons/dungeon-quest-atlas/screenshot_5-png-694ae1.webp)
+![Misiones, cadenas y recompensas](/images/addons/dungeon-quest-atlas/cityofdalaran-quests-dungeon-png-618ec5.webp)
 
-![Botín de cada mazmorra y jefe](/images/addons/dungeon-quest-atlas/screenshot_6-png-75a0d6.webp)
+![Jefes, mapa, entrada y ruta](/images/addons/dungeon-quest-atlas/cityofdalaran-dungeon-png-6c8caf.webp)
+
+![Botín de cada mazmorra y jefe](/images/addons/dungeon-quest-atlas/cityofdalaran-loot-dungeon-png-67af21.webp)
 
 ![Mapas de mazmorra con cada planta](/images/addons/dungeon-quest-atlas/screenshot_8-png-a1c95b.webp)
 
@@ -26,7 +28,15 @@ sidebar:
 
 ![Portales de mazmorra en el mapa del mundo](/images/addons/dungeon-quest-atlas/screenshot_12-png-8704b5.webp)
 
-![Bandas con su cuenta atrás](/images/addons/dungeon-quest-atlas/screenshot_9-png-26d05f.webp)
+![Bandas con su cuenta atrás](/images/addons/dungeon-quest-atlas/raids-dungeon-png-55bba4.webp)
+
+![Páginas de banda con sus jefes](/images/addons/dungeon-quest-atlas/onyxia-dungeon-png-e777de.webp)
+
+![Requisito de acceso de Onyxia, paso a paso](/images/addons/dungeon-quest-atlas/onyxia-attunedme-dungeon-png-ee1bee.webp)
+
+![Registro de viajero: eventos de mundo](/images/addons/dungeon-quest-atlas/travellog-dungeon-png-30d615.webp)
+
+![Viajes: qué hacer ahora](/images/addons/dungeon-quest-atlas/journeys-dungeon-png-a70203.webp)
 
 ## Qué hace
 
@@ -38,7 +48,7 @@ Dungeon Quest Atlas reúne todas las **misiones de mazmorra** de **WoW Forever**
 
 - **Más de 300 misiones de mazmorra** con nivel, facción y estado, con los iconos del propio juego: **Disponible** (!), **En curso** (…), **Lista para entregar** (?), **Completada** (✓) o **Bloqueada** (por nivel o misión previa). Contador "3/7 completadas" por mazmorra.
 - **Cadenas de misiones**: todos los pasos con su estado y un "(2/5)" en la lista. Clic en cualquier paso, también los de fuera de la mazmorra, para abrirlo. Al entregar un paso, la flecha puede llevarte al siguiente.
-- **Aviso de misiones que faltan**: al llegar a la zona de una mazmorra de tu nivel, el chat te dice qué misiones suyas aún puedes coger, con enlaces. Una vez por mazmorra y sesión; se puede quitar.
+- **Aviso de misiones que faltan**: cerca de la entrada de una mazmorra de tu nivel, el chat te dice qué misiones suyas aún puedes coger, con enlaces; cerca de quien da alguna, esa. Una vez por mazmorra y misión en cada sesión; se puede quitar.
 - **Objetivos y recompensas** en el idioma de tu juego, con el tooltip del propio juego (Mayús para comparar), las que se eligen y las fijas, experiencia y dinero, incluidas las recompensas nuevas de Forever.
 - **Inicio y final de la misión**: el PNJ u objeto que la da y el que la recibe, con zona y coordenadas, y botones **Marcar inicio** / **Marcar final**.
 - **Misiones de clase** con el icono de su clase, bloqueadas para las demás clases y que se pueden ocultar.
@@ -84,7 +94,9 @@ Dungeon Quest Atlas reúne todas las **misiones de mazmorra** de **WoW Forever**
 | `/dqa config` | Abre las opciones |
 | `/dqa mode` | Elige Atlas completo o Modo aventura |
 | `/dqa runs` | Abre la lista de tus partidas de mazmorra |
+| `/dqa tracker` | Vuelve a mostrar la ventana de la partida si la cerraste |
 | `/dqa rolls` | Abre el historial de tiradas de botín |
+| `/dqa rare` | Enseña un aviso de raro de prueba, para ver cómo queda |
 | `/dqa rfk` | Abre una mazmorra por su atajo (`stocks`, `gnomer`, `dala`...) |
 | `/dqa clear` | Quita todos los marcadores |
 | `/dqa bug` | Muestra la dirección para informar de un fallo |

@@ -8,9 +8,11 @@ sidebar:
 
 ## Capturas
 
-![Texto de vida y poder en los marcos](/images/addons/health-bar-text-forever/healthbar-info-png-5670cc.webp)
+![Vida y poder, siempre a la vista](/images/addons/health-bar-text-forever/vida-barra-png-cc44f6.webp)
 
-![Opciones](/images/addons/health-bar-text-forever/opcions-menu-health-text-forever-png-a172eb.webp)
+![Elige cómo se ve cada número](/images/addons/health-bar-text-forever/menu-vida1-png-1bd231.webp)
+
+![Cada marco, con sus propios ajustes](/images/addons/health-bar-text-forever/menu-vida2-png-ae7fa2.webp)
 
 ## Qué hace
 

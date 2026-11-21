@@ -8,9 +8,11 @@ sidebar:
 
 ## Screenshots
 
-![Health and power text on the frames](/images/addons/health-bar-text-forever/healthbar-info-png-5670cc.webp)
+![Health and power, always visible](/images/addons/health-bar-text-forever/vida-barra-png-cc44f6.webp)
 
-![Options](/images/addons/health-bar-text-forever/opcions-menu-health-text-forever-png-a172eb.webp)
+![Pick how each number looks](/images/addons/health-bar-text-forever/menu-vida1-png-1bd231.webp)
+
+![Every frame, set up on its own](/images/addons/health-bar-text-forever/menu-vida2-png-ae7fa2.webp)
 
 ## What it does
 

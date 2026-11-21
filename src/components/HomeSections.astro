@@ -8,7 +8,7 @@
 import { readdirSync } from 'node:fs';
 import addons from '../data/addons.json';
 import { covers } from '../lib/covers';
-import { t, href } from '../lib/i18n';
+import { t, href, totalDownloads } from '../lib/i18n';
 
 interface Props {
 	lang: 'en' | 'es';
@@ -17,7 +17,6 @@ const { lang } = Astro.props;
 const es = lang === 'es';
 const l = es ? 1 : 0;
 const w = (en: string, sp: string) => (es ? sp : en);
-const total = addons.reduce((s, a) => s + a.downloads, 0);
 const versions = [...new Set(addons.flatMap((a) => a.clients.map((c) => c[0])))];
 const count = (v: string) => addons.filter((a) => a.clients.some((c) => c[0] === v)).length;
 // One filter per game version, with the logo of its expansion (Legacy: the first one it covers).
@@ -81,7 +80,7 @@ const principles = [
 	<section class="chapter" data-reveal>
 		<header class="sec-head">
 			<p class="eyebrow"><span>01</span> / {w('The armory', 'La armería')}</p>
-			<p class="mono">{addons.length} addons · {versions.length} {w('game versions', 'versiones del juego')} · {total.toLocaleString(lang)} {t(lang, 'downloads')}</p>
+			<p class="mono">{addons.length} addons · {versions.length} {w('game versions', 'versiones del juego')} · {totalDownloads} {t(lang, 'downloads')}</p>
 			<h2>{w(`${addons.length} addons. One Azeroth.`, `${addons.length} addons. Un Azeroth.`)}</h2>
 			<p class="lead">
 				{w(

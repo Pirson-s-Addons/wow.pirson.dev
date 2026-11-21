@@ -3,9 +3,10 @@
 // Usage: node scripts/seed-addons.mjs [path to the folder holding the addon repos, default ..]
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
 
-const root = new URL('..', import.meta.url).pathname;
+const root = fileURLToPath(new URL('..', import.meta.url));
 const repos = process.argv[2] ?? join(root, '..');
 const addons = JSON.parse(readFileSync(join(root, 'src/data/addons.json'), 'utf8'));
 const LANGS = { en: ['README.md', 'src/content/docs/addons'], es: ['README.es.md', 'src/content/docs/es/addons'] };
@@ -17,8 +18,8 @@ export function toMarkdown(md, repoUrl) {
 	out = out.replace(/\n*<br\/>\s*\n*<p align="center">[\s\S]*$/, '\n'); // drop footer banner
 	// video thumbnail linking to YouTube -> clickable Markdown image
 	out = out.replace(/<p align="center">\s*<a href="([^"]+)"><img src="([^"]+)"[^>]*alt="([^"]*)"><\/a><br>\s*<sub>[^<]*<\/sub>\s*<\/p>/g, '[![$3]($2)]($1)');
-	out = out.replace(/<img src="([^"]+)" alt="([^"]*)"[^>]*>\s*(?:<br>\s*<sub>([^<]*)<\/sub>)?/g, (_, src, alt, cap) => `\n\n![${cap || alt}](${src})\n\n`);
-	out = out.replace(/<\/?(table|tr|td)[^>]*>/g, '');
+	out = out.replace(/<img src="([^"]+)"[^>]*?alt="([^"]*)"[^>]*>\s*(?:<br>\s*<sub>([^<]*)<\/sub>)?/g, (_, src, alt, cap) => `\n\n![${cap || alt}](${src})\n\n`);
+	out = out.replace(/<\/?(table|tr|td|p)(\s[^>]*)?>/g, '');
 	out = out.replace(/<details>\s*<summary><b>([^<]+)<\/b><\/summary>/g, '### $1');
 	out = out.replace(/<\/details>/g, '');
 	const raw = repoUrl.replace('https://github.com/', 'https://raw.githubusercontent.com/');
@@ -45,10 +46,11 @@ for (const [i, a] of addons.entries()) {
 console.log(`${written} pages written`);
 
 // self-check of the converter on the README shapes it meets
-const sample = `<p align="center">banner</p>\n\n## Screenshots\n\n<p align="center">\n<a href="https://yt/v"><img src="https://yt/t.jpg" width="640" alt="How to"></a><br>\n<sub>How to</sub>\n</p>\n\n<table>\n<tr>\n<td align="center" width="50%"><img src="https://x/a.png" alt="A"><br><sub>Bar</sub></td>\n</tr>\n</table>\n\n## Docs\n\n![Pic](.github/p.png)\n\nSee [the file](LICENSE).\n\n<details>\n<summary><b>Public API</b></summary>\n\ncode\n</details>\n\n<br/>\n\n<p align="center"><a href="x"><img src="f.svg"/></a></p>\n`;
+const sample = `<p align="center">banner</p>\n\n## Screenshots\n\n<p align="center">\n<a href="https://yt/v"><img src="https://yt/t.jpg" width="640" alt="How to"></a><br>\n<sub>How to</sub>\n</p>\n\n<table>\n<tr>\n<td align="center" width="50%"><img src="https://x/a.png" alt="A"><br><sub>Bar</sub></td>\n</tr>\n</table>\n\n<p align="center">\n<img src="https://x/g.gif" width="520" alt="Pad"><br>\n<sub>Pad</sub>\n</p>\n\n## Docs\n\n![Pic](.github/p.png)\n\nSee [the file](LICENSE).\n\n<details>\n<summary><b>Public API</b></summary>\n\ncode\n</details>\n\n<br/>\n\n<p align="center"><a href="x"><img src="f.svg"/></a></p>\n`;
 const got = toMarkdown(sample, 'https://github.com/o/r');
 assert.ok(got.startsWith('## Screenshots'));
 assert.ok(got.includes('![Bar](https://x/a.png)'));
+assert.ok(got.includes('![Pad](https://x/g.gif)'));
 assert.ok(got.includes('[![How to](https://yt/t.jpg)](https://yt/v)'));
 assert.ok(got.includes('[the file](https://github.com/o/r/blob/main/LICENSE)'));
 assert.ok(got.includes('![Pic](https://raw.githubusercontent.com/o/r/main/.github/p.png)'));

@@ -6,9 +6,10 @@
 import { readFileSync, writeFileSync, readdirSync, existsSync, mkdirSync } from 'node:fs';
 import { join, basename } from 'node:path';
 import { createHash } from 'node:crypto';
+import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
 
-const root = new URL('..', import.meta.url).pathname;
+const root = fileURLToPath(new URL('..', import.meta.url));
 const docs = join(root, 'src/content/docs');
 const outDir = join(root, 'public/images/addons');
 mkdirSync(outDir, { recursive: true });
@@ -29,7 +30,7 @@ async function localize(url, slug) {
 	if (!existsSync(dest)) {
 		const res = await fetch(url);
 		if (!res.ok) throw new Error(`${url}: HTTP ${res.status}`);
-		await sharp(Buffer.from(await res.arrayBuffer())).resize({ width: 1600, withoutEnlargement: true }).webp({ quality: 80 }).toFile(dest);
+		await sharp(Buffer.from(await res.arrayBuffer()), { animated: true }).resize({ width: 1600, withoutEnlargement: true }).webp({ quality: 80 }).toFile(dest);
 	}
 	const path = `/images/addons/${slug}/${name}`;
 	local.set(key, path);
