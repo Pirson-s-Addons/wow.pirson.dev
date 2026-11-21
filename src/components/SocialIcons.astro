@@ -11,13 +11,11 @@ const links: { label: string; href: string; icon: StarlightIcon; note?: string }
 	{ label: 'YouTube', href: 'https://www.youtube.com/@SrPirson-Dev', icon: 'youtube', note: '@SrPirson-Dev' },
 	{ label: 'Instagram', href: 'https://www.instagram.com/srpirson.wow/', icon: 'instagram', note: '@srpirson.wow' },
 	{ label: 'Reddit', href: 'https://www.reddit.com/user/SrPirson/', icon: 'reddit', note: 'u/SrPirson' },
-	{ label: 'GitHub', href: 'https://github.com/SrPirson', icon: 'github', note: 'SrPirson' },
 	...(config.social ?? []).map((s) => ({
 		...s,
-		label: s.icon === 'rss' ? (es ? 'RSS del blog' : 'Blog RSS') : s.icon === 'github' ? "Pirson's Addons" : s.label,
-		note: s.icon === 'github' ? (es ? 'Código de los addons' : 'Addons source code') : undefined,
+		label: s.icon === 'rss' ? (es ? 'RSS del blog' : 'Blog RSS') : s.label,
+		note: s.icon === 'github' ? 'Pirson-s-Addons' : undefined,
 	})),
-	{ label: es ? 'Web personal' : 'Website', href: 'https://pirsondev.vercel.app/', icon: 'laptop', note: 'pirsondev.vercel.app' },
 	{ label: 'Buy Me a Coffee', href: 'https://buymeacoffee.com/franciscorb', icon: 'heart', note: es ? 'Apoya los addons' : 'Support the addons' },
 ];
 ---
