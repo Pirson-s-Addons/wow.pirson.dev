@@ -1,8 +1,8 @@
 ---
-// Home hero, like a WoW loading screen: the addons' screenshots cross-fade full-screen with a slow
-// zoom behind a centred, gilded title. Under it, the numbers bar.
+// Home hero, like a WoW loading screen: in-game footage of several zones cross-fades full-screen
+// behind a centred, gilded title, with the zone's name in a corner. Each clip names its zone's
+// music (data-music), which src/components/HomeSections.astro plays when the visitor turns sound on.
 import addons from '../data/addons.json';
-import { covers } from '../lib/covers';
 import { t } from '../lib/i18n';
 
 const PAGE_TITLE_ID = '_top'; // Starlight's page title id (not exported)
@@ -11,14 +11,38 @@ const { title = entry.data.title, tagline, actions = [] } = entry.data.hero || {
 const es = lang === 'es';
 const total = addons.reduce((s, a) => s + a.downloads, 0);
 const versions = new Set(addons.flatMap((a) => a.clients.map((c) => c[0]))).size;
-const art = addons.map((a) => covers[a.slug]).filter(Boolean).slice(0, 8);
+const clips = [
+	['vallefresno-2', 'ashenvale', es ? 'Vallefresno' : 'Ashenvale'],
+	['trabalomas-1', 'arathi-warfront', es ? 'Tierras Altas de Arathi' : 'Arathi Highlands'],
+	['orgrimmar-1', 'orgrimmar', 'Orgrimmar'],
+	['ocean', 'jade-forest', es ? 'La Gran Mar' : 'The Great Sea'],
+];
+const games = [
+	['forever', 'WoW Forever'],
+	['mop-classic', 'Mists of Pandaria Classic'],
+	['wow', 'World of Warcraft'],
+];
 ---
 
-<section class="hx">
+<section class="hx" data-zone-src data-music={clips[0][1]}>
 	<div class="hx-bg" aria-hidden="true" data-hx-bg>
-		{art.map((src, i) => <img src={src} alt="" class:list={[i === 0 && 'is-on']} loading={i === 0 ? 'eager' : 'lazy'} />)}
+		{
+			clips.map(([clip, music, zone], i) => (
+				<video
+					src={`/media/bg/${clip}.mp4`}
+					poster={i === 0 ? `/media/bg/${clip}.webp` : undefined}
+					data-music={music}
+					data-zone={zone}
+					class:list={[i === 0 && 'is-on']}
+					muted
+					playsinline
+					preload={i === 0 ? 'auto' : 'none'}
+				/>
+			))
+		}
 	</div>
 	<div class="hx-embers" aria-hidden="true">{Array.from({ length: 14 }, (_, i) => <span style={`--i:${i}`} />)}</div>
+	<p class="hx-zone mono" aria-hidden="true" data-hx-zone>{clips[0][2]}</p>
 
 	<div class="hx-copy">
 		<p class="eyebrow"><img src="/favicon.png" alt="" width="22" height="22" /> Pirson's Addons</p>
@@ -33,7 +57,7 @@ const art = addons.map((a) => covers[a.slug]).filter(Boolean).slice(0, 8);
 				))
 			}
 		</div>
-		<p class="mono hx-meta">WoW Forever · MoP Classic · Retail · Classic Era</p>
+		<p class="hx-games">{games.map(([g, alt]) => <img src={`/media/games/${g}.webp`} alt={alt} height="48" loading="eager" />)}</p>
 		<p class="mono hx-meta">{es ? 'Gratis · 20 idiomas · Guías en inglés y español' : 'Free · 20 languages · Guides in English & Español'}</p>
 	</div>
 
@@ -45,14 +69,34 @@ const art = addons.map((a) => covers[a.slug]).filter(Boolean).slice(0, 8);
 </section>
 
 <script>
-	const bgs = [...document.querySelectorAll<HTMLImageElement>('[data-hx-bg] img')];
-	if (bgs.length > 1 && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+	// Plays the zone clips one after another, cross-fading a second before each ends.
+	const hx = document.querySelector<HTMLElement>('[data-zone-src].hx');
+	const clips = [...document.querySelectorAll<HTMLVideoElement>('[data-hx-bg] video')];
+	const label = document.querySelector<HTMLElement>('[data-hx-zone]')!;
+	// Reduced motion or data saver: the first clip's poster stays as a still.
+	const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
+	if (hx && clips.length && !saveData && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
 		let on = 0;
-		setInterval(() => {
-			if (document.hidden) return;
-			bgs[on].classList.remove('is-on');
-			on = (on + 1) % bgs.length;
-			bgs[on].classList.add('is-on');
-		}, 6000);
+		const next = () => {
+			const old = clips[on];
+			on = (on + 1) % clips.length;
+			const v = clips[on];
+			v.currentTime = 0;
+			v.play().catch(() => {});
+			v.classList.add('is-on');
+			old.classList.remove('is-on');
+			label.textContent = v.dataset.zone!;
+			hx.dataset.music = v.dataset.music;
+			dispatchEvent(new CustomEvent('zone-change'));
+			// warm up the clip after this one
+			clips[(on + 1) % clips.length].preload = 'auto';
+		};
+		for (const v of clips) {
+			v.addEventListener('timeupdate', () => {
+				if (v === clips[on] && v.duration && v.currentTime > v.duration - 1.2) next();
+			});
+		}
+		clips[0].play().catch(() => {});
+		clips[1].preload = 'auto';
 	}
 </script>

@@ -1,7 +1,10 @@
 ---
 // Home page body, in numbered chapters: the action bar of every addon, the lineup (each addon as a
-// WoW item tooltip, filtered by game version), videos and a screenshot marquee, principles, install
-// steps and a closing call to action. Without JavaScript the version tabs stay hidden.
+// WoW item tooltip, filtered by game version), videos (silent preview on hover) and a screenshot
+// marquee, principles and the closing band over in-game footage, install steps. Without JavaScript
+// the version tabs stay hidden.
+// Sound: a floating button plays the music of the zone on screen (the hero's current clip, or a band's
+// data-music), cross-fading between zones. Off until the visitor turns it on; the choice is remembered.
 import { readdirSync } from 'node:fs';
 import addons from '../data/addons.json';
 import { covers } from '../lib/covers';
@@ -38,13 +41,19 @@ const rows = [shots.filter((_, i) => i % 2 === 0), shots.filter((_, i) => i % 2 
 const videos = [
 	['dungeon-quest-atlas', 'AYYhYFyfzfY'],
 	['wow-translator', 'DmyrbF9iDdQ'],
+	['emoji-react', 'E3wdcegOrYo'],
 	['cursor-glow-rgb', 'DhS620RpkQA'],
-].map(([slug, id]) => ({
-	a: addons.find((a) => a.slug === slug)!,
-	id,
-	thumb: `/images/addons/${slug}/${readdirSync(`${dir}/${slug}`).find((f) => f.startsWith('maxresdefault'))}`,
-}));
+].map(([slug, id]) => {
+	const thumb = readdirSync(`${dir}/${slug}`).find((f) => f.startsWith('maxresdefault'));
+	return {
+		a: addons.find((a) => a.slug === slug)!,
+		id,
+		thumb: thumb ? `/images/addons/${slug}/${thumb}` : `/media/preview/${slug}.webp`,
+		preview: `/media/preview/${slug}.mp4`,
+	};
+});
 
+const icons = ['inv_crate_05', 'inv_jewelry_ring_34', 'inv_misc_note_01', 'inv_jewelry_necklace_14', 'inv_misc_food_legion_gooslime_bottle', 'inv_torch_lit'];
 const principles = [
 	[w('Free, for good', 'Gratis, para siempre'), w('No premium tiers, no ads, no account. Install it and play.', 'Sin versiones premium, sin anuncios, sin cuentas. Lo instalas y a jugar.')],
 	[w('Every client', 'Todos los clientes'), w('WoW Forever first, then MoP Classic, Classic Era, Retail and everything in between.', 'Primero WoW Forever, y también MoP Classic, Classic Era, Retail y todo lo que hay en medio.')],
@@ -140,10 +149,11 @@ const principles = [
 		</header>
 		<div class="videos">
 			{
-				videos.map(({ a, id, thumb }) => (
+				videos.map(({ a, id, thumb, preview }) => (
 					<figure class="video" style={`--q:${a.color}`}>
 						<button type="button" class="video-play" data-yt={id} aria-label={`${w('Play', 'Reproducir')}: ${a.name}`}>
 							<img src={thumb} alt="" loading="lazy" />
+							<video class="video-prev" src={preview} muted loop playsinline preload="none" aria-hidden="true" />
 							<span class="video-icon" aria-hidden="true" />
 						</button>
 						<figcaption>
@@ -167,16 +177,18 @@ const principles = [
 		}
 	</div>
 
-	<!-- 04 · principles -->
-	<section class="chapter" data-reveal>
+	<!-- 04 · principles, over moonlit Ashenvale -->
+	<section class="chapter vband" data-zone-src data-music="ashenvale">
+		<video class="vband-bg" src="/media/bg/vallefresno-4.mp4" poster="/media/bg/vallefresno-4.webp" muted loop playsinline preload="none" aria-hidden="true" />
 		<header class="sec-head">
 			<p class="eyebrow"><span>04</span> / {w('Principles', 'Principios')}</p>
 			<h2>{w('Forged the hard way.', 'Forjados a la antigua.')}</h2>
 		</header>
 		<ol class="principles">
 			{
-				principles.map(([h, p]) => (
+				principles.map(([h, p], i) => (
 					<li>
+						<img class="wow-icon" src={`/media/icons/${icons[i]}.png`} alt="" width="44" height="44" loading="lazy" />
 						<h3>{h}</h3>
 						<p>{p}</p>
 					</li>
@@ -208,7 +220,8 @@ const principles = [
 	</section>
 
 	<!-- closing band -->
-	<section class="cta-band" data-reveal>
+	<section class="cta-band vband" data-zone-src data-music="orgrimmar">
+		<video class="vband-bg" src="/media/bg/orgrimmar-2.mp4" poster="/media/bg/orgrimmar-2.webp" muted loop playsinline preload="none" aria-hidden="true" />
 		<h2>{w('Join the raid.', 'Únete a la banda.')}</h2>
 		<p>{w('Report a bug, ask for a feature or just say hi.', 'Avisa de un fallo, pide una función o simplemente saluda.')}</p>
 		<div class="hx-actions">
@@ -217,6 +230,11 @@ const principles = [
 		</div>
 	</section>
 </div>
+
+<button type="button" class="sound" aria-pressed="false" data-sound hidden>
+	<span class="sound-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+	<span data-sound-label>{w('Sound of Azeroth', 'Sonido de Azeroth')}</span>
+</button>
 
 <script>
 	// version tabs
@@ -233,9 +251,108 @@ const principles = [
 			});
 		}
 	}
+	// silent preview while the pointer or focus is on a video card
+	for (const b of document.querySelectorAll<HTMLElement>('.video-play')) {
+		const v = b.querySelector('video')!;
+		const on = () => v.play().then(() => b.classList.add('is-previewing')).catch(() => {});
+		const off = () => (b.classList.remove('is-previewing'), v.pause());
+		b.addEventListener('pointerenter', on);
+		b.addEventListener('focus', on);
+		b.addEventListener('pointerleave', off);
+		b.addEventListener('blur', off);
+	}
+
+	// background clips of the bands play only while on screen
+	const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const bands = new IntersectionObserver((entries) => {
+		for (const e of entries) {
+			const v = e.target.querySelector('video')!;
+			if (e.isIntersecting && !still) v.play().catch(() => {});
+			else v.pause();
+		}
+	});
+	document.querySelectorAll('.vband').forEach((b) => bands.observe(b));
+
+	// zone music: two players cross-fade whenever the zone on screen changes
+	const btn = document.querySelector<HTMLButtonElement>('[data-sound]')!;
+	const zones = [...document.querySelectorAll<HTMLElement>('[data-zone-src]')];
+	const players = [new Audio(), new Audio()];
+	const VOL = 0.45;
+	let front = 0, track = '', enabled = localStorage.getItem('pa-sound') === '1';
+	for (const p of players) {
+		p.loop = true;
+		p.preload = 'none';
+		p.volume = 0;
+	}
+	const fade = (p: HTMLAudioElement, to: number, ms = 1600) => {
+		const from = p.volume, t0 = performance.now();
+		const step = (now: number) => {
+			const k = Math.min(1, (now - t0) / ms);
+			p.volume = from + (to - from) * k;
+			if (k < 1) requestAnimationFrame(step);
+			else if (to === 0) p.pause();
+		};
+		requestAnimationFrame(step);
+	};
+	// the zone whose block covers the middle of the screen; the hero until something else does
+	const current = () => {
+		const mid = innerHeight / 2;
+		const z = zones.find((el) => {
+			const r = el.getBoundingClientRect();
+			return r.top <= mid && r.bottom >= mid;
+		});
+		return (z ?? zones[0]).dataset.music!;
+	};
+	const sync = () => {
+		if (!enabled) return;
+		const want = current();
+		if (want === track) return;
+		track = btn.dataset.track = want;
+		fade(players[front], 0);
+		front = 1 - front;
+		const p = players[front];
+		p.src = `/media/music/${want}.m4a`;
+		p.play().then(() => fade(p, VOL)).catch(() => {});
+	};
+	const show = () => {
+		btn.setAttribute('aria-pressed', String(enabled));
+		btn.classList.toggle('is-on', enabled);
+	};
+	btn.hidden = false;
+	show();
+	const silence = () => {
+		enabled = false;
+		show();
+		players.forEach((p) => fade(p, 0, 600));
+		track = '';
+	};
+	btn.addEventListener('click', () => {
+		if (enabled) silence();
+		else {
+			enabled = true;
+			show();
+			sync();
+		}
+		localStorage.setItem('pa-sound', enabled ? '1' : '0');
+	});
+	addEventListener('scroll', sync, { passive: true });
+	addEventListener('zone-change', sync);
+	// browsers only start sound after a gesture: if it was left on, resume on the first one
+	if (enabled) {
+		const resume = () => {
+			if (!enabled || !players[front].paused) return;
+			track = '';
+			sync();
+		};
+		addEventListener('pointerdown', resume, { once: true });
+		addEventListener('keydown', resume, { once: true });
+		sync();
+	}
+
 	// videos load only when played (no YouTube requests before that)
 	for (const b of document.querySelectorAll<HTMLButtonElement>('[data-yt]')) {
 		b.addEventListener('click', () => {
+			silence(); // the video brings its own sound (the remembered choice stays as it was)
 			const f = document.createElement('iframe');
 			f.src = `https://www.youtube-nocookie.com/embed/${b.dataset.yt}?autoplay=1`;
 			f.title = b.getAttribute('aria-label')!;
