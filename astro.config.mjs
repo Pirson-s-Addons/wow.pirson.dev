@@ -36,6 +36,7 @@ export default defineConfig({
 				Footer: './src/components/Footer.astro',
 				ThemeProvider: './src/components/ThemeProvider.astro',
 				ThemeSelect: './src/components/ThemeSelect.astro',
+				SocialIcons: './src/components/SocialIcons.astro',
 			},
 			sidebar: [
 				{

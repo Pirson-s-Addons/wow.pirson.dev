@@ -1,0 +1,125 @@
+---
+// Header "Social" dropdown in place of Starlight's row of icons: Pirson's channels first, then the
+// links from the Starlight config (the org's GitHub and the blog's RSS, added by starlight-blog).
+// A native <details>, so it works without JavaScript; the script only closes it from outside.
+import config from 'virtual:starlight/user-config';
+import { Icon } from '@astrojs/starlight/components';
+import type { StarlightIcon } from '@astrojs/starlight/types';
+
+const es = Astro.locals.starlightRoute.lang === 'es';
+const links: { label: string; href: string; icon: StarlightIcon; note?: string }[] = [
+	{ label: 'YouTube', href: 'https://www.youtube.com/@SrPirson-Dev', icon: 'youtube', note: '@SrPirson-Dev' },
+	{ label: 'Instagram', href: 'https://www.instagram.com/srpirson.wow/', icon: 'instagram', note: '@srpirson.wow' },
+	{ label: 'Reddit', href: 'https://www.reddit.com/user/SrPirson/', icon: 'reddit', note: 'u/SrPirson' },
+	{ label: 'GitHub', href: 'https://github.com/SrPirson', icon: 'github', note: 'SrPirson' },
+	...(config.social ?? []).map((s) => ({
+		...s,
+		label: s.icon === 'rss' ? (es ? 'RSS del blog' : 'Blog RSS') : s.icon === 'github' ? "Pirson's Addons" : s.label,
+		note: s.icon === 'github' ? (es ? 'Código de los addons' : 'Addons source code') : undefined,
+	})),
+	{ label: es ? 'Web personal' : 'Website', href: 'https://pirsondev.vercel.app/', icon: 'laptop', note: 'pirsondev.vercel.app' },
+	{ label: 'Buy Me a Coffee', href: 'https://buymeacoffee.com/franciscorb', icon: 'heart', note: es ? 'Apoya los addons' : 'Support the addons' },
+];
+---
+
+<details class="social" data-social>
+	<summary>
+		<span>{es ? 'Redes' : 'Social'}</span>
+		<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+	</summary>
+	<ul class="social-menu">
+		{
+			links.map(({ label, href, icon, note }) => (
+				<li>
+					<a href={href} rel="me noopener" target="_blank">
+						<Icon name={icon} size="1.15rem" />
+						<span class="social-label">{label}</span>
+						{note && <span class="social-note">{note}</span>}
+					</a>
+				</li>
+			))
+		}
+	</ul>
+</details>
+
+<script>
+	for (const d of document.querySelectorAll<HTMLDetailsElement>('[data-social]')) {
+		document.addEventListener('click', (e) => d.open && !d.contains(e.target as Node) && (d.open = false));
+		d.addEventListener('keydown', (e) => e.key === 'Escape' && ((d.open = false), d.querySelector('summary')!.focus()));
+	}
+</script>
+
+<style>
+	.social {
+		position: relative;
+	}
+	summary {
+		display: flex;
+		align-items: center;
+		gap: 0.3rem;
+		font-family: var(--display);
+		font-size: 1.05rem;
+		color: var(--text);
+		list-style: none;
+		cursor: pointer;
+	}
+	summary::-webkit-details-marker {
+		display: none;
+	}
+	summary:hover,
+	.social[open] summary {
+		color: var(--arcane);
+	}
+	summary svg {
+		width: 1rem;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 2;
+		transition: rotate 0.2s;
+	}
+	.social[open] summary svg {
+		rotate: 180deg;
+	}
+	.social-menu {
+		position: absolute;
+		top: calc(100% + 0.8rem);
+		right: -0.5rem;
+		z-index: 40;
+		min-width: 17rem;
+		margin: 0;
+		padding: 0.4rem;
+		list-style: none;
+		background: rgb(13 12 20 / 0.92);
+		border: 1px solid rgb(242 196 103 / 0.35);
+		border-radius: 14px;
+		backdrop-filter: blur(16px);
+		box-shadow: 0 20px 50px rgb(0 0 0 / 0.6);
+	}
+	.social-menu a {
+		display: grid;
+		grid-template-columns: 1.15rem 1fr;
+		column-gap: 0.75rem;
+		align-items: center;
+		padding: 0.55rem 0.7rem;
+		text-decoration: none;
+		color: var(--text);
+		border-radius: 9px;
+		transition: background 0.15s;
+	}
+	.social-menu a:hover,
+	.social-menu a:focus-visible {
+		background: rgb(196 127 243 / 0.14);
+	}
+	.social-menu a :global(svg) {
+		grid-row: span 2;
+		color: var(--gold);
+	}
+	.social-label {
+		font-size: 0.9rem;
+		font-weight: 700;
+	}
+	.social-note {
+		font-size: 0.75rem;
+		color: var(--muted);
+	}
+</style>
