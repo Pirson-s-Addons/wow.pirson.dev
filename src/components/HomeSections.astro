@@ -231,10 +231,13 @@ const principles = [
 	</section>
 </div>
 
-<button type="button" class="sound" aria-pressed="false" data-sound hidden>
-	<span class="sound-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-	<span data-sound-label>{w('Sound of Azeroth', 'Sonido de Azeroth')}</span>
-</button>
+<div class="sound" data-sound-box hidden>
+	<button type="button" class="sound-btn" aria-pressed="false" data-sound>
+		<span class="sound-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+		<span>{w('Sound of Azeroth', 'Sonido de Azeroth')}</span>
+	</button>
+	<input type="range" class="sound-vol" min="0" max="100" value="12" aria-label={w('Music volume', 'Volumen de la música')} data-sound-vol />
+</div>
 
 <script>
 	// version tabs
@@ -277,7 +280,10 @@ const principles = [
 	const btn = document.querySelector<HTMLButtonElement>('[data-sound]')!;
 	const zones = [...document.querySelectorAll<HTMLElement>('[data-zone-src]')];
 	const players = [new Audio(), new Audio()];
-	const VOL = 0.45;
+	// background level: quiet by default (12%), the slider's value is remembered
+	const slider = document.querySelector<HTMLInputElement>('[data-sound-vol]')!;
+	let vol = Number(localStorage.getItem('pa-vol') ?? 12) / 100;
+	slider.value = String(Math.round(vol * 100));
 	let front = 0, track = '', enabled = localStorage.getItem('pa-sound') === '1';
 	for (const p of players) {
 		p.loop = true;
@@ -312,13 +318,18 @@ const principles = [
 		front = 1 - front;
 		const p = players[front];
 		p.src = `/media/music/${want}.m4a`;
-		p.play().then(() => fade(p, VOL)).catch(() => {});
+		p.play().then(() => fade(p, vol)).catch(() => {});
 	};
 	const show = () => {
 		btn.setAttribute('aria-pressed', String(enabled));
-		btn.classList.toggle('is-on', enabled);
+		btn.parentElement!.classList.toggle('is-on', enabled);
 	};
-	btn.hidden = false;
+	btn.parentElement!.hidden = false;
+	slider.addEventListener('input', () => {
+		vol = Number(slider.value) / 100;
+		localStorage.setItem('pa-vol', slider.value);
+		if (enabled) players[front].volume = vol;
+	});
 	show();
 	const silence = () => {
 		enabled = false;

@@ -355,32 +355,58 @@ h2,
 	filter: drop-shadow(0 4px 14px rgb(0 0 0 / 0.7));
 }
 
-/* floating sound switch */
+/* floating sound switch + volume */
 .sound {
 	position: fixed;
 	right: 1.2rem;
 	bottom: 1.2rem;
 	z-index: 30;
-	display: inline-flex;
+	display: flex;
 	align-items: center;
-	gap: 0.6rem;
-	padding: 0.65rem 1.1rem;
-	font: inherit;
-	font-size: 0.85rem;
-	font-weight: 700;
-	color: var(--text);
+	gap: 0.3rem;
+	padding: 0.3rem;
 	background: rgb(13 12 20 / 0.75);
 	border: 1px solid rgb(242 196 103 / 0.4);
 	border-radius: 999px;
 	backdrop-filter: blur(12px);
-	cursor: pointer;
 	box-shadow: 0 10px 30px rgb(0 0 0 / 0.5);
 	transition: border-color 0.2s, box-shadow 0.2s;
+}
+.sound[hidden] {
+	display: none;
 }
 .sound:hover,
 .sound.is-on {
 	border-color: var(--gold);
 	box-shadow: 0 10px 30px rgb(0 0 0 / 0.5), 0 0 22px rgb(242 196 103 / 0.3);
+}
+.sound-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.6rem;
+	padding: 0.35rem 0.8rem;
+	font: inherit;
+	font-size: 0.85rem;
+	font-weight: 700;
+	color: var(--text);
+	background: none;
+	border: 0;
+	border-radius: 999px;
+	cursor: pointer;
+}
+/* the slider shows while the sound is on */
+.sound-vol {
+	width: 0;
+	margin: 0;
+	opacity: 0;
+	accent-color: var(--gold);
+	cursor: pointer;
+	transition: width 0.3s, opacity 0.3s, margin 0.3s;
+}
+.sound.is-on .sound-vol {
+	width: 6rem;
+	margin-right: 0.7rem;
+	opacity: 1;
 }
 .sound-bars {
 	display: flex;
