@@ -1,0 +1,246 @@
+---
+// Home page body, in numbered chapters: the action bar of every addon, the lineup (each addon as a
+// WoW item tooltip, filtered by game version), videos and a screenshot marquee, principles, install
+// steps and a closing call to action. Without JavaScript the version tabs stay hidden.
+import { readdirSync } from 'node:fs';
+import addons from '../data/addons.json';
+import { covers } from '../lib/covers';
+import { t, href } from '../lib/i18n';
+
+interface Props {
+	lang: 'en' | 'es';
+}
+const { lang } = Astro.props;
+const es = lang === 'es';
+const l = es ? 1 : 0;
+const w = (en: string, sp: string) => (es ? sp : en);
+const total = addons.reduce((s, a) => s + a.downloads, 0);
+const versions = [...new Set(addons.flatMap((a) => a.clients.map((c) => c[l])))];
+const count = (v: string) => addons.filter((a) => a.clients.some((c) => c[l] === v)).length;
+const quality: Record<string, [string, string]> = {
+	'#ff8000': ['Legendary', 'Legendario'],
+	'#c77dff': ['Epic', 'Épico'],
+	'#4aa3ff': ['Rare', 'Raro'],
+	'#1eff00': ['Uncommon', 'Poco común'],
+};
+const keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '='];
+
+// Two screenshots of each addon for the marquee, read from public/ at build time.
+const dir = 'public/images/addons';
+const shots = readdirSync(dir).flatMap((d) =>
+	readdirSync(`${dir}/${d}`)
+		.filter((f) => !f.startsWith('maxresdefault'))
+		.slice(0, 2)
+		.map((f) => `/images/addons/${d}/${f}`),
+);
+const rows = [shots.filter((_, i) => i % 2 === 0), shots.filter((_, i) => i % 2 === 1)];
+
+const videos = [
+	['dungeon-quest-atlas', 'AYYhYFyfzfY'],
+	['wow-translator', 'DmyrbF9iDdQ'],
+	['cursor-glow-rgb', 'DhS620RpkQA'],
+].map(([slug, id]) => ({
+	a: addons.find((a) => a.slug === slug)!,
+	id,
+	thumb: `/images/addons/${slug}/${readdirSync(`${dir}/${slug}`).find((f) => f.startsWith('maxresdefault'))}`,
+}));
+
+const principles = [
+	[w('Free, for good', 'Gratis, para siempre'), w('No premium tiers, no ads, no account. Install it and play.', 'Sin versiones premium, sin anuncios, sin cuentas. Lo instalas y a jugar.')],
+	[w('Every client', 'Todos los clientes'), w('WoW Forever first, then MoP Classic, Classic Era, Retail and everything in between.', 'Primero WoW Forever, y también MoP Classic, Classic Era, Retail y todo lo que hay en medio.')],
+	[w('Speaks your language', 'Habla tu idioma'), w('Every addon ships in 20 languages, from English and Español to 한국어 and 中文.', 'Cada addon viene en 20 idiomas, del inglés y el español al 한국어 y el 中文.')],
+	[w('Looks like the game', 'Parece del juego'), w('Option panels built with the game’s own templates, so nothing feels bolted on.', 'Paneles de opciones hechos con las plantillas del propio juego: nada parece un pegote.')],
+	[w('Tested before release', 'Probado antes de publicar'), w('Automated tests run every addon against the real game API before it ships.', 'Tests automáticos prueban cada addon contra la API real del juego antes de publicarlo.')],
+	[w('Every command explained', 'Cada comando explicado'), w('A full guide per addon, in English and Spanish: what it does, how to set it up, every command.', 'Una guía completa por addon, en inglés y español: qué hace, cómo configurarlo y todos sus comandos.')],
+];
+---
+
+<div class="home not-content">
+	<!-- 01 · action bar -->
+	<section class="chapter" data-reveal>
+		<header class="sec-head">
+			<p class="eyebrow"><span>01</span> / {w('The armory', 'La armería')}</p>
+			<p class="mono">{addons.length} addons · {versions.length} {w('game versions', 'versiones del juego')} · {total.toLocaleString(lang)} {t(lang, 'downloads')}</p>
+			<h2>{w(`${addons.length} addons. One Azeroth.`, `${addons.length} addons. Un Azeroth.`)}</h2>
+			<p class="lead">
+				{w(
+					'Small tools that fix what the game leaves out: dungeon quests, maps, unit frames, PvP timers, chat and more. Pick one from the bar.',
+					'Pequeñas herramientas que arreglan lo que el juego se deja: misiones de mazmorra, mapas, marcos de unidad, PvP, chat y más. Elige uno de la barra.',
+				)}
+			</p>
+		</header>
+		<nav class="actionbar" aria-label="Addons">
+			{
+				addons.map((a, i) => (
+					<a class="ab-slot" href={href(lang, `addons/${a.slug}`)} style={`--q:${a.color}`} title={a.name}>
+						<img src={`/logos/${a.id}.webp`} alt={a.name} width="56" height="56" loading="lazy" />
+						{i < keys.length && <span class="ab-key">{keys[i]}</span>}
+					</a>
+				))
+			}
+		</nav>
+	</section>
+
+	<!-- 02 · lineup -->
+	<section class="chapter" id="the-library" data-catalog>
+		<header class="sec-head">
+			<p class="eyebrow"><span>02</span> / {w('The lineup', 'El catálogo')}</p>
+			<h2>{w('Pick your loot.', 'Elige tu botín.')}</h2>
+		</header>
+		<div class="tabs" role="group" aria-label={w('Filter by game version', 'Filtrar por versión del juego')} hidden data-filters>
+			<button type="button" aria-pressed="true" data-v="">
+				{w('All', 'Todas')} <span>{addons.length}</span>
+			</button>
+			{
+				versions.map((v) => (
+					<button type="button" aria-pressed="false" data-v={v}>
+						{v} <span>{count(v)}</span>
+					</button>
+				))
+			}
+		</div>
+		<ol class="lineup">
+			{
+				addons.map((a, i) => (
+					<li data-versions={a.clients.map((c) => c[l]).join('|')} data-reveal>
+						<a class="loot" href={href(lang, `addons/${a.slug}`)} style={`--q:${a.color}`} data-tilt>
+							<span class="loot-art">
+								{covers[a.slug] ? <img src={covers[a.slug]} alt="" loading="lazy" /> : <span class="slot-blank" />}
+								<span class="loot-num">{String(i + 1).padStart(2, '0')}</span>
+							</span>
+							<span class="loot-tip">
+								<img class="loot-logo" src={`/logos/${a.id}.webp`} alt="" width="52" height="52" loading="lazy" />
+								<span class="loot-name">{a.name}</span>
+								<span class="loot-q">{(quality[a.color] ?? quality['#1eff00'])[l]} · {a.cat[l]}</span>
+								<span class="loot-row">
+									<span>{w('Downloads', 'Descargas')}</span>
+									<span>{a.downloads.toLocaleString(lang)}</span>
+								</span>
+								<span class="loot-use">
+									{w('Use:', 'Uso:')} {a[lang]}
+								</span>
+								<span class="loot-req">
+									{w('Requires', 'Requiere')} {a.clients.length === 1 ? a.clients[0][l] : `${a.clients[0][l]} +${a.clients.length - 1}`}
+								</span>
+								<span class="loot-go">{w(`Explore ${a.name}`, `Ver ${a.name}`)} →</span>
+							</span>
+							<span class="tcg-glare" aria-hidden="true" />
+						</a>
+					</li>
+				))
+			}
+		</ol>
+	</section>
+
+	<!-- 03 · videos and screenshots -->
+	<section class="chapter" data-reveal>
+		<header class="sec-head">
+			<p class="eyebrow"><span>03</span> / {w('In action', 'En acción')}</p>
+			<h2>{w('See them in the game.', 'Míralos en el juego.')}</h2>
+		</header>
+		<div class="videos">
+			{
+				videos.map(({ a, id, thumb }) => (
+					<figure class="video" style={`--q:${a.color}`}>
+						<button type="button" class="video-play" data-yt={id} aria-label={`${w('Play', 'Reproducir')}: ${a.name}`}>
+							<img src={thumb} alt="" loading="lazy" />
+							<span class="video-icon" aria-hidden="true" />
+						</button>
+						<figcaption>
+							<img src={`/logos/${a.id}.webp`} alt="" width="28" height="28" loading="lazy" />
+							{a.name}
+						</figcaption>
+					</figure>
+				))
+			}
+		</div>
+	</section>
+	<div class="marquee" aria-hidden="true">
+		{
+			rows.map((row, r) => (
+				<div class:list={['marquee-row', r === 1 && 'is-rev']}>
+					{[...row, ...row].map((src) => (
+						<img src={src} alt="" loading="lazy" />
+					))}
+				</div>
+			))
+		}
+	</div>
+
+	<!-- 04 · principles -->
+	<section class="chapter" data-reveal>
+		<header class="sec-head">
+			<p class="eyebrow"><span>04</span> / {w('Principles', 'Principios')}</p>
+			<h2>{w('Forged the hard way.', 'Forjados a la antigua.')}</h2>
+		</header>
+		<ol class="principles">
+			{
+				principles.map(([h, p]) => (
+					<li>
+						<h3>{h}</h3>
+						<p>{p}</p>
+					</li>
+				))
+			}
+		</ol>
+	</section>
+
+	<!-- 05 · install -->
+	<section class="chapter" data-reveal>
+		<header class="sec-head">
+			<p class="eyebrow"><span>05</span> / {w('Install', 'Instalar')}</p>
+			<h2>{w('Ready in three steps.', 'Listo en tres pasos.')}</h2>
+		</header>
+		<ol class="steps">
+			<li>
+				<strong>{w('Get the CurseForge app', 'Instala la app de CurseForge')}</strong>{' '}
+				{w('and pick World of Warcraft and your game version.', 'y elige World of Warcraft y tu versión del juego.')}
+			</li>
+			<li>
+				<strong>{w('Search the addon', 'Busca el addon')}</strong> {w('by name and click Install.', 'por su nombre y pulsa Instalar.')}
+			</li>
+			<li>
+				<strong>{w('Log in to the game.', 'Entra al juego.')}</strong>{' '}
+				{w('The app keeps the addon updated from then on.', 'La app mantiene el addon actualizado a partir de ahí.')}
+			</li>
+		</ol>
+		<a class="btn btn-glass" href={href(lang, 'install')}>{w('Install by hand and fix common problems', 'Instalar a mano y resolver problemas')}</a>
+	</section>
+
+	<!-- closing band -->
+	<section class="cta-band" data-reveal>
+		<h2>{w('Join the raid.', 'Únete a la banda.')}</h2>
+		<p>{w('Report a bug, ask for a feature or just say hi.', 'Avisa de un fallo, pide una función o simplemente saluda.')}</p>
+		<div class="hx-actions">
+			<a class="btn btn-gold" href="https://www.curseforge.com/members/pirson/projects" rel="noopener">CurseForge</a>
+			<a class="btn btn-glass" href="https://github.com/Pirson-s-Addons" rel="noopener">GitHub</a>
+		</div>
+	</section>
+</div>
+
+<script>
+	// version tabs
+	for (const cat of document.querySelectorAll<HTMLElement>('[data-catalog]')) {
+		const bar = cat.querySelector<HTMLElement>('[data-filters]')!;
+		const buttons = [...bar.querySelectorAll<HTMLButtonElement>('button')];
+		const items = [...cat.querySelectorAll<HTMLElement>('[data-versions]')];
+		bar.hidden = false;
+		for (const b of buttons) {
+			b.addEventListener('click', () => {
+				for (const o of buttons) o.setAttribute('aria-pressed', String(o === b));
+				const v = b.dataset.v!;
+				for (const it of items) it.hidden = !!v && !it.dataset.versions!.split('|').includes(v);
+			});
+		}
+	}
+	// videos load only when played (no YouTube requests before that)
+	for (const b of document.querySelectorAll<HTMLButtonElement>('[data-yt]')) {
+		b.addEventListener('click', () => {
+			const f = document.createElement('iframe');
+			f.src = `https://www.youtube-nocookie.com/embed/${b.dataset.yt}?autoplay=1`;
+			f.title = b.getAttribute('aria-label')!;
+			f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+			b.replaceWith(f);
+		});
+	}
+</script>

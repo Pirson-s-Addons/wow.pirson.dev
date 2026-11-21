@@ -30,9 +30,9 @@ npm run build
 | Piece | File |
 | --- | --- |
 | Route tweaks: no Starlight sidebar anywhere; addon guides become full-width pages with a hero (kept out of frontmatter because Keystatic rewrites it) | `src/routeData.ts` |
-| Hero dispatcher: home deck, addon store-page header, or compact page header | `src/components/Hero.astro` |
-| Home: card deck + blurred art backdrop + numbers bar | `HomeDeck.astro` |
-| Home: WoW Forever bento, library with version tabs | `Featured.astro`, `AddonGrid.astro` |
+| Hero dispatcher: home loading-screen hero, addon store-page header, or compact page header | `src/components/Hero.astro` |
+| Home: loading-screen hero (cross-fading screenshots, embers, gilded title) + numbers bar | `HomeHero.astro` |
+| Home chapters: 01 action bar, 02 lineup as item tooltips with version tabs, 03 videos (load on click) + screenshot marquee, 04 principles, 05 install, closing band | `HomeSections.astro` |
 | Addon guide header, sticky section nav, screenshot galleries + viewer | `AddonHero.astro` |
 | Install page (method tabs, steps, folder finder, troubleshooting) | `InstallGuide.astro` |
 | Site navigation rail / drawer | `SideNav.astro` |

@@ -1,7 +1,7 @@
 ---
-// Pages with a hero: the home gets the card deck, addon guides the store-page header (their hero
+// Pages with a hero: the home gets the loading-screen hero, addon guides the store-page header (their hero
 // comes from src/routeData.ts), any other full-width page (install…) a compact header.
-import HomeDeck from './HomeDeck.astro';
+import HomeHero from './HomeHero.astro';
 import AddonHero from './AddonHero.astro';
 
 const PAGE_TITLE_ID = '_top'; // Starlight's page title id (not exported)
@@ -12,7 +12,7 @@ const { title = entry.data.title, tagline, actions = [] } = entry.data.hero || {
 
 {
 	home ? (
-		<HomeDeck />
+		<HomeHero />
 	) : entry.data.addon ? (
 		<AddonHero />
 	) : (
