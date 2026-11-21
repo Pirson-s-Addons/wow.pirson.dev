@@ -258,21 +258,13 @@ h2,
 	font-size: clamp(3rem, 8vw, 7rem);
 	line-height: 0.95;
 	letter-spacing: -0.01em;
-	color: #fff;
-	text-shadow: 0 4px 40px rgb(0 0 0 / 0.6);
 	text-wrap: balance;
 	animation: rise 1.4s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s both;
 }
 .hx-title em {
 	font-style: normal;
-	color: transparent;
-	background: linear-gradient(100deg, #fff6d8 0%, #f2c467 35%, #fff1c2 48%, #c98f2c 62%, #f2c467 80%, #fff6d8 100%);
-	background-size: 250% 100%;
-	-webkit-background-clip: text;
-	background-clip: text;
-	text-shadow: none;
-	filter: drop-shadow(0 0 24px rgb(242 196 103 / 0.35));
-	animation: shine 3s cubic-bezier(0.3, 0.7, 0.2, 1) 0.8s both;
+	--bevel: linear-gradient(180deg, #fff7d6 0%, #ffd77a 47%, #a8741f 50%, #e2a947 100%);
+	--bevel-edge: #4a2c08;
 }
 @keyframes rise {
 	from {
@@ -445,8 +437,27 @@ h2,
 	margin: 0;
 	font-size: clamp(2.2rem, 5vw, 3.8rem);
 	line-height: 1.02;
-	color: #f7f1e3;
 	text-wrap: balance;
+}
+/* Chiselled lettering, like the Goodmountain specimen: lit upper half, shaded lower half split in
+   the middle of every line (the gradient tiles once per line height), a thin dark edge and a short
+   extrusion below. --bevel / --bevel-edge recolour it (gold on the hero's <em>). */
+.hx-title,
+.hx-title em,
+.home h2,
+.ah h1 {
+	color: transparent;
+	background: var(--bevel, linear-gradient(180deg, #ffffff 0%, #efe6ff 47%, #9f88bd 50%, #d3c3e8 100%));
+	background-size: 100% 1lh;
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-stroke: 0.018em var(--bevel-edge, #2a1838);
+	text-shadow: none;
+	filter: drop-shadow(0 0.035em 0 var(--bevel-edge, #2a1838)) drop-shadow(0 0.07em 0 rgb(0 0 0 / 0.55))
+		drop-shadow(0 6px 24px rgb(0 0 0 / 0.5));
+}
+.hx-title em {
+	filter: drop-shadow(0 0 22px rgb(242 196 103 / 0.3));
 }
 .sec-head {
 	display: flex;
@@ -1410,8 +1421,6 @@ h2,
 	margin: 0;
 	font-size: clamp(2.4rem, 6vw, 4.6rem);
 	line-height: 0.98;
-	color: #fff;
-	text-shadow: 0 4px 30px rgb(0 0 0 / 0.6);
 	text-wrap: balance;
 }
 .ah-one {
