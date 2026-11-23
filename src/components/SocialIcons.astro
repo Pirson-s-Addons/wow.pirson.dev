@@ -1,5 +1,5 @@
 ---
-// Header "Social" dropdown in place of Starlight's row of icons: Pirson's channels first, then the
+// Header "Social" dropdown in place of Starlight's row of icons: the Discord community and Pirson's channels first, then the
 // links from the Starlight config (the org's GitHub and the blog's RSS, added by starlight-blog).
 // A native <details>, so it works without JavaScript; the script only closes it from outside.
 import config from 'virtual:starlight/user-config';
@@ -8,6 +8,7 @@ import type { StarlightIcon } from '@astrojs/starlight/types';
 
 const es = Astro.locals.starlightRoute.lang === 'es';
 const links: { label: string; href: string; icon: StarlightIcon; note?: string }[] = [
+	{ label: 'Discord', href: 'https://discord.gg/BM3hXNZXTh', icon: 'discord', note: es ? 'Comunidad, bugs e ideas' : 'Community, bugs and ideas' },
 	{ label: 'YouTube', href: 'https://www.youtube.com/@SrPirson-Dev', icon: 'youtube', note: '@SrPirson-Dev' },
 	{ label: 'Instagram', href: 'https://www.instagram.com/srpirson.wow/', icon: 'instagram', note: '@srpirson.wow' },
 	{ label: 'Reddit', href: 'https://www.reddit.com/user/SrPirson/', icon: 'reddit', note: 'u/SrPirson' },
