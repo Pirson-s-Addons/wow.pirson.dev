@@ -1,6 +1,6 @@
-// Refreshes src/data/addons.json from the org profile (Pirson-s-Addons/.github), which already
-// keeps the addon catalog (texts in EN/ES) and the CurseForge numbers up to date every week.
-// Usage: npm run sync
+// Refreshes src/data/addons.json from the org profile (Pirson-s-Addons/.github), which keeps the addon
+// catalog (texts in EN/ES) and the weekly CurseForge numbers, then today's downloads from cfwidget.
+// Usage: npm run sync (also daily from .github/workflows/sync.yml)
 import { writeFileSync } from 'node:fs';
 import assert from 'node:assert/strict';
 
@@ -35,6 +35,18 @@ const addons = catalog.map((a) => {
 		version: live.version ?? null,
 	};
 });
+
+// today's downloads; cfwidget may answer "in queue" for a project it has not cached yet, so retry, and keep
+// the weekly figure if it still has none
+const live = async (id) => {
+	for (let i = 0; i < 3; i++) {
+		const res = await fetch(`https://api.cfwidget.com/${id}`).catch(() => null);
+		const total = res?.ok ? (await res.json())?.downloads?.total : undefined;
+		if (typeof total === 'number') return total;
+		await new Promise((r) => setTimeout(r, 5000));
+	}
+};
+await Promise.all(addons.map(async (a) => a.cf && (a.downloads = (await live(a.cf)) ?? a.downloads)));
 
 assert.equal(new Set(addons.map((a) => a.slug)).size, addons.length, 'duplicate slugs');
 addons.sort((a, b) => b.downloads - a.downloads);

@@ -19,6 +19,8 @@ export default defineConfig({
 			head: [
 				{ tag: 'meta', attrs: { property: 'og:image', content: 'https://wow.pirson.dev/og.png' } },
 				{ tag: 'meta', attrs: { name: 'twitter:card', content: 'summary_large_image' } },
+				// Vercel Web Analytics: cookieless page views, served by Vercel once enabled in the project's Analytics tab
+				{ tag: 'script', attrs: { defer: true, src: '/_vercel/insights/script.js' } },
 			],
 			defaultLocale: 'root',
 			locales: {

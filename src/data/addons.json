@@ -51,7 +51,7 @@
 				"Legado (WoD a Shadowlands)"
 			]
 		],
-		"downloads": 72069,
+		"downloads": 77796,
 		"version": "2.15"
 	},
 	{
@@ -78,7 +78,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 40946,
+		"downloads": 61267,
 		"version": "3.06"
 	},
 	{
@@ -105,7 +105,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 26355,
+		"downloads": 44564,
 		"version": "1.03"
 	},
 	{
@@ -132,7 +132,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 18924,
+		"downloads": 29073,
 		"version": "1.08"
 	},
 	{
@@ -159,8 +159,35 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 12175,
+		"downloads": 14753,
 		"version": "1.11"
+	},
+	{
+		"id": "gr",
+		"slug": "gather-radar",
+		"name": "Gather Radar",
+		"repo": "GatherRadar",
+		"url": "https://www.curseforge.com/wow/addons/gather-radar",
+		"cf": 1757790,
+		"color": "#c77dff",
+		"cat": [
+			"Professions",
+			"Profesiones"
+		],
+		"one": [
+			"Herbs, ore and treasure on your maps",
+			"Hierbas, minerales y tesoros en tus mapas"
+		],
+		"en": "Herbs, ore, treasure and fishing pools on the minimap and world map, with icons.",
+		"es": "Hierbas, minerales, tesoros y bancos de peces en el minimapa y el mapa del mundo.",
+		"clients": [
+			[
+				"WoW Forever",
+				"WoW Forever"
+			]
+		],
+		"downloads": 9384,
+		"version": "1.04"
 	},
 	{
 		"id": "rq",
@@ -194,35 +221,8 @@
 				"TBC Classic"
 			]
 		],
-		"downloads": 7822,
+		"downloads": 8555,
 		"version": "1.13"
-	},
-	{
-		"id": "gr",
-		"slug": "gather-radar",
-		"name": "Gather Radar",
-		"repo": "GatherRadar",
-		"url": "https://www.curseforge.com/wow/addons/gather-radar",
-		"cf": 1757790,
-		"color": "#c77dff",
-		"cat": [
-			"Professions",
-			"Profesiones"
-		],
-		"one": [
-			"Herbs, ore and treasure on your maps",
-			"Hierbas, minerales y tesoros en tus mapas"
-		],
-		"en": "Herbs, ore, treasure and fishing pools on the minimap and world map, with icons.",
-		"es": "Hierbas, minerales, tesoros y bancos de peces en el minimapa y el mapa del mundo.",
-		"clients": [
-			[
-				"WoW Forever",
-				"WoW Forever"
-			]
-		],
-		"downloads": 6466,
-		"version": "1.04"
 	},
 	{
 		"id": "tk",
@@ -248,35 +248,8 @@
 				"MoP Classic"
 			]
 		],
-		"downloads": 5945,
+		"downloads": 6583,
 		"version": "1.05"
-	},
-	{
-		"id": "mf",
-		"slug": "map-fix-forever",
-		"name": "Map Fix Forever",
-		"repo": "MapFixForever",
-		"url": "https://www.curseforge.com/wow/addons/map-fix-forever",
-		"cf": 1701856,
-		"color": "#4aa3ff",
-		"cat": [
-			"Map",
-			"Mapa"
-		],
-		"one": [
-			"Fixes the green world map",
-			"Arregla el mapa del mundo verde"
-		],
-		"en": "Fixes the green world map in non-English clients with the original map art.",
-		"es": "Arregla el mapa del mundo verde en clientes no ingleses con el arte original.",
-		"clients": [
-			[
-				"WoW Forever",
-				"WoW Forever"
-			]
-		],
-		"downloads": 2364,
-		"version": "1.02"
 	},
 	{
 		"id": "dr",
@@ -302,7 +275,34 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 1830,
+		"downloads": 3208,
+		"version": "1.02"
+	},
+	{
+		"id": "mf",
+		"slug": "map-fix-forever",
+		"name": "Map Fix Forever",
+		"repo": "MapFixForever",
+		"url": "https://www.curseforge.com/wow/addons/map-fix-forever",
+		"cf": 1701856,
+		"color": "#4aa3ff",
+		"cat": [
+			"Map",
+			"Mapa"
+		],
+		"one": [
+			"Fixes the green world map",
+			"Arregla el mapa del mundo verde"
+		],
+		"en": "Fixes the green world map in non-English clients with the original map art.",
+		"es": "Arregla el mapa del mundo verde en clientes no ingleses con el arte original.",
+		"clients": [
+			[
+				"WoW Forever",
+				"WoW Forever"
+			]
+		],
+		"downloads": 2792,
 		"version": "1.02"
 	},
 	{
@@ -357,7 +357,7 @@
 				"Legado (WoD a Shadowlands)"
 			]
 		],
-		"downloads": 1173,
+		"downloads": 1314,
 		"version": "1.06"
 	},
 	{
@@ -396,7 +396,7 @@
 				"TBC Classic"
 			]
 		],
-		"downloads": 1039,
+		"downloads": 1095,
 		"version": "1.08"
 	},
 	{
@@ -431,39 +431,8 @@
 				"Wrath Classic"
 			]
 		],
-		"downloads": 723,
+		"downloads": 776,
 		"version": "1.08"
-	},
-	{
-		"id": "ea",
-		"slug": "move-extra-action-button",
-		"name": "Move Extra Action Button",
-		"repo": "MoveExtraActionButton",
-		"url": "https://www.curseforge.com/wow/addons/move-extra-action-button",
-		"cf": 1439079,
-		"color": "#1eff00",
-		"cat": [
-			"Interface",
-			"Interfaz"
-		],
-		"one": [
-			"Move the Extra Action Button anywhere",
-			"Mueve el botón de acción extra"
-		],
-		"en": "Move the Extra Action Button and the alternate power bar anywhere on screen.",
-		"es": "Mueve el botón de acción extra y la barra de poder alternativo donde quieras.",
-		"clients": [
-			[
-				"MoP Classic",
-				"MoP Classic"
-			],
-			[
-				"TBC Classic",
-				"TBC Classic"
-			]
-		],
-		"downloads": 666,
-		"version": "1.03"
 	},
 	{
 		"id": "vf",
@@ -493,35 +462,39 @@
 				"MoP Classic"
 			]
 		],
-		"downloads": 663,
+		"downloads": 716,
 		"version": "1.07"
 	},
 	{
-		"id": "lg",
-		"slug": "leave-instance-group",
-		"name": "Leave Instance Group",
-		"repo": "LeaveInstanceGroup",
-		"url": "https://www.curseforge.com/wow/addons/leave-instance-group",
-		"cf": 1349365,
+		"id": "ea",
+		"slug": "move-extra-action-button",
+		"name": "Move Extra Action Button",
+		"repo": "MoveExtraActionButton",
+		"url": "https://www.curseforge.com/wow/addons/move-extra-action-button",
+		"cf": 1439079,
 		"color": "#1eff00",
 		"cat": [
-			"Utility",
-			"Utilidad"
+			"Interface",
+			"Interfaz"
 		],
 		"one": [
-			"Leave instance groups from your portrait",
-			"Sal del grupo de instancia desde el retrato"
+			"Move the Extra Action Button anywhere",
+			"Mueve el botón de acción extra"
 		],
-		"en": "Adds the missing Leave Instance Group option to your portrait menu.",
-		"es": "Añade la opción que falta para salir del grupo de instancia en tu retrato.",
+		"en": "Move the Extra Action Button and the alternate power bar anywhere on screen.",
+		"es": "Mueve el botón de acción extra y la barra de poder alternativo donde quieras.",
 		"clients": [
 			[
 				"MoP Classic",
 				"MoP Classic"
+			],
+			[
+				"TBC Classic",
+				"TBC Classic"
 			]
 		],
-		"downloads": 277,
-		"version": "1.05"
+		"downloads": 693,
+		"version": "1.03"
 	},
 	{
 		"id": "er",
@@ -547,8 +520,62 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 187,
+		"downloads": 379,
 		"version": "1.04"
+	},
+	{
+		"id": "lg",
+		"slug": "leave-instance-group",
+		"name": "Leave Instance Group",
+		"repo": "LeaveInstanceGroup",
+		"url": "https://www.curseforge.com/wow/addons/leave-instance-group",
+		"cf": 1349365,
+		"color": "#1eff00",
+		"cat": [
+			"Utility",
+			"Utilidad"
+		],
+		"one": [
+			"Leave instance groups from your portrait",
+			"Sal del grupo de instancia desde el retrato"
+		],
+		"en": "Adds the missing Leave Instance Group option to your portrait menu.",
+		"es": "Añade la opción que falta para salir del grupo de instancia en tu retrato.",
+		"clients": [
+			[
+				"MoP Classic",
+				"MoP Classic"
+			]
+		],
+		"downloads": 295,
+		"version": "1.05"
+	},
+	{
+		"id": "rg",
+		"slug": "rotation-guide",
+		"name": "Rotation Guide",
+		"repo": "RotationGuide",
+		"url": "https://www.curseforge.com/wow/addons/rotation-guide",
+		"cf": 1806190,
+		"color": "#1eff00",
+		"cat": [
+			"Combat",
+			"Combate"
+		],
+		"one": [
+			"Your class rotation, all 27 specs",
+			"La rotación de tu clase, 27 especializaciones"
+		],
+		"en": "Your class rotation on WoW Forever, for all 27 specs.",
+		"es": "La rotación de tu clase en WoW Forever, para las 27 especializaciones.",
+		"clients": [
+			[
+				"WoW Forever",
+				"WoW Forever"
+			]
+		],
+		"downloads": 226,
+		"version": "1.01"
 	},
 	{
 		"id": "lr",
@@ -574,7 +601,7 @@
 				"MoP Classic"
 			]
 		],
-		"downloads": 182,
+		"downloads": 188,
 		"version": "1.06"
 	},
 	{
@@ -601,7 +628,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 137,
+		"downloads": 179,
 		"version": "1.04"
 	},
 	{
@@ -628,7 +655,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 71,
+		"downloads": 155,
 		"version": "1.02"
 	},
 	{
@@ -683,34 +710,7 @@
 				"Legado (WoD a Shadowlands)"
 			]
 		],
-		"downloads": 49,
+		"downloads": 76,
 		"version": "1.00"
-	},
-	{
-		"id": "rg",
-		"slug": "rotation-guide",
-		"name": "Rotation Guide",
-		"repo": "RotationGuide",
-		"url": "https://www.curseforge.com/wow/addons/rotation-guide",
-		"cf": 1806190,
-		"color": "#1eff00",
-		"cat": [
-			"Combat",
-			"Combate"
-		],
-		"one": [
-			"Your class rotation, all 27 specs",
-			"La rotación de tu clase, 27 especializaciones"
-		],
-		"en": "Your class rotation on WoW Forever, for all 27 specs.",
-		"es": "La rotación de tu clase en WoW Forever, para las 27 especializaciones.",
-		"clients": [
-			[
-				"WoW Forever",
-				"WoW Forever"
-			]
-		],
-		"downloads": 24,
-		"version": "1.01"
 	}
 ]
