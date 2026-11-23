@@ -5,6 +5,7 @@
 		"name": "WoW Translator",
 		"repo": "WoW-Translator",
 		"url": "https://www.curseforge.com/wow/addons/wow-translator",
+		"cf": 1431567,
 		"color": "#ff8000",
 		"cat": [
 			"Chat & Communication",
@@ -59,6 +60,7 @@
 		"name": "Dungeon Quest Atlas",
 		"repo": "DungeonQuestAtlas",
 		"url": "https://www.curseforge.com/wow/addons/dungeon-quest-atlas",
+		"cf": 1713716,
 		"color": "#ff8000",
 		"cat": [
 			"Quests",
@@ -85,6 +87,7 @@
 		"name": "HandyNotes: Dungeon & Raid Locations",
 		"repo": "HandyNotes_DungeonRaidLocations-Forever",
 		"url": "https://www.curseforge.com/wow/addons/handynotes-dungeon-raid-locations-forever",
+		"cf": 1743547,
 		"color": "#ff8000",
 		"cat": [
 			"Map",
@@ -111,6 +114,7 @@
 		"name": "Health Bar Text Forever",
 		"repo": "HealthBarTextForever",
 		"url": "https://www.curseforge.com/wow/addons/health-bar-text-forever",
+		"cf": 1700978,
 		"color": "#c77dff",
 		"cat": [
 			"Interface",
@@ -137,6 +141,7 @@
 		"name": "Seal Timers Forever",
 		"repo": "SealTimersForever",
 		"url": "https://www.curseforge.com/wow/addons/seal-timers-forever",
+		"cf": 1701053,
 		"color": "#c77dff",
 		"cat": [
 			"Interface",
@@ -163,6 +168,7 @@
 		"name": "Remove Questie",
 		"repo": "RemoveQuestie",
 		"url": "https://www.curseforge.com/wow/addons/remove-questie",
+		"cf": 1308020,
 		"color": "#c77dff",
 		"cat": [
 			"Gameplay",
@@ -197,6 +203,7 @@
 		"name": "Gather Radar",
 		"repo": "GatherRadar",
 		"url": "https://www.curseforge.com/wow/addons/gather-radar",
+		"cf": 1757790,
 		"color": "#c77dff",
 		"cat": [
 			"Professions",
@@ -223,6 +230,7 @@
 		"name": "HandyNotes: Trove of the Thunder King",
 		"repo": "HandyNotes_Trove-Thunder-King",
 		"url": "https://www.curseforge.com/wow/addons/handynotes-trove-of-the-thunder-king",
+		"cf": 1403777,
 		"color": "#c77dff",
 		"cat": [
 			"Map",
@@ -249,6 +257,7 @@
 		"name": "Map Fix Forever",
 		"repo": "MapFixForever",
 		"url": "https://www.curseforge.com/wow/addons/map-fix-forever",
+		"cf": 1701856,
 		"color": "#4aa3ff",
 		"cat": [
 			"Map",
@@ -275,6 +284,7 @@
 		"name": "DR Tracker Forever",
 		"repo": "DRTrackerForever",
 		"url": "https://www.curseforge.com/wow/addons/dr-tracker-forever",
+		"cf": 1744981,
 		"color": "#4aa3ff",
 		"cat": [
 			"PvP",
@@ -301,6 +311,7 @@
 		"name": "Cursor Glow RGB",
 		"repo": "Cursor-Glow-RGB",
 		"url": "https://www.curseforge.com/wow/addons/cursor-glow-rgb",
+		"cf": 1549539,
 		"color": "#4aa3ff",
 		"cat": [
 			"Interface",
@@ -355,6 +366,7 @@
 		"name": "Prospect Helper",
 		"repo": "ProspectHelper",
 		"url": "https://www.curseforge.com/wow/addons/prospect-helper",
+		"cf": 1335779,
 		"color": "#4aa3ff",
 		"cat": [
 			"Professions",
@@ -393,6 +405,7 @@
 		"name": "Mill Helper",
 		"repo": "MillHelper",
 		"url": "https://www.curseforge.com/wow/addons/mill-helper",
+		"cf": 1339466,
 		"color": "#1eff00",
 		"cat": [
 			"Professions",
@@ -427,6 +440,7 @@
 		"name": "Move Extra Action Button",
 		"repo": "MoveExtraActionButton",
 		"url": "https://www.curseforge.com/wow/addons/move-extra-action-button",
+		"cf": 1439079,
 		"color": "#1eff00",
 		"cat": [
 			"Interface",
@@ -457,6 +471,7 @@
 		"name": "Vendor Item Filter",
 		"repo": "VendorItemFilter",
 		"url": "https://www.curseforge.com/wow/addons/vendor-item-filter",
+		"cf": 1343504,
 		"color": "#1eff00",
 		"cat": [
 			"Utility",
@@ -487,6 +502,7 @@
 		"name": "Leave Instance Group",
 		"repo": "LeaveInstanceGroup",
 		"url": "https://www.curseforge.com/wow/addons/leave-instance-group",
+		"cf": 1349365,
 		"color": "#1eff00",
 		"cat": [
 			"Utility",
@@ -513,6 +529,7 @@
 		"name": "Emoji & React",
 		"repo": "EmojiReact",
 		"url": "https://www.curseforge.com/wow/addons/emoji-react",
+		"cf": 1729936,
 		"color": "#1eff00",
 		"cat": [
 			"Chat & Communication",
@@ -539,6 +556,7 @@
 		"name": "Loot-A-Rang Classic",
 		"repo": "Loot-A-Rang-Classic",
 		"url": "https://www.curseforge.com/wow/addons/loot-a-rang-classic",
+		"cf": 1331866,
 		"color": "#1eff00",
 		"cat": [
 			"Quality of Life",
@@ -565,6 +583,7 @@
 		"name": "Azeroth Tic-Tac-Toe",
 		"repo": "AzerothTicTacToe",
 		"url": "https://www.curseforge.com/wow/addons/azeroth-tic-tac-toe",
+		"cf": 1476012,
 		"color": "#1eff00",
 		"cat": [
 			"Games",
@@ -591,6 +610,7 @@
 		"name": "Azeroth AI",
 		"repo": null,
 		"url": "https://www.curseforge.com/wow/addons/azeroth-ai",
+		"cf": 1796245,
 		"color": "#1eff00",
 		"cat": [
 			"Assistant",
@@ -617,6 +637,7 @@
 		"name": "Chocolate XP Bar",
 		"repo": "ChocolateXPBar",
 		"url": "https://www.curseforge.com/wow/addons/chocolate-xp-bar",
+		"cf": 1788942,
 		"color": "#1eff00",
 		"cat": [
 			"Interface",
@@ -671,6 +692,7 @@
 		"name": "Rotation Guide",
 		"repo": "RotationGuide",
 		"url": "https://www.curseforge.com/wow/addons/rotation-guide",
+		"cf": 1806190,
 		"color": "#1eff00",
 		"cat": [
 			"Combat",

@@ -13,7 +13,5 @@ export const t = (lang: string | undefined, key: keyof typeof words) => words[ke
 // Link to a page in the reader's language: English lives at the root, Spanish under /es/.
 export const href = (lang: string | undefined, path: string) => (lang === 'es' ? `/es/${path}/` : `/${path}/`);
 
-// Total downloads as a round figure that only moves every 100K ("+200K"), so the copy does not age.
-const sum = addons.reduce((s, a) => s + a.downloads, 0);
-export const downloadsK = sum >= 1e5 ? Math.floor(sum / 1e5) * 100 : Math.floor(sum / 1e3);
-export const totalDownloads = `+${downloadsK}K`;
+// Total downloads at build time; pages mark it data-dl="total" and the live figure replaces it.
+export const totalDownloads = addons.reduce((s, a) => s + a.downloads, 0);

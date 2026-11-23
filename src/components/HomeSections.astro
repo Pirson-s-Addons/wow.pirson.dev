@@ -89,7 +89,7 @@ const principles = [
 	<section class="chapter" data-reveal>
 		<header class="sec-head">
 			<p class="eyebrow"><i class="glyph" aria-hidden="true">&#x2694;</i><span>01</span> / {w('The armory', 'La armería')}</p>
-			<p class="mono">{addons.length} addons · {versions.length} {w('game versions', 'versiones del juego')} · {totalDownloads} {t(lang, 'downloads')}</p>
+			<p class="mono">{addons.length} addons · {versions.length} {w('game versions', 'versiones del juego')} · <span data-dl="total">{totalDownloads.toLocaleString(lang)}</span> {t(lang, 'downloads')}</p>
 			<h2>{w(`${addons.length} addons. One Azeroth.`, `${addons.length} addons. Un Azeroth.`)}</h2>
 			<p class="lead">
 				{w(
@@ -160,7 +160,7 @@ const principles = [
 								<span class="loot-q">{(quality[a.color] ?? quality['#1eff00'])[l]} · {a.cat[l]}</span>
 								<span class="loot-row">
 									<span>{w('Downloads', 'Descargas')}</span>
-									<span>{a.downloads.toLocaleString(lang)}</span>
+									<span data-dl={a.cf}>{a.downloads.toLocaleString(lang)}</span>
 								</span>
 								<span class="loot-use">
 									{w('Use:', 'Uso:')} {a[lang]}

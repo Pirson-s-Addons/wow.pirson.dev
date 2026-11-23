@@ -39,7 +39,7 @@ const more = current
 								<span class="slot-one">{a.one[l]}</span>
 								<span class="slot-meta">
 									<span>{a.cat[l]}</span>
-									<span>{a.downloads.toLocaleString(lang)} {t(lang, 'downloads')}</span>
+									<span><span data-dl={a.cf}>{a.downloads.toLocaleString(lang)}</span> {t(lang, 'downloads')}</span>
 								</span>
 							</span>
 							<span class="tcg-glare" aria-hidden="true" />
@@ -83,6 +83,22 @@ const more = current
 <div class="xp-bar" aria-hidden="true"><span data-xp></span></div>
 
 <script>
+	// Download counts: the build's figure first, then the live one from /api/downloads (CurseForge, cached 1 h).
+	const dl = document.querySelectorAll<HTMLElement>('[data-dl]');
+	if (dl.length)
+		fetch('/api/downloads')
+			.then((r) => (r.ok ? r.json() : {}))
+			.then((live: Record<string, number>) => {
+				const fmt = new Intl.NumberFormat(document.documentElement.lang);
+				for (const el of dl) {
+					const n = live[el.dataset.dl!];
+					if (!n) continue;
+					if (el.dataset.count) el.dataset.count = String(n); // a running count-up ends on the live figure
+					el.textContent = fmt.format(n);
+				}
+			})
+			.catch(() => {});
+
 	const fill = document.querySelector<HTMLElement>('[data-xp]');
 	if (fill) {
 		const update = () => {
@@ -116,10 +132,10 @@ const more = current
 			for (const e of entries) {
 				if (!e.isIntersecting) continue;
 				count.unobserve(e.target);
-				const el = e.target as HTMLElement, end = Number(el.dataset.count), t0 = performance.now();
+				const el = e.target as HTMLElement, t0 = performance.now();
 				const step = (now: number) => {
 					const p = Math.min(1, (now - t0) / 1400);
-					el.textContent = (el.dataset.prefix ?? '') + fmt.format(Math.round(end * (1 - Math.pow(1 - p, 3)))) + (el.dataset.suffix ?? '');
+					el.textContent = (el.dataset.prefix ?? '') + fmt.format(Math.round(Number(el.dataset.count) * (1 - Math.pow(1 - p, 3)))) + (el.dataset.suffix ?? '');
 					if (p < 1) requestAnimationFrame(step);
 				};
 				requestAnimationFrame(step);

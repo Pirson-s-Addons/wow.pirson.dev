@@ -24,6 +24,7 @@ const addons = catalog.map((a) => {
 		name: a.name,
 		repo: a.repo,
 		url: a.url,
+		cf: live.cf ?? null, // CurseForge project id, for the live counts in /api/downloads
 		color: a.color,
 		cat: a.cat,
 		one: a.one,

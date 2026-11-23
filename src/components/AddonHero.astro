@@ -35,7 +35,7 @@ const sections = headings.filter((h) => h.depth === 2);
 		</div>
 	</div>
 	<dl class="ah-stats glass">
-		<div><dd>{a.downloads.toLocaleString(lang)}</dd><dt>{t(lang, 'downloads')}</dt></div>
+		<div><dd data-dl={a.cf}>{a.downloads.toLocaleString(lang)}</dd><dt>{t(lang, 'downloads')}</dt></div>
 		{a.version && <div><dd>v{a.version}</dd><dt>{es ? 'versión' : 'version'}</dt></div>}
 		<div><dd>{a.clients.length}</dd><dt>{a.clients.length === 1 ? (es ? 'versión del juego' : 'game version') : (es ? 'versiones del juego' : 'game versions')}</dt></div>
 		<div><dd>{es ? 'EN · ES' : 'EN · ES'}</dd><dt>{es ? 'guía' : 'guide'}</dt></div>
