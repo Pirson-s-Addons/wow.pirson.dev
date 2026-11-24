@@ -1,0 +1,114 @@
+---
+// A dungeon, as foreverjournal.pro lays it out: name and levels, an intro from the data, and tabs for
+// Quests (the list and the first quest's sheet), Bosses (each Journal boss button with its loot), Loot
+// (the whole dungeon) and Map (every floor with the bosses pinned). Tabs are a tablist over panels
+// hidden with hidden="until-found", so their text stays in the page for search engines.
+import { T, wow, type Lang } from '../../lib/atlas/i18n';
+import { addon, isBoss, dungeonName, name, href, questName, itemName, L, lootId, lootChance, type Boss } from '../../lib/atlas/data';
+import { intro, portrait, quality, art } from '../../lib/atlas/view';
+import CopyMenu from './CopyMenu.astro';
+import BossTabs from './BossTabs.astro';
+import LootRow from './LootRow.astro';
+import QuestRow from './QuestRow.astro';
+import QuestSheet from './QuestSheet.astro';
+
+interface Props {
+	lang: Lang;
+	d: (typeof addon.Dungeons)[number];
+}
+const { lang, d } = Astro.props;
+const bosses = (addon.Bosses[d.key] ?? []) as (Boss & { display?: number })[];
+const floors = addon.Maps[d.key] ?? [];
+const quests = [...d.quests].filter((id) => addon.Quests[id]).sort((a, b) => (addon.Quests[a].level ?? 0) - (addon.Quests[b].level ?? 0));
+const bossName = (b: Boss) => (b.kind === 'trash' ? L(lang, 'TRASH') : b.kind === 'recipes' ? L(lang, 'RECIPES') : b.npcID ? name(lang, `npc:${b.npcID}`, b.name) : b.name);
+const loot = bosses
+	.flatMap((b, i) => (b.loot ?? []).map((e) => ({ id: lootId(e), chance: lootChance(e), boss: i + 1, from: bossName(b) })))
+	.sort((a, b) => quality(lang, b.id) - quality(lang, a.id));
+const title = dungeonName(lang, d);
+const text = intro(lang, d);
+const byLevel = [...addon.Dungeons].sort((a, b) => a.minLevel - b.minLevel || a.maxLevel - b.maxLevel);
+const next = byLevel[byLevel.indexOf(d) + 1];
+const tabs = [
+	{ key: 'quests', label: L(lang, 'TAB_QUESTS') },
+	{ key: 'bosses', label: L(lang, 'TAB_BOSSES') },
+	{ key: 'loot', label: L(lang, 'LOOT') },
+	...(floors.length ? [{ key: 'map', label: L(lang, 'MAP') }] : []),
+];
+---
+
+<header class="page-head">
+	<h1>{title}</h1>
+	<span class="lv"><b>{wow(L(lang, 'LEVEL'))}</b>{d.minLevel}-{d.maxLevel}</span>
+	{d.faction !== 'Both' && <span class:list={['fac', d.faction.toLowerCase()]} title={L(lang, `FACTION_${d.faction.toUpperCase()}`)} />}
+	{d.entrance && <CopyMenu lang={lang} id={`way-entrance-${d.key}`} point={{ label: title, ...d.entrance }} button={L(lang, 'MAP_ENTRANCE')} icon="https://wow.zamimg.com/images/wow/icons/small/spell_arcane_teleportironforge.jpg" />}
+</header>
+<p class="intro">
+	{text.lead}
+	{
+		text.best && (
+			<>
+				{text.bestText.split(/(%1|%2)/).map((part) =>
+					part === '%1' ? <a href={href(lang, { kind: 'item', id: text.best!.item })}>{itemName(lang, text.best!.item)}</a> : part === '%2' ? <a href={href(lang, { kind: 'quest', id: text.best!.quest })}>{questName(lang, text.best!.quest)}</a> : part,
+				)}{' '}
+			</>
+		)
+	}
+	{text.chains}
+</p>
+
+<div class="tabs" data-tabs="dungeon" focusgroup="tablist nomemory" aria-label={title}>
+	{tabs.map((t, i) => <button type="button" class="redbtn" id={`tab-${t.key}`} data-tab={t.key} aria-selected={i === 0 ? 'true' : 'false'} focusgroupstart={i === 0 ? '' : undefined}>{t.label}</button>)}
+</div>
+
+<section class="tab-panel" data-tab-of="dungeon" data-tab="quests" role="tabpanel" aria-labelledby="tab-quests">
+	<div class="split">
+		<div class="panel-box list-col">
+			<h2 class="panel-title">{L(lang, 'TAB_QUESTS')}</h2>
+			<div class="panel-pad">
+				<ul class="quest-list">
+					{quests.map((id, i) => <QuestRow lang={lang} id={id} current={i === 0} />)}
+				</ul>
+			</div>
+		</div>
+		<div class="parchment">{quests[0] && <QuestSheet lang={lang} id={quests[0]} />}</div>
+	</div>
+</section>
+
+<section class="tab-panel" data-tab-of="dungeon" data-tab="bosses" role="tabpanel" aria-labelledby="tab-bosses" hidden="until-found">
+	<div class="panel-box panel-pad">
+		<BossTabs lang={lang} bosses={bosses} label={L(lang, 'TAB_BOSSES')} bg={art(d.key, 'lore')} pages={bosses.map((b) => (isBoss(b) ? href(lang, { kind: 'boss', d, b }) : undefined))} />
+	</div>
+</section>
+
+<section class="tab-panel" data-tab-of="dungeon" data-tab="loot" role="tabpanel" aria-labelledby="tab-loot" hidden="until-found">
+	<div class="panel-box panel-pad">
+		<ul class="loot loot-grid">
+			{loot.map((l) => <li><LootRow lang={lang} id={l.id} right={l.chance ? `${l.chance}%` : undefined} from={l.from} src={L(lang, 'DROPS_FROM').replace('%s', l.from)} /></li>)}
+		</ul>
+	</div>
+</section>
+
+{
+	floors.length > 0 && (
+		<section class="tab-panel" data-tab-of="dungeon" data-tab="map" role="tabpanel" aria-labelledby="tab-map" hidden="until-found">
+			<div class="panel-box panel-pad maps">
+				{floors.map((f, n) => (
+					<figure class="floor">
+						<img src={`/atlas/maps/${f.id}.webp`} alt={`${title}: ${wow(L(lang, 'MAP_FLOOR_SHORT'), n + 1)}`} width="1002" height="668" loading="lazy" />
+						{floors.length > 1 && <figcaption class="darkbox">{wow(L(lang, 'MAP_FLOOR_SHORT'), n + 1)}</figcaption>}
+						{(f.pins ?? []).map(([i, x, y]) =>
+							bosses[i - 1] ? (
+								<a class="pin" href={`#boss-${i}`} data-goto-tab="bosses" style={`left:${x * 100}%;top:${y * 100}%`} title={bossName(bosses[i - 1])}>
+									<img src={portrait(bosses[i - 1])} alt={bossName(bosses[i - 1])} width="34" height="34" loading="lazy" />
+								</a>
+							) : null,
+						)}
+					</figure>
+				))}
+			</div>
+		</section>
+	)
+}
+
+{next && <a class="next-link" href={href(lang, { kind: 'dungeon', d: next })}>{dungeonName(lang, next)} →</a>}
+<p class="sr-only">{T[lang].ctaText}</p>

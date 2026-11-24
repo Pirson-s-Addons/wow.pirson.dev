@@ -1,0 +1,27 @@
+---
+// A loot row (Items.lua): LootFrame, 40 px icon with the quality border, name in its quality colour,
+// type line, a right text (drop chance) and, for the whole dungeon's list, "Loot: Boss" under it.
+import type { Lang } from '../../lib/atlas/i18n';
+import { href, itemName, L } from '../../lib/atlas/data';
+import { icon, itemIcon, itemType, quality, QUALITY } from '../../lib/atlas/view';
+import ItemTip from './ItemTip.astro';
+
+interface Props {
+	lang: Lang;
+	id: number;
+	right?: string;
+	from?: string; // boss name: the line under the row
+	src?: string; // the tooltip's green line
+}
+const { lang, id, right, from, src } = Astro.props;
+const q = quality(lang, id);
+---
+
+<a class:list={['loot-row', from && 'with-boss']} href={href(lang, { kind: 'item', id })} interestfor={`tt-${id}`} aria-describedby={`tt-${id}`} style={`--qc:${QUALITY[q]}`}>
+	<span class="icon40"><img src={icon(itemIcon(id), 'large')} alt="" width="40" height="40" loading="lazy" /></span>
+	<span class:list={['nm', `q${q}`]}>{itemName(lang, id)}</span>
+	<span class="ty">{itemType(lang, id)}</span>
+	{right && <span class="rt">{right}</span>}
+	{from && <span class="from">{L(lang, 'LOOT_BOSS').replace('%s', from)}</span>}
+</a>
+<ItemTip lang={lang} id={id} src={src} />

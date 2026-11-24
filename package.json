@@ -10,7 +10,13 @@
     "astro": "astro",
     "sync": "node scripts/sync-data.mjs",
     "images": "node scripts/localize-images.mjs",
-    "seed": "node scripts/seed-addons.mjs"
+    "seed": "node scripts/seed-addons.mjs",
+    "atlas:extract": "node scripts/atlas/extract.mjs",
+    "atlas:names": "node scripts/atlas/names.mjs",
+    "atlas:maps": "python3 -I scripts/atlas/maps.py",
+    "atlas:check": "node --experimental-strip-types scripts/atlas/check.ts",
+    "atlas:ui": "python3 -I scripts/atlas/ui.py",
+    "atlas:models": "python3 -I scripts/atlas/models.py"
   },
   "dependencies": {
     "@astrojs/react": "^7.1.9",
@@ -18,13 +24,22 @@
     "@astrojs/vercel": "^11.0.22",
     "@fontsource-variable/manrope": "^5.3.0",
     "@fontsource/alegreya-sans": "^5.3.0",
+    "@fontsource/forum": "^5.3.0",
     "@fontsource/marcellus": "^5.3.0",
+    "@fontsource/noto-serif-kr": "^5.3.1",
+    "@fontsource/noto-serif-sc": "^5.3.1",
+    "@fontsource/noto-serif-tc": "^5.3.1",
     "@keystatic/astro": "^6.0.0",
     "@keystatic/core": "^0.6.10",
+    "@oddbird/popover-polyfill": "^0.7.3",
     "astro": "^7.4.12",
+    "interestfor": "^1.0.12",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "sharp": "^0.35.5",
     "starlight-blog": "^0.30.2"
+  },
+  "devDependencies": {
+    "wasmoon": "^1.16.0"
   }
 }

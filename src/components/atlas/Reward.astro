@@ -1,0 +1,42 @@
+---
+// A reward card (QuestPanel): 39 px icon with the quality border on the quest item name plate.
+// An item, or the XP / money card.
+import type { Lang } from '../../lib/atlas/i18n';
+import { href, itemName } from '../../lib/atlas/data';
+import { icon, itemIcon, quality, QUALITY } from '../../lib/atlas/view';
+import ItemTip from './ItemTip.astro';
+
+interface Props {
+	lang: Lang;
+	id?: number;
+	count?: number;
+	label?: string; // XP or money text
+	iconFile?: string;
+}
+const { lang, id, count, label, iconFile } = Astro.props;
+const q = id ? quality(lang, id) : 1;
+---
+
+{
+	id ? (
+		<>
+			<a class="reward" href={href(lang, { kind: 'item', id })} interestfor={`tt-${id}`} aria-describedby={`tt-${id}`} style={`--qc:${QUALITY[q]}`}>
+				<span class="plate" />
+				<span class="icon40">
+					<img src={icon(itemIcon(id), 'large')} alt="" width="39" height="39" loading="lazy" />
+				</span>
+				{count && count > 1 && <span class="cnt">{count}</span>}
+				<span class:list={['nm', `q${q}`]}>{itemName(lang, id)}</span>
+			</a>
+			<ItemTip lang={lang} id={id} />
+		</>
+	) : (
+		<span class="reward" style="--qc:#6b6b6b">
+			<span class="plate" />
+			<span class="icon40">
+				<img src={icon(iconFile, 'large')} alt="" width="39" height="39" loading="lazy" />
+			</span>
+			<span class="nm white">{label}</span>
+		</span>
+	)
+}

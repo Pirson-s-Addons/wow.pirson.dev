@@ -1,0 +1,29 @@
+---
+// The Atlas home: the hero (as foreverjournal.pro opens) and the dungeon, raid and event cards.
+import { T, type Lang } from '../../lib/atlas/i18n';
+import { href, L } from '../../lib/atlas/data';
+import { art } from '../../lib/atlas/view';
+import Cards from './Cards.astro';
+import addons from '../../data/addons.json';
+
+interface Props {
+	lang: Lang;
+}
+const { lang } = Astro.props;
+const t = T[lang];
+const curse = addons.find((a) => a.id === 'dq')?.url ?? '';
+---
+
+<section class="hero" style={`--hero:url(${art('THANES', 'lore')})`}>
+	<div>
+		<h1>{t.homeTitle}</h1>
+		<p>{t.homeLead}</p>
+		<div class="actions">
+			<a class="redbtn" href={curse} rel="noopener">{t.ctaCurse}</a>
+			<a class="redbtn" href="https://discord.gg/BM3hXNZXTh" rel="noopener">{t.ctaDiscord}</a>
+			<a class="redbtn" href={href(lang, { kind: 'tutorials' })}>{L(lang, 'TAB_TUTORIALS')}</a>
+		</div>
+	</div>
+</section>
+<Cards lang={lang} kind="dungeons" first />
+<Cards lang={lang} kind="events" />

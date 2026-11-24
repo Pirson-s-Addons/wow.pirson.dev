@@ -1,0 +1,33 @@
+---
+// A boss button of the Journal (UI/BossPanel.lua): the creature picture (or the round portrait in the
+// hole), the name in parchment gold, "Level: N · Rare · N items", the level badge. A tab of BossTabs,
+// or a link.
+import { wow, type Lang } from '../../lib/atlas/i18n';
+import { L, name, type Boss } from '../../lib/atlas/data';
+import { creature, portrait, humanoid } from '../../lib/atlas/view';
+
+interface Props {
+	lang: Lang;
+	boss: Boss & { display?: number };
+	index: number;
+	meta?: string;
+	href?: string; // a link instead of a tab
+	tab?: 'selected' | 'tab';
+}
+const { lang, boss, index, meta, href, tab } = Astro.props;
+const label = boss.kind === 'trash' ? L(lang, 'TRASH') : boss.kind === 'recipes' ? L(lang, 'RECIPES') : boss.npcID ? name(lang, `npc:${boss.npcID}`, boss.name) : boss.name;
+// the Journal's 128x64 creature art spills out of the round frame; the model's portrait fits it, so it wins
+const pic = boss.display ? undefined : creature(boss);
+const items = (boss.loot ?? []).length;
+const info = meta ?? [boss.level && `${wow(L(lang, 'LEVEL'))} ${boss.level}`, boss.kind === 'rare' && L(lang, 'RARE'), items && wow(L(lang, 'ITEMS'), items)].filter(Boolean).join('  ·  ');
+const Tag = href ? 'a' : 'button';
+const attrs = href ? { href } : { type: 'button', id: `boss-tab-${index}`, 'data-tab': String(index), 'aria-selected': String(tab === 'selected'), focusgroupstart: tab === 'selected' ? '' : undefined };
+---
+
+<Tag class="boss-row" {...attrs}>
+	{pic ? <img class="creature" src={pic} alt="" width="128" height="64" loading="lazy" /> : <img class:list={['hole', humanoid(boss) && 'model']} src={portrait(boss)} alt="" width="46" height="46" loading="lazy" />}
+	<span class="label">{boss.kind === 'rare' ? <span class="rare">{label}</span> : label}</span>
+	<span class="meta">{info}</span>
+	{boss.kind === 'rare' && <span class="dragon" aria-hidden="true" />}
+	{(!boss.kind || boss.kind === 'rare') && <span class="badge">{boss.level ?? '??'}</span>}
+</Tag>

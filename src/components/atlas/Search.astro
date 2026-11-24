@@ -1,0 +1,78 @@
+---
+// Search (the addon's search box and Loot search): every dungeon, raid, event, chain, quest and item of
+// this language, filtered as you type from /atlas/search-<lang>.json; results are rows in two columns.
+import { T2, type Lang } from '../../lib/atlas/i18n';
+import { L } from '../../lib/atlas/data';
+
+interface Props {
+	lang: Lang;
+}
+const { lang } = Astro.props;
+const t = T2[lang];
+const types = { d: L(lang, 'TAB_DUNGEONS'), r: L(lang, 'TAB_RAIDS'), e: L(lang, 'TAB_EVENTS'), c: L(lang, 'CHAIN_PART'), q: L(lang, 'TAB_QUESTS'), i: t.items };
+---
+
+<div class="panel-box" data-search={`/atlas/search-${lang}.json`} data-types={JSON.stringify(types)} data-none={t.searchNone}>
+	<h1 class="panel-title">{L(lang, 'SEARCH')}</h1>
+	<form role="search" class="searchbox big">
+		<input type="search" name="q" placeholder={t.searchLabel} aria-label={t.searchTitle} autocomplete="off" />
+	</form>
+	<div class="search-results">
+		<div>
+			<p class="empty" aria-live="polite" data-status></p>
+			<ul class="loot" data-results></ul>
+		</div>
+	</div>
+</div>
+
+<script>
+	const box = document.querySelector<HTMLElement>('[data-search]')!;
+	const input = box.querySelector('input')!;
+	const list = box.querySelector('[data-results]')!;
+	const status = box.querySelector('[data-status]')!;
+	const types: Record<string, string> = JSON.parse(box.dataset.types!);
+	const QUALITY = ['#9d9d9d', '#ffffff', '#1eff00', '#0070dd', '#a335ee', '#ff8000', '#e6cc80', '#e6cc80'];
+	// lower case, no Latin accents: "Prisión" finds "prision"
+	const fold = (s: string) => s.normalize('NFKD').replace(/(\p{Script=Latin})\p{M}+/gu, '$1').toLowerCase();
+	type Row = { name: string; key: string; url: string; type: string; level?: number; icon?: string; q?: number };
+	let rows: Row[] = [];
+	const el = <K extends keyof HTMLElementTagNameMap>(tag: K, props: Partial<HTMLElementTagNameMap[K]>) => Object.assign(document.createElement(tag), props);
+	const show = () => {
+		const words = fold(input.value).split(/\s+/).filter(Boolean);
+		list.replaceChildren();
+		if (!words.length) return (status.textContent = '');
+		const found = rows
+			.filter((r) => words.every((w) => r.key.includes(w)))
+			// names that start with the query first, then dungeons before quests before items, then shorter
+			.sort((a, b) => +!a.key.startsWith(words[0]) - +!b.key.startsWith(words[0]) || 'dreqci'.indexOf(a.type) - 'dreqci'.indexOf(b.type) || a.name.length - b.name.length)
+			.slice(0, 80);
+		status.textContent = found.length ? '' : box.dataset.none!;
+		for (const r of found) {
+			const a = el('a', { className: 'loot-row', href: r.url });
+			a.style.setProperty('--qc', QUALITY[r.q ?? 1]);
+			const ico = el('span', { className: 'icon40' });
+			ico.append(el('img', { src: r.icon?.startsWith('/') ? r.icon : `https://wow.zamimg.com/images/wow/icons/large/${r.icon ?? 'inv_misc_questionmark'}.jpg`, alt: '', width: 40, height: 40, loading: 'lazy' }));
+			const nm = el('span', { className: `nm q${r.type === 'i' ? (r.q ?? 1) : 1}`, textContent: r.name });
+			if (r.type !== 'i') nm.style.color = '#ffd100';
+			a.append(ico, nm, el('span', { className: 'ty', textContent: types[r.type] }));
+			if (r.level) a.append(el('span', { className: 'rt', textContent: String(r.level) }));
+			const li = el('li', {});
+			li.append(a);
+			list.append(li);
+		}
+	};
+	fetch(box.dataset.search!)
+		.then((res) => res.json())
+		.then((data: [string, string, string, number?, string?, number?][]) => {
+			rows = data.map(([name, url, type, level, icon, q]) => ({ name, key: fold(name), url, type, level, icon, q }));
+			input.value ||= new URLSearchParams(location.search).get('q') ?? '';
+			show();
+		});
+	input.addEventListener('input', show);
+	box.querySelector('form')!.addEventListener('submit', (e) => {
+		e.preventDefault();
+		history.replaceState(null, '', `?q=${encodeURIComponent(input.value)}`);
+		show();
+	});
+	input.focus();
+</script>

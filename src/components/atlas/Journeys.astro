@@ -1,0 +1,52 @@
+---
+// Journeys (Journeys.lua): the new reputations as renown cards and what is coming, on the dark page.
+import { T2, LANG, wow, type Lang } from '../../lib/atlas/i18n';
+import { addon, raidName, dungeonName, href, L } from '../../lib/atlas/data';
+import { icon } from '../../lib/atlas/view';
+
+interface Props {
+	lang: Lang;
+}
+const { lang } = Astro.props;
+const date = (d: string) => new Intl.DateTimeFormat(LANG[lang].html, { dateStyle: 'long' }).format(new Date(`${d}T12:00:00Z`));
+const days = (d: string) => Math.ceil((new Date(`${d}T12:00:00Z`).getTime() - Date.now()) / 864e5);
+---
+
+<div class="panel-box panel-pad">
+	<div>
+		<h1 class="sec-head">{L(lang, 'JOURNEY_RENOWN')}</h1>
+		<ul class="renown">
+			{
+				addon.Reputations.map((r) => {
+					const d = r.dungeon && addon.Dungeons.find((x) => x.key === r.dungeon);
+					const raid = r.raid && addon.Raids.find((x) => x.key === r.raid);
+					return (
+						<li>
+							<img src={icon(r.icons?.[0] ?? 'achievement_reputation_01', 'large')} alt="" width="40" height="40" loading="lazy" />
+							{r.side && <span class:list={['fac', r.side.toLowerCase()]} />}
+							<strong>{r.name}</strong>
+							{r.zone && <small>{wow(L(lang, 'JOURNEY_ZONE'), r.zone)}</small>}
+							{d && <small><a href={href(lang, { kind: 'dungeon', d })}>{wow(L(lang, 'JOURNEY_LINKED_DUNGEON'), dungeonName(lang, d))}</a></small>}
+							{raid && <small><a href={href(lang, { kind: 'raid', r: raid })}>{wow(L(lang, 'JOURNEY_LINKED_RAID'), raidName(lang, raid))}</a></small>}
+							{!!r.rewards && <small>{wow(L(lang, 'JOURNEY_REWARDS'), r.rewards)}</small>}
+						</li>
+					);
+				})
+			}
+		</ul>
+		<h2 class="sec-head">{L(lang, 'JOURNEY_UPCOMING')}</h2>
+		<ul class="timeline darkbox">
+			{
+				addon.Raids.filter((r) => r.unlock).map((r) => (
+					<li>
+						<span class="when">
+							{date(r.unlock!)} {days(r.unlock!) > 0 && <span class="soon">{wow(L(lang, 'JOURNEY_IN_DAYS'), days(r.unlock!))}</span>}
+						</span>
+						<a href={href(lang, { kind: 'raid', r })}>{raidName(lang, r)}</a>
+					</li>
+				))
+			}
+		</ul>
+		<p class="sr-only">{T2[lang].repsDesc}</p>
+	</div>
+</div>

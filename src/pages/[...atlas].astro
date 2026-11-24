@@ -1,0 +1,181 @@
+---
+// Every Atlas page in every language: /dungeons/…, /es/mazmorras/…, /de/dungeons/… (src/lib/atlas/data.ts
+// builds the paths). Each one is a view of the addon's window: section (bottom tab), crumbs and content.
+import assert from 'node:assert/strict';
+import { T, T2, fmt, type Lang } from '../lib/atlas/i18n';
+import { pages, bossName, dungeonName, questName, itemName, raidName, eventName, eventQuests, href, addon, chainOf, dungeonOfQuest, L, type Page } from '../lib/atlas/data';
+import Layout, { type Crumb, type Section } from '../components/atlas/Layout.astro';
+import Home from '../components/atlas/Home.astro';
+import Cards from '../components/atlas/Cards.astro';
+import DungeonPage from '../components/atlas/DungeonPage.astro';
+import QuestPage from '../components/atlas/QuestPage.astro';
+import ItemPage from '../components/atlas/ItemPage.astro';
+import RaidPage from '../components/atlas/RaidPage.astro';
+import BossPage from '../components/atlas/BossPage.astro';
+import EventPage from '../components/atlas/EventPage.astro';
+import Journeys from '../components/atlas/Journeys.astro';
+import Tiers from '../components/atlas/Tiers.astro';
+import Search from '../components/atlas/Search.astro';
+import Tutorials from '../components/atlas/Tutorials.astro';
+
+export function getStaticPaths() {
+	const list = pages();
+	const seen = new Set<string>();
+	const dupes = list.filter((p) => seen.size === seen.add(p.path).size).map((p) => p.path);
+	assert.deepEqual(dupes, [], 'two Atlas pages share a URL');
+	return list.map(({ lang, path, page }) => ({ params: { atlas: path }, props: { lang, page } }));
+}
+
+const { lang, page } = Astro.props as { lang: Lang; page: Page };
+const t = T[lang];
+const t2 = T2[lang];
+const byLevel = [...addon.Dungeons].sort((a, b) => a.minLevel - b.minLevel || a.maxLevel - b.maxLevel);
+const dungeons = { label: L(lang, 'TAB_DUNGEONS'), href: href(lang, { kind: 'home' }) };
+// a quest's book: its dungeon, its event, its chain, or just itself
+const questHome = (id: number) => {
+	const d = dungeonOfQuest.get(id)?.[0];
+	const e = addon.EventList.find((x) => eventQuests(x).includes(id));
+	return { d, e, chain: chainOf(id) };
+};
+
+// a boss page's title and description (search results): %1 boss, %2 dungeon or raid, %3 level, %4 items
+const BOSS_T: Record<Lang, [string, string]> = {
+	en: ['%1: loot and level - %2 - WoW Forever', '%1 (level %3) in %2, WoW Forever: all %4 items it drops, with drop chances, and its model in 3D.'],
+	es: ['%1: botín y nivel - %2 - WoW Forever', '%1 (nivel %3) en %2, WoW Forever: los %4 objetos que suelta, con su probabilidad, y su modelo en 3D.'],
+	de: ['%1: Beute und Stufe - %2 - WoW Forever', '%1 (Stufe %3) in %2, WoW Forever: alle %4 Gegenstände mit Dropchance und das 3D-Modell.'],
+	fr: ['%1 : butin et niveau - %2 - WoW Forever', '%1 (niveau %3) dans %2, WoW Forever : les %4 objets qu’il laisse tomber, avec leur probabilité, et son modèle 3D.'],
+	it: ['%1: bottino e livello - %2 - WoW Forever', '%1 (livello %3) in %2, WoW Forever: tutti i %4 oggetti che rilascia, con probabilità, e il suo modello 3D.'],
+	pt: ['%1: saque e nível - %2 - WoW Forever', '%1 (nível %3) em %2, WoW Forever: os %4 itens que deixa cair, com a chance, e o seu modelo 3D.'],
+	ru: ['%1: добыча и уровень - %2 - WoW Forever', '%1 (уровень %3), %2, WoW Forever: все %4 предметов с шансом выпадения и 3D-модель.'],
+	ko: ['%1: 전리품과 레벨 - %2 - WoW Forever', '%2의 %1 (레벨 %3), WoW Forever: 획득 확률과 함께 전리품 %4개, 3D 모델.'],
+	zh: ['%1：掉落与等级 - %2 - WoW Forever', '%2中的%1（等级%3），WoW Forever：全部%4件掉落物品及掉率，以及3D模型。'],
+	tw: ['%1：掉落與等級 - %2 - WoW Forever', '%2中的%1（等級%3），WoW Forever：全部%4件掉落物品與機率，以及3D模型。'],
+};
+
+let section: Section = 'dungeons';
+let crumbs: Crumb[] = [];
+let title = '';
+let description = '';
+switch (page.kind) {
+	case 'home':
+		[title, description] = [t.homeTitle, t.homeDesc];
+		break;
+	case 'dungeon': {
+		const n = dungeonName(lang, page.d);
+		const lv = `${page.d.minLevel}-${page.d.maxLevel}`;
+		const bosses = (addon.Bosses[page.d.key] ?? []).filter((b) => !b.kind || b.kind === 'rare').length;
+		[title, description] = [fmt(t.dungeonTitle, n, lv), fmt(t.dungeonDesc, page.d.quests.length, bosses, n, lv)];
+		crumbs = [dungeons, { label: n }];
+		break;
+	}
+	case 'quest': {
+		const n = questName(lang, page.id);
+		[title, description] = [fmt(t.questTitle, n), fmt(t.questDesc, n, addon.Quests[page.id]?.level ?? '?')];
+		const { d, e } = questHome(page.id);
+		if (d) {
+			crumbs = [dungeons, { label: dungeonName(lang, d), href: href(lang, { kind: 'dungeon', d }) }, { label: n }];
+		} else if (e) {
+			section = 'events';
+			crumbs = [{ label: eventName(lang, e), href: href(lang, { kind: 'event', e }) }, { label: n }];
+		} else crumbs = [{ label: n }];
+		break;
+	}
+	case 'item': {
+		const n = itemName(lang, page.id);
+		[title, description] = [fmt(t.itemTitle, n), fmt(t.itemDesc, n)];
+		crumbs = [{ label: n }];
+		break;
+	}
+	case 'chain': {
+		const n = questName(lang, page.steps.at(-1)!);
+		[title, description] = [fmt(t.chainTitle, n), fmt(t.chainDesc, n, page.steps.length)];
+		crumbs = [{ label: n }];
+		break;
+	}
+	case 'raid': {
+		const n = raidName(lang, page.r);
+		section = 'raids';
+		[title, description] = [fmt(t2.raidTitle, n), fmt(t2.raidDesc, n, page.r.size)];
+		crumbs = [{ label: L(lang, 'TAB_RAIDS'), href: href(lang, { kind: 'raids' }) }, { label: n }];
+		break;
+	}
+	case 'boss': {
+		const n = bossName(lang, page.b);
+		const home = page.d ? dungeonName(lang, page.d) : raidName(lang, page.r!);
+		if (page.r) section = 'raids';
+		[title, description] = [fmt(BOSS_T[lang][0], n, home), fmt(BOSS_T[lang][1], n, home, page.b.level ?? '?', page.b.loot?.length ?? 0)];
+		crumbs = [
+			page.d ? dungeons : { label: L(lang, 'TAB_RAIDS'), href: href(lang, { kind: 'raids' }) },
+			{ label: home, href: href(lang, page.d ? { kind: 'dungeon', d: page.d } : { kind: 'raid', r: page.r! }) },
+			{ label: n },
+		];
+		break;
+	}
+	case 'event': {
+		const n = eventName(lang, page.e);
+		section = 'events';
+		[title, description] = [fmt(t2.eventTitle, n), fmt(t2.eventDesc, n, eventQuests(page.e).length)];
+		crumbs = [{ label: L(lang, 'TAB_EVENTS'), href: href(lang, { kind: 'events' }) }, { label: n }];
+		break;
+	}
+	case 'tiers':
+		[title, description] = [`${L(lang, 'TIER_TITLE')} (Tier 0, Tier 0.5) - WoW Forever`, t2.tiersDesc];
+		section = 'tiers';
+		crumbs = [{ label: L(lang, 'TIER_TITLE') }];
+		break;
+	case 'reputations':
+		section = 'journeys';
+		[title, description] = [t2.repsTitle, t2.repsDesc];
+		crumbs = [{ label: L(lang, 'TAB_JOURNEYS') }];
+		break;
+	case 'search':
+		[title, description] = [`${t2.searchTitle} - WoW Forever`, t.homeDesc];
+		section = 'search';
+		crumbs = [{ label: L(lang, 'SEARCH') }];
+		break;
+	case 'raids':
+		section = 'raids';
+		crumbs = [{ label: L(lang, 'TAB_RAIDS') }];
+		[title, description] = [`${L(lang, 'TAB_RAIDS')} - WoW Forever`, fmt(t2.raidDesc, addon.Raids.map((r) => raidName(lang, r)).join(', '), '10-40')];
+		break;
+	case 'events':
+		section = 'events';
+		crumbs = [{ label: L(lang, 'TAB_EVENTS') }];
+		[title, description] = [`${L(lang, 'TAB_EVENTS')} - WoW Forever`, t2.eventDesc.replace('%1', L(lang, 'TAB_EVENTS')).replace('%2', String(addon.EventList.reduce((n, e) => n + eventQuests(e).length, 0)))];
+		break;
+	case 'tutorials':
+		section = 'tutorials';
+		crumbs = [{ label: L(lang, 'TAB_TUTORIALS') }];
+		[title, description] = [`${L(lang, 'TAB_TUTORIALS')} - Dungeon Quest Atlas`, t.ctaText];
+		break;
+}
+const q = page.kind === 'quest' ? questHome(page.id) : undefined;
+---
+
+<Layout lang={lang} page={page} title={title} description={description} section={section} crumbs={crumbs}>
+	{page.kind === 'home' && <Home lang={lang} />}
+	{page.kind === 'raids' && <Cards lang={lang} kind="raids" headingLevel={1} first />}
+	{page.kind === 'events' && <Cards lang={lang} kind="events" headingLevel={1} first />}
+	{page.kind === 'dungeon' && <DungeonPage lang={lang} d={page.d} />}
+	{
+		page.kind === 'quest' && q && (
+			<QuestPage
+				lang={lang}
+				id={page.id}
+				list={q.d ? q.d.quests.filter((x) => addon.Quests[x]) : q.e ? eventQuests(q.e) : (q.chain ?? [page.id])}
+				listTitle={q.d ? dungeonName(lang, q.d) : q.e ? eventName(lang, q.e) : L(lang, 'CHAIN_PART')}
+				listHref={q.d ? href(lang, { kind: 'dungeon', d: q.d }) : q.e ? href(lang, { kind: 'event', e: q.e }) : q.chain ? href(lang, { kind: 'chain', steps: q.chain }) : undefined}
+				fold={!!(q.d || q.e)}
+			/>
+		)
+	}
+	{page.kind === 'chain' && <QuestPage lang={lang} id={page.steps.at(-1)!} list={page.steps} listTitle={`${L(lang, 'CHAIN_PART')} · ${fmt(t.chainSteps, page.steps.length)}`} fold={false} />}
+	{page.kind === 'item' && <ItemPage lang={lang} id={page.id} />}
+	{page.kind === 'raid' && <RaidPage lang={lang} r={page.r} />}
+	{page.kind === 'boss' && <BossPage lang={lang} b={page.b} d={page.d} r={page.r} />}
+	{page.kind === 'event' && <EventPage lang={lang} e={page.e} />}
+	{page.kind === 'reputations' && <Journeys lang={lang} />}
+	{page.kind === 'tiers' && <Tiers lang={lang} />}
+	{page.kind === 'search' && <Search lang={lang} />}
+	{page.kind === 'tutorials' && <Tutorials lang={lang} />}
+</Layout>
