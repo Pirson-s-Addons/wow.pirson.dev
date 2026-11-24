@@ -29,7 +29,7 @@ export type GameEvent = {
 };
 type TierSet = { key: string; pieceQuest?: number[]; quests?: number[]; questNames?: string[] } & Record<string, { name: string; [piece: number]: number }>;
 export type Reputation = { id: number; name: string; zone?: string; side?: string; rewards?: number; raid?: string; dungeon?: string; icons?: string[] };
-type Dungeon = {
+export type Dungeon = {
 	key: string; name: string; minLevel: number; maxLevel: number; isForever: boolean; faction: string; quests: number[];
 	names?: Record<string, string>; entrance?: { mapID: number; x: number; y: number };
 };
@@ -127,6 +127,14 @@ for (const [id, q] of Object.entries(addon.Quests)) {
 	for (const [i] of q.need ?? []) push(itemNeeded, i, +id);
 }
 
+// a boss's name; trash and recipe lists are not bosses (no page of their own)
+export const bossName = (lang: Lang, b: Boss) => (b.kind === 'trash' ? L(lang, 'TRASH') : b.kind === 'recipes' ? L(lang, 'RECIPES') : b.npcID ? name(lang, `npc:${b.npcID}`, b.name) : b.name);
+export const isBoss = (b: Boss) => !b.kind || b.kind === 'rare';
+export const bossPages = () => [
+	...addon.Dungeons.flatMap((d) => (addon.Bosses[d.key] ?? []).filter(isBoss).map((b) => ({ kind: 'boss', d, b }) as const)),
+	...addon.Raids.flatMap((r) => (r.bosses ?? []).filter(isBoss).map((b) => ({ kind: 'boss', r, b }) as const)),
+];
+
 // --- pages: kind, id and URL in each language ---
 export type Page =
 	| { kind: 'home' }
@@ -135,6 +143,7 @@ export type Page =
 	| { kind: 'item'; id: number }
 	| { kind: 'chain'; steps: number[] }
 	| { kind: 'raid'; r: Raid }
+	| { kind: 'boss'; d?: Dungeon; r?: Raid; b: Boss }
 	| { kind: 'event'; e: GameEvent }
 	| { kind: 'tiers' }
 	| { kind: 'reputations' }
@@ -163,6 +172,11 @@ export function url(lang: Lang, p: Page): string | null {
 			return at(lang, 'chains', `${p.steps.at(-1)}-${slug(questName(lang, p.steps.at(-1)!))}`);
 		case 'raid':
 			return at(lang, 'raids', slug(raidName(lang, p.r)));
+		case 'boss': {
+			// under its dungeon or raid: /es/mazmorras/las-minas-de-la-muerte/rhahkzor/
+			const home = url(lang, p.d ? { kind: 'dungeon', d: p.d } : { kind: 'raid', r: p.r! })!;
+			return `${home}${slug(bossName(lang, p.b))}/`;
+		}
 		case 'event':
 			return at(lang, 'events', slug(eventName(lang, p.e)));
 		case 'tiers':
@@ -193,6 +207,7 @@ export function pages(): { lang: Lang; path: string; page: Page }[] {
 		...allItems.map((id) => ({ kind: 'item', id }) as const),
 		...chains.map((steps) => ({ kind: 'chain', steps }) as const),
 		...addon.Raids.map((r) => ({ kind: 'raid', r }) as const),
+		...bossPages(),
 		...addon.EventList.filter((e) => eventQuests(e).length).map((e) => ({ kind: 'event', e }) as const),
 		{ kind: 'tiers' },
 		{ kind: 'reputations' },

@@ -1,7 +1,7 @@
 ---
 // A raid: opening date and size, then tabs for Bosses (with loot when known) and the Attunement chain.
 import { LANG, wow, type Lang } from '../../lib/atlas/i18n';
-import { raidName, questName, href, itemName, L, type Raid } from '../../lib/atlas/data';
+import { isBoss, raidName, questName, href, itemName, L, type Raid } from '../../lib/atlas/data';
 import { icon, itemIcon, art } from '../../lib/atlas/view';
 import CopyMenu from './CopyMenu.astro';
 import BossTabs from './BossTabs.astro';
@@ -31,7 +31,7 @@ const tabs = [{ key: 'bosses', label: L(lang, 'TAB_BOSSES') }, ...(att ? [{ key:
 <section class="tab-panel" data-tab-of="raid" data-tab="bosses" role="tabpanel" aria-labelledby="tab-bosses">
 	<div class="panel-box panel-pad">
 		{!bosses.length && <p>{L(lang, 'RAID_NO_BOSSES')}</p>}
-		{bosses.length > 0 && <BossTabs lang={lang} bosses={bosses} label={L(lang, 'TAB_BOSSES')} bg={art(r.key, 'lore')} meta={(i) => wow(L(lang, 'RAID_BOSS_N'), i + 1, bosses.length)} />}
+		{bosses.length > 0 && <BossTabs lang={lang} bosses={bosses} label={L(lang, 'TAB_BOSSES')} bg={art(r.key, 'lore')} pages={bosses.map((b) => (isBoss(b) ? href(lang, { kind: 'boss', r, b }) : undefined))} meta={(i) => wow(L(lang, 'RAID_BOSS_N'), i + 1, bosses.length)} />}
 		{bosses.length > 0 && !bosses.some((b) => b.loot) && <p>{L(lang, 'RAID_NO_LOOT')}</p>}
 	</div>
 </section>

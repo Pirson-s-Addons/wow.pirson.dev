@@ -4,7 +4,7 @@
 // (the whole dungeon) and Map (every floor with the bosses pinned). Tabs are a tablist over panels
 // hidden with hidden="until-found", so their text stays in the page for search engines.
 import { T, wow, type Lang } from '../../lib/atlas/i18n';
-import { addon, dungeonName, name, href, questName, itemName, L, lootId, lootChance, type Boss } from '../../lib/atlas/data';
+import { addon, isBoss, dungeonName, name, href, questName, itemName, L, lootId, lootChance, type Boss } from '../../lib/atlas/data';
 import { intro, portrait, quality, art } from '../../lib/atlas/view';
 import CopyMenu from './CopyMenu.astro';
 import BossTabs from './BossTabs.astro';
@@ -76,7 +76,7 @@ const tabs = [
 
 <section class="tab-panel" data-tab-of="dungeon" data-tab="bosses" role="tabpanel" aria-labelledby="tab-bosses" hidden="until-found">
 	<div class="panel-box panel-pad">
-		<BossTabs lang={lang} bosses={bosses} label={L(lang, 'TAB_BOSSES')} bg={art(d.key, 'lore')} />
+		<BossTabs lang={lang} bosses={bosses} label={L(lang, 'TAB_BOSSES')} bg={art(d.key, 'lore')} pages={bosses.map((b) => (isBoss(b) ? href(lang, { kind: 'boss', d, b }) : undefined))} />
 	</div>
 </section>
 

@@ -2,7 +2,7 @@
 // An item: its game tooltip as the game draws it, and beside it where it drops (boss, dungeon, chance) and the quests that give
 // it or need it.
 import { T, type Lang } from '../../lib/atlas/i18n';
-import { addon, itemName, itemDrops, itemRewards, itemNeeded, dungeonName, raidName, href, name, L } from '../../lib/atlas/data';
+import { addon, isBoss, itemName, itemDrops, itemRewards, itemNeeded, dungeonName, raidName, href, name, L } from '../../lib/atlas/data';
 import { icon, itemIcon, itemType, quality, tooltipHtml, portrait, QUALITY } from '../../lib/atlas/view';
 import QuestRow from './QuestRow.astro';
 
@@ -47,7 +47,7 @@ const html = tooltipHtml(lang, `item:${id}`);
 								const n = list.indexOf(s.boss) + 1;
 								return (
 									<li>
-										<a class="boss-row" href={href(lang, where) + (n ? `#boss-${n}` : '')}>
+										<a class="boss-row" href={isBoss(s.boss) ? href(lang, s.dungeon ? { kind: 'boss', d: s.dungeon, b: s.boss } : { kind: 'boss', r: s.raid!, b: s.boss }) : href(lang, where) + (n ? `#boss-${n}` : '')}>
 											<img class="hole" src={portrait(s.boss as { name: string; display?: number; kind?: string })} alt="" width="46" height="46" loading="lazy" />
 											<span class="label">{bossName(s.boss)}</span>
 											<span class="meta">

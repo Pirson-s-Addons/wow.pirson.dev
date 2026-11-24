@@ -111,10 +111,11 @@ const frames: Record<string, number[]> = pub('../src/data/atlas/frames.json') ? 
 export function camera3d(b: { display?: number }) {
 	const f = frames[b.display ?? 0];
 	if (!f) return {};
-	const [x, y, z, half, reach] = f;
-	// 30° high field of view; the stage is about 1.7 times wider than high; some air around it
+	const [x, y, z, w, h, d] = f;
+	// seen from the front (the model does not turn by itself): the same share of the stage for every boss,
+	// 30° high field of view, a stage about 1.8 times wider than high, a little air around it
 	const t = Math.tan((15 * Math.PI) / 180);
-	const far = Math.max(half / t, reach / (t * 1.7)) * 1.15 + reach * 0.2;
+	const far = Math.max(h / t, w / (t * 1.8)) * 1.12 + d;
 	return { 'camera-target': `${x}m ${y}m ${z}m`, 'camera-orbit': `0deg 80deg ${far.toFixed(2)}m`, 'field-of-view': '30deg', 'min-camera-orbit': `auto auto ${(far * 0.35).toFixed(2)}m`, 'max-camera-orbit': `auto auto ${(far * 1.6).toFixed(2)}m` };
 }
 export const model3d = (b: { display?: number }) => (b.display && pub(`atlas/models/npc-${b.display}.glb`) ? `/atlas/models/npc-${b.display}.glb` : undefined);

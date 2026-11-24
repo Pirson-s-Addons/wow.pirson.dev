@@ -2606,3 +2606,18 @@ body.atlas {
 .item-head h1.q4 {
 	--title-q: #c27bff;
 }
+/* a boss's own page: the stage full width */
+.bosses.solo {
+	grid-template-columns: minmax(0, 1fr);
+}
+.bosses.solo .boss-detail {
+	grid-area: auto;
+}
+.boss-title a {
+	pointer-events: auto;
+	color: inherit;
+}
+.boss-title a:hover {
+	text-decoration: underline;
+	text-underline-offset: 4px;
+}

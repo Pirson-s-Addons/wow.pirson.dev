@@ -295,8 +295,7 @@ def to_gltf(m: M2, typed: dict[int, int], show) -> tuple[bytes, list[float]]:
     lo3 = [min(p[k] for p in pts) for k in range(3)]
     hi3 = [max(p[k] for p in pts) for k in range(3)]
     c = [(a + b) / 2 for a, b in zip(lo3, hi3)]
-    spin = max(((p[0] - c[0]) ** 2 + (p[2] - c[2]) ** 2) ** 0.5 for p in pts)  # its reach while it turns
-    frame = [round(v, 3) for v in (*c, (hi3[1] - lo3[1]) / 2, spin)]
+    frame = [round(v, 3) for v in (*c, *((b - a) / 2 for a, b in zip(lo3, hi3)))]  # centre, half width/height/depth
 
     used = ["EXT_texture_webp"] + (["KHR_materials_unlit"] if any("extensions" in x for x in materials) else [])
     gltf = {
@@ -312,7 +311,7 @@ def to_gltf(m: M2, typed: dict[int, int], show) -> tuple[bytes, list[float]]:
     buf += b"\0" * (-len(buf) % 4)
     total = 12 + 8 + len(js) + 8 + len(buf)
     glb = struct.pack("<4sII", b"glTF", 2, total) + struct.pack("<I4s", len(js), b"JSON") + js + struct.pack("<I4s", len(buf), b"BIN\0") + bytes(buf)
-    return glb, frame  # frame: centre x, y, z, half its height and its reach turning, in the pose shown
+    return glb, frame  # frame: centre x, y, z and half its width, height, depth, in the pose shown
 
 
 # a slot's item geoset groups: (ItemSlot, GeosetGroup_n) -> the body's geoset group it picks

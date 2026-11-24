@@ -14,8 +14,10 @@ interface Props {
 	label: string; // the list's accessible name
 	bg: string; // the dungeon's art, behind the model
 	meta?: (i: number) => string; // the line under a boss name (default: level, rare, items)
+	solo?: boolean; // a boss's own page: its stage and loot, no list
+	pages?: (string | undefined)[]; // each boss's own page, linked from its name
 }
-const { lang, bosses, label, bg, meta } = Astro.props;
+const { lang, bosses, label, bg, meta, solo, pages = [] } = Astro.props;
 const bossName = (b: Boss) => (b.kind === 'trash' ? L(lang, 'TRASH') : b.kind === 'recipes' ? L(lang, 'RECIPES') : b.npcID ? name(lang, `npc:${b.npcID}`, b.name) : b.name);
 const info = (b: Boss, i: number) =>
 	meta?.(i) ?? [b.level && `${wow(L(lang, 'LEVEL'))} ${b.level}`, b.kind === 'rare' && L(lang, 'RARE'), b.loot?.length && wow(L(lang, 'ITEMS'), b.loot.length)].filter(Boolean).join('  ·  ');
@@ -23,21 +25,25 @@ const info = (b: Boss, i: number) =>
 
 {/* the 3D viewer only where a boss has a model; panels load theirs when shown (loading="lazy") */}
 {bosses.some((b) => model3d(b)) && <script is:inline type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@4.0.0/dist/model-viewer.min.js" />}
-<div class="bosses">
-	<div class="boss-list" data-tabs="bosses" focusgroup="tablist nomemory" aria-label={label}>
-		{bosses.map((b, i) => <BossRow lang={lang} boss={b} index={i + 1} meta={info(b, i)} tab={i === 0 ? 'selected' : 'tab'} />)}
-	</div>
+<div class:list={['bosses', solo && 'solo']}>
+	{
+		!solo && (
+			<div class="boss-list" data-tabs="bosses" focusgroup="tablist nomemory" aria-label={label}>
+				{bosses.map((b, i) => <BossRow lang={lang} boss={b} index={i + 1} meta={info(b, i)} tab={i === 0 ? 'selected' : 'tab'} />)}
+			</div>
+		)
+	}
 	{
 		bosses.map((b, i) => (
-			<section class="boss-detail" id={`boss-${i + 1}`} data-tab-of="bosses" data-tab={String(i + 1)} role="tabpanel" aria-labelledby={`boss-tab-${i + 1}`} hidden={i ? 'until-found' : undefined}>
+			<section class="boss-detail" id={solo ? undefined : `boss-${i + 1}`} data-tab-of={solo ? undefined : 'bosses'} data-tab={String(i + 1)} role={solo ? undefined : "tabpanel"} aria-labelledby={solo ? undefined : `boss-tab-${i + 1}`} hidden={i ? 'until-found' : undefined}>
 				<div class="boss-stage" style={`--bg: url('${bg}')`}>
 					{model3d(b) ? (
-						<model-viewer src={model3d(b)} poster={portrait(b)} alt={bossName(b)} loading="lazy" autoplay {...camera3d(b)} camera-controls touch-action="pan-y" auto-rotate rotation-per-second="18deg" interaction-prompt="none" shadow-intensity="1" exposure="1.1" />
+						<model-viewer src={model3d(b)} poster={portrait(b)} alt={bossName(b)} loading="lazy" autoplay {...camera3d(b)} camera-controls touch-action="pan-y" interaction-prompt="none" shadow-intensity="1" exposure="1.1" />
 					) : (
 						<img class:list={['shot', !b.display && 'icon']} src={portrait(b)} alt="" width="300" height="300" loading="lazy" />
 					)}
 					<div class="boss-title">
-						<h3>{bossName(b)}</h3>
+						<h3>{pages[i] ? <a href={pages[i]}>{bossName(b)}</a> : bossName(b)}</h3>
 						<p>{info(b, i)}</p>
 					</div>
 				</div>

@@ -1,0 +1,30 @@
+---
+// A boss's own page (for search engines and links): name, level and home, the model on its stage, the loot.
+import { wow, type Lang } from '../../lib/atlas/i18n';
+import { bossName, dungeonName, raidName, href, L, type Boss, type Dungeon, type Raid } from '../../lib/atlas/data';
+import { art } from '../../lib/atlas/view';
+import BossTabs from './BossTabs.astro';
+
+interface Props {
+	lang: Lang;
+	b: Boss & { display?: number };
+	d?: Dungeon;
+	r?: Raid;
+}
+const { lang, b, d, r } = Astro.props;
+const home = d ? { kind: 'dungeon' as const, d } : { kind: 'raid' as const, r: r! };
+const homeName = d ? dungeonName(lang, d) : raidName(lang, r!);
+const n = bossName(lang, b);
+---
+
+<header class="page-head">
+	<h1>{n}</h1>
+	<span class="lv">
+		{b.level && <><b>{wow(L(lang, 'LEVEL'))}</b> {b.level}</>}
+		{b.kind === 'rare' && <> · {L(lang, 'RARE')}</>}
+	</span>
+</header>
+<p class="intro"><a href={href(lang, home)}>{homeName}</a>{b.loot?.length ? <> · {wow(L(lang, 'ITEMS'), b.loot.length)}</> : null}</p>
+<div class="panel-box panel-pad">
+	<BossTabs lang={lang} bosses={[b]} label={n} bg={art(d ? d.key : r!.key, 'lore')} solo />
+</div>
