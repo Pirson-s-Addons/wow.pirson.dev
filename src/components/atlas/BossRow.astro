@@ -16,7 +16,8 @@ interface Props {
 }
 const { lang, boss, index, meta, href, tab } = Astro.props;
 const label = boss.kind === 'trash' ? L(lang, 'TRASH') : boss.kind === 'recipes' ? L(lang, 'RECIPES') : boss.npcID ? name(lang, `npc:${boss.npcID}`, boss.name) : boss.name;
-const pic = creature(boss);
+// the Journal's 128x64 creature art spills out of the round frame; the model's portrait fits it, so it wins
+const pic = boss.display ? undefined : creature(boss);
 const items = (boss.loot ?? []).length;
 const info = meta ?? [boss.level && `${wow(L(lang, 'LEVEL'))} ${boss.level}`, boss.kind === 'rare' && L(lang, 'RARE'), items && wow(L(lang, 'ITEMS'), items)].filter(Boolean).join('  ·  ');
 const Tag = href ? 'a' : 'button';
@@ -24,7 +25,7 @@ const attrs = href ? { href } : { type: 'button', id: `boss-tab-${index}`, 'data
 ---
 
 <Tag class="boss-row" {...attrs}>
-	{pic ? <img class="creature" src={pic} alt="" width="128" height="64" loading="lazy" /> : <img class="hole" src={portrait(boss)} alt="" width="46" height="46" loading="lazy" />}
+	{pic ? <img class="creature" src={pic} alt="" width="128" height="64" loading="lazy" /> : <img class:list={['hole', boss.display && 'model']} src={portrait(boss)} alt="" width="46" height="46" loading="lazy" />}
 	<span class="label">{boss.kind === 'rare' ? <span class="rare">{label}</span> : label}</span>
 	<span class="meta">{info}</span>
 	{(!boss.kind || boss.kind === 'rare') && <span class="badge">{boss.level ?? '??'}</span>}

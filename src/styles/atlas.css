@@ -2396,3 +2396,14 @@ body.atlas {
 		font-size: 22px;
 	}
 }
+/* the item's name and type a clear step away from the icon frame */
+.loot-row .nm,
+.loot-row .ty,
+.loot-row .from {
+	left: 58px;
+}
+/* the model thumbnail is the whole body: show its head and shoulders, as the game's portrait does
+   (browsers without object-view-box keep the whole body) */
+.boss-row .hole.model {
+	object-view-box: inset(4% 25% 46% 25%);
+}
