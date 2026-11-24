@@ -3,6 +3,12 @@
 // breadcrumbs, the page, and the footer with the atlas and addon links. Game tooltips: popover="hint"
 // shown by the item links (interestfor), polyfilled where missing.
 import '@fontsource/marcellus/400.css';
+// the game's other scripts: Cyrillic (FRIZQT___CYR), Korean (2002), Chinese (ARKai): free look-alikes,
+// each loaded only when a page has its letters (unicode-range)
+import '@fontsource/forum/400.css';
+import '@fontsource/noto-serif-kr/400.css';
+import '@fontsource/noto-serif-sc/400.css';
+import '@fontsource/noto-serif-tc/400.css';
 import '../../styles/atlas.css';
 import { LANGS, LANG, T, T2, type Lang } from '../../lib/atlas/i18n';
 import { url, L, type Page } from '../../lib/atlas/data';

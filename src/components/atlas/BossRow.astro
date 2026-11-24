@@ -28,5 +28,6 @@ const attrs = href ? { href } : { type: 'button', id: `boss-tab-${index}`, 'data
 	{pic ? <img class="creature" src={pic} alt="" width="128" height="64" loading="lazy" /> : <img class:list={['hole', humanoid(boss) && 'model']} src={portrait(boss)} alt="" width="46" height="46" loading="lazy" />}
 	<span class="label">{boss.kind === 'rare' ? <span class="rare">{label}</span> : label}</span>
 	<span class="meta">{info}</span>
+	{boss.kind === 'rare' && <span class="dragon" aria-hidden="true" />}
 	{(!boss.kind || boss.kind === 'rare') && <span class="badge">{boss.level ?? '??'}</span>}
 </Tag>

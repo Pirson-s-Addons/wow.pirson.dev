@@ -19,8 +19,9 @@
 	--gold: #ffd100;
 	--link: #5c1d00;
 	--brand: #d597ff;
-	--friz: 'Marcellus', 'Palatino Linotype', serif;
-	--morpheus: 'Goodmountain', 'Marcellus', serif;
+	/* a letter Marcellus or Goodmountain lack falls to the next: Cyrillic to Forum, Korean and Chinese to Noto Serif */
+	--friz: 'Marcellus', 'Forum', 'Noto Serif KR', 'Noto Serif SC', 'Palatino Linotype', serif;
+	--morpheus: 'Goodmountain', 'Marcellus', 'Forum', 'Noto Serif KR', 'Noto Serif SC', serif;
 	--q0: #9d9d9d;
 	--q1: #ffffff;
 	--q2: #1eff00;
@@ -2484,4 +2485,52 @@ body.atlas {
 	.timeline .when {
 		width: 100%;
 	}
+}
+/* the boss list a size up, and the level readable */
+.boss-list .boss-row {
+	zoom: 1.22;
+}
+.boss-row .badge {
+	z-index: 2;
+	font-size: 10px;
+	font-weight: 700;
+	text-shadow: 0 0 2px #000, 1px 1px 0 #000;
+}
+.boss-row .meta {
+	color: #e0d2b4;
+}
+/* a rare boss: the silver dragon of the target frame wraps its portrait, mirrored, as in the addon
+   (UI/BossPanel.lua DecoratePortrait: 80x79 at -7, -13 from the button) */
+.boss-row .dragon {
+	position: absolute;
+	z-index: 1;
+	left: -79px;
+	top: -13px;
+	width: 81px;
+	height: 80px;
+	background: url('/atlas/ui/boss-rare-dragon.webp') 0 0 / 100% 100%;
+	transform: scaleX(-1);
+	pointer-events: none;
+}
+@media (max-width: 900px) {
+	.boss-list {
+		grid-auto-columns: 300px;
+	}
+}
+
+/* Traditional Chinese takes its own glyph shapes */
+:root:lang(zh-TW) {
+	--friz: 'Marcellus', 'Noto Serif TC', serif;
+	--morpheus: 'Goodmountain', 'Marcellus', 'Noto Serif TC', serif;
+}
+/* the quest sheet as the game sets it: the title and the section heads in the title font (QuestTitleFont,
+   Morpheus), the text in Friz (QuestFont) */
+.qsheet h2,
+.paper-header {
+	font-family: var(--morpheus);
+	letter-spacing: 0.01em;
+}
+/* small caps of the title font only for scripts that have them */
+:root:is(:lang(ko), :lang(zh-CN), :lang(zh-TW)) :is(.panel-title, .page-head h1, .boss-title h3, .card .name) {
+	font-variant-caps: normal;
 }
