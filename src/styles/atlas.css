@@ -421,19 +421,6 @@ body.atlas {
 }
 
 /* bosses tab: one Journal boss button per boss, its loot under it */
-.boss-block {
-	margin: 0 0 18px;
-}
-.boss-block .boss-row {
-	max-width: 420px;
-	cursor: default;
-}
-.boss-block .loot {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
-	gap: 4px 10px;
-	margin-top: 8px;
-}
 .loot-grid {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
@@ -763,7 +750,7 @@ body.atlas {
 .boss-row[aria-pressed='true'] {
 	background-image: url('/atlas/ui/ej-boss-button-down.webp'), url('/atlas/ui/ej-boss-button-down.webp');
 }
-a.boss-row:hover::after {
+:is(a, button).boss-row:hover::after {
 	content: '';
 	position: absolute;
 	inset: 0;
@@ -916,46 +903,6 @@ a.boss-row:hover::after {
 }
 
 
-/* boss overview */
-.boss-head {
-	position: relative;
-	height: 64px;
-	isolation: isolate;
-}
-.boss-head .ring {
-	position: absolute;
-	left: -4px;
-	top: -2px;
-	width: 64px;
-	height: 61px;
-	background: url('/atlas/ui/ej-boss-model-button.webp') 0 0 / 100% 100%;
-}
-.boss-head .ring img {
-	position: absolute;
-	left: 12px;
-	top: 10px;
-	width: 40px;
-	height: 40px;
-	border-radius: 50%;
-	object-fit: cover;
-	z-index: -1;
-}
-.boss-head h2 {
-	position: absolute;
-	left: 62px;
-	top: 10px;
-	margin: 0;
-	color: var(--ink);
-	font: 18px var(--friz);
-}
-.boss-head p {
-	position: absolute;
-	left: 62px;
-	top: 36px;
-	margin: 0;
-	color: var(--ink);
-	font: 12px var(--friz);
-}
 
 /* quest list rows (44 high, dark) */
 .quest-list {
@@ -2355,12 +2302,97 @@ body.atlas {
 .loot-row .from {
 	color: #b3a68d;
 }
-/* a static boss row (the Bosses tab) is not a link: no hand, no highlight */
-div.boss-row {
-	cursor: default;
-}
 /* the creature art (128 px from -76) ends 52 px into the body: the name starts past it, not on top of it */
 .boss-row .creature ~ .label,
 .boss-row .creature ~ .meta {
 	left: 50px;
+}
+
+/* ---------- the bosses: the Journal's list on the left, the chosen boss on the right ---------- */
+.bosses {
+	display: grid;
+	grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+	gap: 20px;
+	align-items: start;
+}
+.boss-list {
+	display: grid;
+	gap: 8px;
+	padding: 12px 0 0 6px; /* room for the creature art over the first button and at its left */
+}
+.boss-list .boss-row {
+	font: inherit;
+	color: inherit;
+}
+.boss-row[aria-selected='true'] {
+	border-image-source: url('/atlas/ui/ej-boss-button-down.webp');
+}
+.boss-row[aria-selected='true'] .label {
+	color: #fff;
+}
+.boss-detail {
+	min-width: 0;
+	/* every panel in the same cell: the hidden ones take no room */
+	grid-area: 1 / 2;
+}
+.boss-head {
+	display: flex;
+	align-items: center;
+	gap: 18px;
+	margin: 0 0 14px;
+	padding: 0 0 14px;
+	border-bottom: 1px solid #3a2c18;
+}
+.boss-shot {
+	flex: none;
+	width: 160px;
+	height: 160px;
+	object-fit: contain;
+	background: radial-gradient(circle at 50% 60%, #3a2c1c, #0b0907 72%);
+	border: 1px solid #5a4424;
+	border-radius: 6px;
+	box-shadow: inset 0 0 0 1px #000, 0 6px 18px rgb(0 0 0 / 0.5);
+}
+.boss-shot.icon {
+	padding: 48px;
+	box-sizing: border-box;
+}
+.boss-head h3 {
+	margin: 0;
+	color: var(--gold);
+	font: 28px var(--morpheus);
+	font-variant-caps: small-caps;
+	text-shadow: 1px 1px 0 #000;
+}
+.boss-head p {
+	margin: 6px 0 0;
+	color: #b3a68d;
+	font: 14px var(--friz);
+}
+.loot-cols {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+	gap: 4px 12px;
+}
+@media (max-width: 900px) {
+	/* the list becomes a row to swipe; the chosen boss right under it */
+	.bosses {
+		grid-template-columns: minmax(0, 1fr);
+	}
+	.boss-detail {
+		grid-area: 2 / 1;
+	}
+	.boss-list {
+		grid-auto-flow: column;
+		grid-auto-columns: 280px;
+		overflow-x: auto;
+		padding-bottom: 6px;
+	}
+	.boss-shot {
+		width: 110px;
+		height: 110px;
+	}
+	.boss-head h3 {
+		font-size: 22px;
+	}
 }

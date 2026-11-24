@@ -1,0 +1,49 @@
+---
+// The bosses of a dungeon or raid as the Encounter Journal shows them: the boss buttons on the left (tabs),
+// the chosen boss on the right with its model picture and its loot. Every boss's panel is in the page
+// (hidden="until-found"), so its loot is indexed and found by the browser's find; #boss-N opens it.
+import { wow, type Lang } from '../../lib/atlas/i18n';
+import { L, name, lootId, lootChance, type Boss } from '../../lib/atlas/data';
+import { portrait } from '../../lib/atlas/view';
+import BossRow from './BossRow.astro';
+import LootRow from './LootRow.astro';
+
+interface Props {
+	lang: Lang;
+	bosses: (Boss & { display?: number })[];
+	label: string; // the list's accessible name
+	meta?: (i: number) => string; // the line under a boss name (default: level, rare, items)
+}
+const { lang, bosses, label, meta } = Astro.props;
+const bossName = (b: Boss) => (b.kind === 'trash' ? L(lang, 'TRASH') : b.kind === 'recipes' ? L(lang, 'RECIPES') : b.npcID ? name(lang, `npc:${b.npcID}`, b.name) : b.name);
+const info = (b: Boss, i: number) =>
+	meta?.(i) ?? [b.level && `${wow(L(lang, 'LEVEL'))} ${b.level}`, b.kind === 'rare' && L(lang, 'RARE'), b.loot?.length && wow(L(lang, 'ITEMS'), b.loot.length)].filter(Boolean).join('  ·  ');
+---
+
+<div class="bosses">
+	<div class="boss-list" data-tabs="bosses" focusgroup="tablist nomemory" aria-label={label}>
+		{bosses.map((b, i) => <BossRow lang={lang} boss={b} index={i + 1} meta={info(b, i)} tab={i === 0 ? 'selected' : 'tab'} />)}
+	</div>
+	{
+		bosses.map((b, i) => (
+			<section class="boss-detail" id={`boss-${i + 1}`} data-tab-of="bosses" data-tab={String(i + 1)} role="tabpanel" aria-labelledby={`boss-tab-${i + 1}`} hidden={i ? 'until-found' : undefined}>
+				<header class="boss-head">
+					<img class:list={['boss-shot', !b.display && 'icon']} src={portrait(b)} alt="" width="300" height="300" loading="lazy" />
+					<div>
+						<h3>{bossName(b)}</h3>
+						<p>{info(b, i)}</p>
+					</div>
+				</header>
+				{!!b.loot?.length && (
+					<ul class="loot loot-cols">
+						{b.loot.map((e) => (
+							<li>
+								<LootRow lang={lang} id={lootId(e)} right={lootChance(e) ? `${lootChance(e)}%` : undefined} src={L(lang, 'DROPS_FROM').replace('%s', bossName(b))} />
+							</li>
+						))}
+					</ul>
+				)}
+			</section>
+		))
+	}
+</div>

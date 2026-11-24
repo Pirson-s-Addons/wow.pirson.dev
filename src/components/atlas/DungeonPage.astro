@@ -7,7 +7,7 @@ import { T, wow, type Lang } from '../../lib/atlas/i18n';
 import { addon, dungeonName, name, href, questName, itemName, L, lootId, lootChance, type Boss } from '../../lib/atlas/data';
 import { intro, portrait, quality } from '../../lib/atlas/view';
 import CopyMenu from './CopyMenu.astro';
-import BossRow from './BossRow.astro';
+import BossTabs from './BossTabs.astro';
 import LootRow from './LootRow.astro';
 import QuestRow from './QuestRow.astro';
 import QuestSheet from './QuestSheet.astro';
@@ -76,22 +76,7 @@ const tabs = [
 
 <section class="tab-panel" data-tab-of="dungeon" data-tab="bosses" role="tabpanel" aria-labelledby="tab-bosses" hidden="until-found">
 	<div class="panel-box panel-pad">
-		{
-			bosses.map((b, i) => (
-				<div class="boss-block">
-					<BossRow lang={lang} boss={b} index={i + 1} />
-					{!!b.loot?.length && (
-						<ul class="loot">
-							{b.loot.map((e) => (
-								<li>
-									<LootRow lang={lang} id={lootId(e)} right={lootChance(e) ? `${lootChance(e)}%` : undefined} src={L(lang, 'DROPS_FROM').replace('%s', bossName(b))} />
-								</li>
-							))}
-						</ul>
-					)}
-				</div>
-			))
-		}
+		<BossTabs lang={lang} bosses={bosses} label={L(lang, 'TAB_BOSSES')} />
 	</div>
 </section>
 

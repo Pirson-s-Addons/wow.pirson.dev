@@ -1,11 +1,10 @@
 ---
 // A raid: opening date and size, then tabs for Bosses (with loot when known) and the Attunement chain.
 import { LANG, wow, type Lang } from '../../lib/atlas/i18n';
-import { raidName, name, questName, href, itemName, L, lootId, lootChance, type Raid } from '../../lib/atlas/data';
+import { raidName, questName, href, itemName, L, type Raid } from '../../lib/atlas/data';
 import { icon, itemIcon } from '../../lib/atlas/view';
 import CopyMenu from './CopyMenu.astro';
-import BossRow from './BossRow.astro';
-import LootRow from './LootRow.astro';
+import BossTabs from './BossTabs.astro';
 
 interface Props {
 	lang: Lang;
@@ -15,7 +14,6 @@ const { lang, r } = Astro.props;
 const bosses = r.bosses ?? [];
 const title = raidName(lang, r);
 const when = r.unlock ? new Intl.DateTimeFormat(LANG[lang].html, { dateStyle: 'long' }).format(new Date(`${r.unlock}T12:00:00Z`)) : L(lang, 'RAID_TBA');
-const bossName = (b: (typeof bosses)[number]) => (b.npcID ? name(lang, `npc:${b.npcID}`, b.name) : b.name);
 const att = r.attunement;
 const tabs = [{ key: 'bosses', label: L(lang, 'TAB_BOSSES') }, ...(att ? [{ key: 'attune', label: L(lang, 'RAID_TAB_ATTUNE') }] : [])];
 ---
@@ -33,22 +31,7 @@ const tabs = [{ key: 'bosses', label: L(lang, 'TAB_BOSSES') }, ...(att ? [{ key:
 <section class="tab-panel" data-tab-of="raid" data-tab="bosses" role="tabpanel" aria-labelledby="tab-bosses">
 	<div class="panel-box panel-pad">
 		{!bosses.length && <p>{L(lang, 'RAID_NO_BOSSES')}</p>}
-		{
-			bosses.map((b, i) => (
-				<div class="boss-block">
-					<BossRow lang={lang} boss={b} index={i + 1} meta={wow(L(lang, 'RAID_BOSS_N'), i + 1, bosses.length)} />
-					{!!b.loot?.length && (
-						<ul class="loot">
-							{b.loot.map((e) => (
-								<li>
-									<LootRow lang={lang} id={lootId(e)} right={lootChance(e) ? `${lootChance(e)}%` : undefined} src={L(lang, 'DROPS_FROM').replace('%s', bossName(b))} />
-								</li>
-							))}
-						</ul>
-					)}
-				</div>
-			))
-		}
+		{bosses.length > 0 && <BossTabs lang={lang} bosses={bosses} label={L(lang, 'TAB_BOSSES')} meta={(i) => wow(L(lang, 'RAID_BOSS_N'), i + 1, bosses.length)} />}
 		{bosses.length > 0 && !bosses.some((b) => b.loot) && <p>{L(lang, 'RAID_NO_LOOT')}</p>}
 	</div>
 </section>
