@@ -64,7 +64,9 @@ export const quality = (lang: Lang, id: number) => tip(lang, `item:${id}`)?.q ??
 export const itemIcon = (id: number) => tip('en', `item:${id}`)?.i;
 
 // A dungeon's picture: its card art (the Forever ones) or its first map floor
-export const art = (key: string) =>
-	existsSync(join(process.cwd(), `public/atlas/art/card_${key}.webp`))
-		? `/atlas/art/card_${key}.webp`
-		: `/atlas/maps/${addon.Maps[key]?.[0]?.id ?? key}.webp`;
+const pub = (f: string) => existsSync(join(process.cwd(), 'public', f));
+export const art = (key: string) => {
+	const card = `/atlas/art/card_${key}.webp`;
+	const map = `/atlas/maps/${addon.Maps[key]?.[0]?.id ?? key}.webp`;
+	return pub(card) ? card : pub(map) ? map : '/atlas/art/card_UPCOMING.webp';
+};

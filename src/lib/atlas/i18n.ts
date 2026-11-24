@@ -4,19 +4,19 @@
 
 export const LANGS = ['en', 'es', 'de', 'fr', 'it', 'pt', 'ru', 'ko', 'zh', 'tw'] as const;
 export type Lang = (typeof LANGS)[number];
-export type Section = 'dungeons' | 'quests' | 'items' | 'chains';
+export type Section = 'dungeons' | 'quests' | 'items' | 'chains' | 'raids' | 'events' | 'tiers' | 'reputations' | 'search';
 
 export const LANG: Record<Lang, { name: string; html: string; og: string; sections: Record<Section, string> }> = {
-	en: { name: 'English', html: 'en', og: 'en_US', sections: { dungeons: 'dungeons', quests: 'quests', items: 'items', chains: 'quest-chains' } },
-	es: { name: 'Español', html: 'es', og: 'es_ES', sections: { dungeons: 'mazmorras', quests: 'misiones', items: 'objetos', chains: 'cadenas' } },
-	de: { name: 'Deutsch', html: 'de', og: 'de_DE', sections: { dungeons: 'dungeons', quests: 'quests', items: 'gegenstaende', chains: 'questreihen' } },
-	fr: { name: 'Français', html: 'fr', og: 'fr_FR', sections: { dungeons: 'donjons', quests: 'quetes', items: 'objets', chains: 'suites-de-quetes' } },
-	it: { name: 'Italiano', html: 'it', og: 'it_IT', sections: { dungeons: 'spedizioni', quests: 'missioni', items: 'oggetti', chains: 'catene' } },
-	pt: { name: 'Português', html: 'pt-BR', og: 'pt_BR', sections: { dungeons: 'masmorras', quests: 'missoes', items: 'itens', chains: 'cadeias' } },
-	ru: { name: 'Русский', html: 'ru', og: 'ru_RU', sections: { dungeons: 'подземелья', quests: 'задания', items: 'предметы', chains: 'цепочки' } },
-	ko: { name: '한국어', html: 'ko', og: 'ko_KR', sections: { dungeons: '던전', quests: '퀘스트', items: '아이템', chains: '연계-퀘스트' } },
-	zh: { name: '简体中文', html: 'zh-CN', og: 'zh_CN', sections: { dungeons: '地下城', quests: '任务', items: '物品', chains: '任务链' } },
-	tw: { name: '繁體中文', html: 'zh-TW', og: 'zh_TW', sections: { dungeons: '地城', quests: '任務', items: '物品', chains: '任務鏈' } },
+	en: { name: 'English', html: 'en', og: 'en_US', sections: { dungeons: 'dungeons', quests: 'quests', items: 'items', chains: 'quest-chains', raids: 'raids', events: 'events', tiers: 'tier-sets', reputations: 'reputations', search: 'search' } },
+	es: { name: 'Español', html: 'es', og: 'es_ES', sections: { dungeons: 'mazmorras', quests: 'misiones', items: 'objetos', chains: 'cadenas', raids: 'bandas', events: 'eventos', tiers: 'conjuntos-de-tier', reputations: 'reputaciones', search: 'buscar' } },
+	de: { name: 'Deutsch', html: 'de', og: 'de_DE', sections: { dungeons: 'dungeons', quests: 'quests', items: 'gegenstaende', chains: 'questreihen', raids: 'schlachtzuege', events: 'weltereignisse', tiers: 'tier-sets', reputations: 'ruf', search: 'suche' } },
+	fr: { name: 'Français', html: 'fr', og: 'fr_FR', sections: { dungeons: 'donjons', quests: 'quetes', items: 'objets', chains: 'suites-de-quetes', raids: 'raids', events: 'evenements', tiers: 'ensembles-de-tier', reputations: 'reputations', search: 'recherche' } },
+	it: { name: 'Italiano', html: 'it', og: 'it_IT', sections: { dungeons: 'spedizioni', quests: 'missioni', items: 'oggetti', chains: 'catene', raids: 'incursioni', events: 'eventi', tiers: 'set-tier', reputations: 'reputazioni', search: 'cerca' } },
+	pt: { name: 'Português', html: 'pt-BR', og: 'pt_BR', sections: { dungeons: 'masmorras', quests: 'missoes', items: 'itens', chains: 'cadeias', raids: 'raides', events: 'eventos', tiers: 'conjuntos-de-tier', reputations: 'reputacoes', search: 'busca' } },
+	ru: { name: 'Русский', html: 'ru', og: 'ru_RU', sections: { dungeons: 'подземелья', quests: 'задания', items: 'предметы', chains: 'цепочки', raids: 'рейды', events: 'события', tiers: 'комплекты-тира', reputations: 'репутация', search: 'поиск' } },
+	ko: { name: '한국어', html: 'ko', og: 'ko_KR', sections: { dungeons: '던전', quests: '퀘스트', items: '아이템', chains: '연계-퀘스트', raids: '공격대', events: '이벤트', tiers: '티어-세트', reputations: '평판', search: '검색' } },
+	zh: { name: '简体中文', html: 'zh-CN', og: 'zh_CN', sections: { dungeons: '地下城', quests: '任务', items: '物品', chains: '任务链', raids: '团队副本', events: '节日活动', tiers: '套装', reputations: '声望', search: '搜索' } },
+	tw: { name: '繁體中文', html: 'zh-TW', og: 'zh_TW', sections: { dungeons: '地城', quests: '任務', items: '物品', chains: '任務鏈', raids: '團隊副本', events: '節慶活動', tiers: '套裝', reputations: '聲望', search: '搜尋' } },
 };
 
 type Texts = {
@@ -390,3 +390,183 @@ const CLASS_NAMES: Record<Lang, string> = {
 	tw: '戰士,聖騎士,獵人,盜賊,牧師,薩滿,法師,術士,德魯伊',
 };
 export const className = (lang: Lang, key: string) => CLASS_NAMES[lang].split(',')[CLASS_KEYS.indexOf(key)] ?? key;
+
+// Phase 3 texts: raids, events, tier sets, reputations, search. %1, %2 as in T.
+type Texts2 = {
+	raidTitle: string; // %1 raid
+	raidDesc: string; // %1 raid, %2 players
+	eventTitle: string;
+	eventDesc: string; // %1 event, %2 quests
+	tiersDesc: string;
+	repsTitle: string;
+	repsDesc: string;
+	searchTitle: string;
+	searchLabel: string;
+	searchNone: string;
+	yearly: string; // %1 date, %2 days
+	monthly: string; // %1 days
+	more: string;
+	items: string;
+};
+export const T2: Record<Lang, Texts2> = {
+	en: {
+		raidTitle: '%1: bosses, loot and attunement - WoW Forever',
+		raidDesc: '%1, the %2-player WoW Forever raid: when it opens, its bosses, their loot and the attunement.',
+		eventTitle: '%1: every quest (WoW Forever)',
+		eventDesc: 'The %2 quests of %1 in WoW Forever: levels, rewards and where each one starts.',
+		tiersDesc: 'Tier 0 and Tier 0.5 sets of every class in WoW Forever: each piece, the boss that drops it and the quests of Tier 0.5.',
+		repsTitle: 'New WoW Forever reputations',
+		repsDesc: 'The new reputations of WoW Forever: where to earn them, their side and their rewards.',
+		searchTitle: 'Search the atlas',
+		searchLabel: 'Dungeon, quest, item…',
+		searchNone: 'Nothing matches the search.',
+		yearly: 'Every year from %1, for about %2 days',
+		monthly: 'Every month from the first Sunday, for about %1 days',
+		more: 'More in the atlas',
+		items: 'Items',
+	},
+	es: {
+		raidTitle: '%1: jefes, botín y requisito - WoW Forever',
+		raidDesc: '%1, la banda de %2 jugadores de WoW Forever: cuándo abre, sus jefes, su botín y el requisito para entrar.',
+		eventTitle: '%1: todas las misiones (WoW Forever)',
+		eventDesc: 'Las %2 misiones de %1 en WoW Forever: niveles, recompensas y dónde empieza cada una.',
+		tiersDesc: 'Conjuntos de Tier 0 y Tier 0.5 de cada clase en WoW Forever: cada pieza, el jefe que la suelta y las misiones del Tier 0.5.',
+		repsTitle: 'Reputaciones nuevas de WoW Forever',
+		repsDesc: 'Las reputaciones nuevas de WoW Forever: dónde se consiguen, de qué facción son y sus recompensas.',
+		searchTitle: 'Buscar en el atlas',
+		searchLabel: 'Mazmorra, misión, objeto…',
+		searchNone: 'Nada coincide con la búsqueda.',
+		yearly: 'Cada año desde el %1, unos %2 días',
+		monthly: 'Cada mes desde el primer domingo, unos %1 días',
+		more: 'Más en el atlas',
+		items: 'Objetos',
+	},
+	de: {
+		raidTitle: '%1: Bosse, Beute und Zugangsquest - WoW Forever',
+		raidDesc: '%1, der Schlachtzug für %2 Spieler in WoW Forever: wann er öffnet, seine Bosse, ihre Beute und der Zugang.',
+		eventTitle: '%1: alle Quests (WoW Forever)',
+		eventDesc: 'Die %2 Quests von %1 in WoW Forever: Stufen, Belohnungen und wo jede beginnt.',
+		tiersDesc: 'Tier-0- und Tier-0.5-Sets jeder Klasse in WoW Forever: jedes Teil, der Boss, der es fallen lässt, und die Quests für Tier 0.5.',
+		repsTitle: 'Neue Rufe in WoW Forever',
+		repsDesc: 'Die neuen Rufe in WoW Forever: wo man sie verdient, ihre Fraktion und ihre Belohnungen.',
+		searchTitle: 'Im Atlas suchen',
+		searchLabel: 'Dungeon, Quest, Gegenstand…',
+		searchNone: 'Nichts passt zur Suche.',
+		yearly: 'Jedes Jahr ab dem %1, etwa %2 Tage',
+		monthly: 'Jeden Monat ab dem ersten Sonntag, etwa %1 Tage',
+		more: 'Mehr im Atlas',
+		items: 'Gegenstände',
+	},
+	fr: {
+		raidTitle: '%1 : boss, butin et accès - WoW Forever',
+		raidDesc: '%1, le raid à %2 joueurs de WoW Forever : son ouverture, ses boss, leur butin et la quête d’accès.',
+		eventTitle: '%1 : toutes les quêtes (WoW Forever)',
+		eventDesc: 'Les %2 quêtes de %1 dans WoW Forever : niveaux, récompenses et où chacune commence.',
+		tiersDesc: 'Ensembles Tier 0 et Tier 0.5 de chaque classe dans WoW Forever : chaque pièce, le boss qui la lâche et les quêtes du Tier 0.5.',
+		repsTitle: 'Nouvelles réputations de WoW Forever',
+		repsDesc: 'Les nouvelles réputations de WoW Forever : où les gagner, leur camp et leurs récompenses.',
+		searchTitle: 'Chercher dans l’atlas',
+		searchLabel: 'Donjon, quête, objet…',
+		searchNone: 'Aucun résultat.',
+		yearly: 'Chaque année à partir du %1, environ %2 jours',
+		monthly: 'Chaque mois à partir du premier dimanche, environ %1 jours',
+		more: 'Plus dans l’atlas',
+		items: 'Objets',
+	},
+	it: {
+		raidTitle: '%1: boss, bottino e accesso - WoW Forever',
+		raidDesc: '%1, l’incursione da %2 giocatori di WoW Forever: quando apre, i boss, il loro bottino e l’accesso.',
+		eventTitle: '%1: tutte le missioni (WoW Forever)',
+		eventDesc: 'Le %2 missioni di %1 in WoW Forever: livelli, ricompense e dove inizia ognuna.',
+		tiersDesc: 'Set Tier 0 e Tier 0.5 di ogni classe in WoW Forever: ogni pezzo, il boss che lo rilascia e le missioni del Tier 0.5.',
+		repsTitle: 'Nuove reputazioni di WoW Forever',
+		repsDesc: 'Le nuove reputazioni di WoW Forever: dove guadagnarle, la fazione e le ricompense.',
+		searchTitle: 'Cerca nell’atlante',
+		searchLabel: 'Spedizione, missione, oggetto…',
+		searchNone: 'Nessun risultato.',
+		yearly: 'Ogni anno dal %1, per circa %2 giorni',
+		monthly: 'Ogni mese dalla prima domenica, per circa %1 giorni',
+		more: 'Altro nell’atlante',
+		items: 'Oggetti',
+	},
+	pt: {
+		raidTitle: '%1: chefes, saque e sintonização - WoW Forever',
+		raidDesc: '%1, o raide de %2 jogadores de WoW Forever: quando abre, os chefes, o saque e a sintonização.',
+		eventTitle: '%1: todas as missões (WoW Forever)',
+		eventDesc: 'As %2 missões de %1 em WoW Forever: níveis, recompensas e onde cada uma começa.',
+		tiersDesc: 'Conjuntos Tier 0 e Tier 0.5 de cada classe em WoW Forever: cada peça, o chefe que a derruba e as missões do Tier 0.5.',
+		repsTitle: 'Novas reputações de WoW Forever',
+		repsDesc: 'As novas reputações de WoW Forever: onde conquistá-las, a facção e as recompensas.',
+		searchTitle: 'Buscar no atlas',
+		searchLabel: 'Masmorra, missão, item…',
+		searchNone: 'Nada corresponde à busca.',
+		yearly: 'Todo ano a partir de %1, por cerca de %2 dias',
+		monthly: 'Todo mês a partir do primeiro domingo, por cerca de %1 dias',
+		more: 'Mais no atlas',
+		items: 'Itens',
+	},
+	ru: {
+		raidTitle: '%1: боссы, добыча и допуск - WoW Forever',
+		raidDesc: '%1 — рейд WoW Forever на %2 игроков: когда открывается, боссы, их добыча и допуск.',
+		eventTitle: '%1: все задания (WoW Forever)',
+		eventDesc: 'Задания события «%1» в WoW Forever (%2): уровни, награды и где начинается каждое.',
+		tiersDesc: 'Комплекты тира 0 и тира 0.5 для каждого класса в WoW Forever: каждый предмет, босс, с которого он падает, и задания тира 0.5.',
+		repsTitle: 'Новые репутации WoW Forever',
+		repsDesc: 'Новые репутации WoW Forever: где их получить, их фракция и награды.',
+		searchTitle: 'Поиск по атласу',
+		searchLabel: 'Подземелье, задание, предмет…',
+		searchNone: 'Ничего не найдено.',
+		yearly: 'Каждый год с %1, около %2 дн.',
+		monthly: 'Каждый месяц с первого воскресенья, около %1 дн.',
+		more: 'Еще в атласе',
+		items: 'Предметы',
+	},
+	ko: {
+		raidTitle: '%1: 우두머리, 전리품, 입장 조건 - WoW Forever',
+		raidDesc: 'WoW Forever의 %2인 공격대 %1: 개방일, 우두머리, 전리품, 입장 조건.',
+		eventTitle: '%1: 모든 퀘스트 (WoW Forever)',
+		eventDesc: 'WoW Forever %1의 퀘스트 %2개: 레벨, 보상, 시작 위치.',
+		tiersDesc: 'WoW Forever 모든 직업의 티어 0과 티어 0.5 세트: 각 부위, 떨어뜨리는 우두머리, 티어 0.5 퀘스트.',
+		repsTitle: 'WoW Forever 신규 평판',
+		repsDesc: 'WoW Forever의 신규 평판: 얻는 곳, 진영, 보상.',
+		searchTitle: '아틀라스 검색',
+		searchLabel: '던전, 퀘스트, 아이템…',
+		searchNone: '검색 결과가 없습니다.',
+		yearly: '매년 %1부터 약 %2일',
+		monthly: '매달 첫 일요일부터 약 %1일',
+		more: '아틀라스 더 보기',
+		items: '아이템',
+	},
+	zh: {
+		raidTitle: '%1：首领、掉落与进入条件 - WoW Forever',
+		raidDesc: 'WoW Forever 的 %2 人团队副本 %1：开放时间、首领、掉落和进入条件。',
+		eventTitle: '%1：全部任务（WoW Forever）',
+		eventDesc: 'WoW Forever 中 %1 的 %2 个任务：等级、奖励和每个任务的起点。',
+		tiersDesc: 'WoW Forever 各职业的 T0 和 T0.5 套装：每个部件、掉落它的首领以及 T0.5 任务。',
+		repsTitle: 'WoW Forever 新声望',
+		repsDesc: 'WoW Forever 的新声望：在哪里获得、所属阵营及奖励。',
+		searchTitle: '搜索图鉴',
+		searchLabel: '地下城、任务、物品…',
+		searchNone: '没有匹配的结果。',
+		yearly: '每年 %1 起，约 %2 天',
+		monthly: '每月第一个星期日起，约 %1 天',
+		more: '图鉴中的更多内容',
+		items: '物品',
+	},
+	tw: {
+		raidTitle: '%1：首領、戰利品與進入條件 - WoW Forever',
+		raidDesc: 'WoW Forever 的 %2 人團隊副本 %1：開放時間、首領、戰利品和進入條件。',
+		eventTitle: '%1：全部任務（WoW Forever）',
+		eventDesc: 'WoW Forever 中 %1 的 %2 個任務：等級、獎勵和每個任務的起點。',
+		tiersDesc: 'WoW Forever 各職業的 T0 和 T0.5 套裝：每個部件、掉落它的首領以及 T0.5 任務。',
+		repsTitle: 'WoW Forever 新聲望',
+		repsDesc: 'WoW Forever 的新聲望：在哪裡取得、所屬陣營及獎勵。',
+		searchTitle: '搜尋圖鑑',
+		searchLabel: '地城、任務、物品…',
+		searchNone: '沒有符合的結果。',
+		yearly: '每年 %1 起，約 %2 天',
+		monthly: '每月第一個星期日起，約 %1 天',
+		more: '圖鑑中的更多內容',
+		items: '物品',
+	},
+};

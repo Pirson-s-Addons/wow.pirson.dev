@@ -3,7 +3,7 @@
 // page's URL in every language, and the CurseForge + Discord call to action at the end of every page.
 import '../../styles/custom.css';
 import '../../styles/atlas.css';
-import { LANGS, LANG, T, type Lang } from '../../lib/atlas/i18n';
+import { LANGS, LANG, T, T2, type Lang } from '../../lib/atlas/i18n';
 import { url, type Page } from '../../lib/atlas/data';
 import addons from '../../data/addons.json';
 
@@ -56,6 +56,13 @@ const home = url(lang, { kind: 'home' })!;
 				<span>Pirson's Addons</span>
 			</a>
 			<a class="atlas-home" href={home}>{t.atlas}</a>
+			{
+				page.kind !== 'search' && (
+					<form role="search" class="atlas-search" action={url(lang, { kind: 'search' })}>
+						<input type="search" name="q" placeholder={T2[lang].searchLabel} aria-label={T2[lang].searchTitle} />
+					</form>
+				)
+			}
 			<details class="atlas-langs">
 				<summary aria-label={t.language}>{LANG[lang].name}</summary>
 				<ul>

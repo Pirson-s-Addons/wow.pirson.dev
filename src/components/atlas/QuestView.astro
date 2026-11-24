@@ -67,7 +67,7 @@ const places = (keys: string[] | undefined) => (keys ?? []).map((k) => place(lan
 				{!!q.choice?.length && (
 					<>
 						<p>{L(lang, 'CHOOSE_ONE')}</p>
-						<ul class="loot">
+						<ul class="atlas-loot">
 							{q.choice.map((i) => (
 								<li>
 									<ItemLink lang={lang} id={i} note={count(i)} />
@@ -77,7 +77,7 @@ const places = (keys: string[] | undefined) => (keys ?? []).map((k) => place(lan
 					</>
 				)}
 				{!!q.rewards?.length && (
-					<ul class="loot">
+					<ul class="atlas-loot">
 						{q.rewards.map((i) => (
 							<li>
 								<ItemLink lang={lang} id={i} note={count(i)} />

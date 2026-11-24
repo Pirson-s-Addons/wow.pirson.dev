@@ -18,6 +18,17 @@ export type Quest = {
 	starts?: string[]; ends?: string[]; name?: string; event?: string; repeatable?: boolean; unavailable?: boolean; breadcrumb?: boolean;
 };
 type Place = { name: string; npcID?: number; mapID?: number; x?: number; y?: number; inside?: boolean };
+export type Raid = {
+	key: string; name: string; size: number; isForever?: boolean; unlock?: string; season?: string; instanceID?: number;
+	names?: Record<string, string>; bosses?: Boss[]; lootSource?: string; entrance?: { mapID: number; x: number; y: number };
+	attunement?: { item: number; Alliance?: number[]; Horde?: number[] };
+};
+export type GameEvent = {
+	key: string; names: Record<string, string>; quests: number[]; item?: number; hours?: number; monthly?: boolean;
+	yearly?: [number, number, number]; dates?: [string, string][];
+};
+type TierSet = { key: string; pieceQuest?: number[]; quests?: number[]; questNames?: string[] } & Record<string, { name: string; [piece: number]: number }>;
+export type Reputation = { id: number; name: string; zone?: string; side?: string; rewards?: number; raid?: string; dungeon?: string; icons?: string[] };
 type Dungeon = {
 	key: string; name: string; minLevel: number; maxLevel: number; isForever: boolean; faction: string; quests: number[];
 	names?: Record<string, string>; entrance?: { mapID: number; x: number; y: number };
@@ -30,6 +41,10 @@ export const addon = read('addon.json') as {
 	Bosses: Record<string, Boss[]>;
 	Places: Record<string, Place>;
 	Maps: Record<string, { id: number | string; pins?: [number, number, number][] }[]>;
+	Raids: Raid[];
+	EventList: GameEvent[];
+	TierSets: TierSet[];
+	Reputations: Reputation[];
 };
 export const texts = read('locales.json') as Record<Lang, Record<string, string>>;
 const tips = Object.fromEntries(LANGS.map((l) => [l, read(`wowhead/${l}.json`)])) as Record<Lang, Record<string, Tip>>;
@@ -59,6 +74,11 @@ export const dungeonName = (lang: Lang, d: Dungeon) => {
 	return wing ? `${zone} (${wing})` : zone;
 };
 
+export const raidName = (lang: Lang, r: Raid) =>
+	lang === 'en' ? r.name : (r.names?.[ADDON_CODE[lang]] ?? name(lang, `zone:${(AREA as Record<string, number>)[r.key]}`, r.name));
+export const eventName = (lang: Lang, e: GameEvent) => e.names[ADDON_CODE[lang]] ?? e.names.enUS ?? e.key;
+export const eventQuests = (e: GameEvent) => e.quests.filter((id) => addon.Quests[id]);
+
 // --- chains: one page per last step (the longest list that ends there; faction or class branches that
 // end in the same quest share it), named after that step ---
 export const chains = (() => {
@@ -84,7 +104,8 @@ export const chainPage = (steps: number[]) => chains.find((c) => c.includes(step
 export const dungeonOfQuest = new Map<number, Dungeon[]>();
 for (const d of addon.Dungeons) for (const id of d.quests) dungeonOfQuest.set(id, [...(dungeonOfQuest.get(id) ?? []), d]);
 
-export type Source = { dungeon: Dungeon; boss: Boss; chance?: number; quest?: boolean };
+// where an item drops: a boss of a dungeon or of a raid
+export type Source = { dungeon?: Dungeon; raid?: Raid; boss: Boss; chance?: number; quest?: boolean };
 export const itemDrops = new Map<number, Source[]>();
 export const itemRewards = new Map<number, number[]>();
 export const itemNeeded = new Map<number, number[]>();
@@ -94,6 +115,11 @@ const push = <K, V>(m: Map<K, V[]>, k: K, v: V) => m.set(k, [...(m.get(k) ?? [])
 for (const d of addon.Dungeons) {
 	for (const boss of addon.Bosses[d.key] ?? []) {
 		for (const e of boss.loot ?? []) push(itemDrops, lootId(e), { dungeon: d, boss, chance: lootChance(e), quest: !Array.isArray(e) && !!e.quest });
+	}
+}
+for (const raid of addon.Raids) {
+	for (const boss of raid.bosses ?? []) {
+		for (const e of boss.loot ?? []) push(itemDrops, lootId(e), { raid, boss, chance: lootChance(e) });
 	}
 }
 for (const [id, q] of Object.entries(addon.Quests)) {
@@ -107,7 +133,12 @@ export type Page =
 	| { kind: 'dungeon'; d: Dungeon }
 	| { kind: 'quest'; id: number }
 	| { kind: 'item'; id: number }
-	| { kind: 'chain'; steps: number[] };
+	| { kind: 'chain'; steps: number[] }
+	| { kind: 'raid'; r: Raid }
+	| { kind: 'event'; e: GameEvent }
+	| { kind: 'tiers' }
+	| { kind: 'reputations' }
+	| { kind: 'search' };
 
 const base = (lang: Lang, section?: Section) => '/' + [lang === 'en' ? '' : lang, section && LANG[lang].sections[section]].filter(Boolean).join('/');
 const at = (lang: Lang, section: Section, s: string) => `${base(lang, section)}/${s}/`;
@@ -127,12 +158,26 @@ export function url(lang: Lang, p: Page): string | null {
 			return at(lang, 'items', `${p.id}-${slug(itemName(lang, p.id))}`);
 		case 'chain':
 			return at(lang, 'chains', `${p.steps.at(-1)}-${slug(questName(lang, p.steps.at(-1)!))}`);
+		case 'raid':
+			return at(lang, 'raids', slug(raidName(lang, p.r)));
+		case 'event':
+			return at(lang, 'events', slug(eventName(lang, p.e)));
+		case 'tiers':
+		case 'reputations':
+		case 'search':
+			return base(lang, p.kind) + '/';
 	}
 }
 // link to a page: the language's own, or the English one
 export const href = (lang: Lang, p: Page) => url(lang, p) ?? url('en', p)!;
 
-export const allItems = [...new Set([...itemDrops.keys(), ...itemRewards.keys(), ...itemNeeded.keys()])].filter((id) => tips.en[`item:${id}`]);
+// tier set pieces: class -> [8 item ids], per set
+export const tierPieces = (set: TierSet) =>
+	Object.entries(set)
+		.filter(([k]) => /^[A-Z]+$/.test(k))
+		.map(([cls, p]) => ({ cls, name: (p as { name: string }).name, items: Array.from({ length: 8 }, (_, i) => (p as Record<number, number>)[i + 1]).filter(Boolean) }));
+const tierItems = addon.TierSets.flatMap((s) => tierPieces(s).flatMap((c) => c.items));
+export const allItems = [...new Set([...itemDrops.keys(), ...itemRewards.keys(), ...itemNeeded.keys(), ...tierItems])].filter((id) => tips.en[`item:${id}`]);
 
 export function pages(): { lang: Lang; path: string; page: Page }[] {
 	const list: Page[] = [
@@ -141,6 +186,11 @@ export function pages(): { lang: Lang; path: string; page: Page }[] {
 		...Object.keys(addon.Quests).map((id) => ({ kind: 'quest', id: +id }) as const),
 		...allItems.map((id) => ({ kind: 'item', id }) as const),
 		...chains.map((steps) => ({ kind: 'chain', steps }) as const),
+		...addon.Raids.map((r) => ({ kind: 'raid', r }) as const),
+		...addon.EventList.filter((e) => eventQuests(e).length).map((e) => ({ kind: 'event', e }) as const),
+		{ kind: 'tiers' },
+		{ kind: 'reputations' },
+		{ kind: 'search' },
 	];
 	const out = [];
 	for (const page of list) {

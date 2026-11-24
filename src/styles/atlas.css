@@ -71,12 +71,42 @@ body.atlas {
 	font-size: 1.15rem;
 }
 .atlas-home {
-	margin-inline-end: auto;
 	text-decoration: none;
 	font-weight: 700;
 }
+.atlas-search {
+	flex: 1;
+	max-width: 22rem;
+	margin-inline-start: auto;
+}
+.atlas-search input {
+	box-sizing: border-box;
+	width: 100%;
+	padding: 0.45rem 0.9rem;
+	color: var(--text);
+	background: rgb(255 255 255 / 0.06);
+	border: 1px solid var(--glass-line);
+	border-radius: 999px;
+	font: inherit;
+}
+.atlas-search input:focus-visible {
+	outline: 2px solid var(--arcane);
+	outline-offset: 1px;
+}
+.atlas-search.big {
+	max-width: 36rem;
+	margin: 1rem 0 0;
+}
+.atlas-search.big input {
+	padding: 0.8rem 1.2rem;
+	font-size: 1.1rem;
+}
 .atlas-langs {
 	position: relative;
+	margin-inline-start: auto;
+}
+.atlas-search + .atlas-langs {
+	margin-inline-start: 0;
 }
 .atlas-langs summary {
 	cursor: pointer;
@@ -233,7 +263,7 @@ body.atlas {
 
 /* rows: dark plates on the parchment, like the addon's quest buttons */
 .quest-list,
-.loot,
+.atlas-loot,
 .chain-steps,
 .needs {
 	margin: 0;
@@ -267,7 +297,7 @@ body.atlas {
 	font-weight: 800;
 	font-variant-numeric: tabular-nums;
 }
-.loot {
+.atlas-loot {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
 	gap: 0.4rem;
@@ -564,7 +594,42 @@ body.atlas {
 	font-size: 0.8rem;
 }
 
+.set-title {
+	margin: 1rem 0 0.5rem;
+	color: var(--ink-head);
+	font-size: 1.15rem;
+}
+.rep-list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.rep-list .quest-row {
+	align-items: center;
+}
+.rep-list img {
+	border-radius: 0.3rem;
+}
+.atlas-section .quest-row a {
+	color: var(--gold);
+	font-weight: 600;
+}
+.atlas-section .quest-row small {
+	color: var(--muted);
+}
+
 @media (max-width: 48rem) {
+	.atlas-top {
+		flex-wrap: wrap;
+	}
+	.atlas-search {
+		order: 3;
+		flex-basis: 100%;
+		max-width: none;
+	}
+	.atlas-search + .atlas-langs {
+		margin-inline-start: auto;
+	}
 	.dungeon-hero,
 	.atlas-cta {
 		grid-template-columns: 1fr;

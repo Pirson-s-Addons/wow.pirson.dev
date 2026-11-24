@@ -38,7 +38,7 @@ const t = T[lang];
 						</p>
 					)}
 					{!!(q.choice?.length || q.rewards?.length) && (
-						<ul class="loot">
+						<ul class="atlas-loot">
 							{[...(q.choice ?? []), ...(q.rewards ?? [])].map((i) => (
 								<li>
 									<ItemLink lang={lang} id={i} />

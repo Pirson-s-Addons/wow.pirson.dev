@@ -38,8 +38,18 @@ for (const set of d.TierSets) {
 	for (const [cls, pieces] of Object.entries(set)) {
 		if (/^[A-Z]+$/.test(cls)) for (let i = 1; i <= 8; i++) add('item', pieces[i]);
 	}
+	for (const q of set.quests ?? []) add('quest', q);
 }
 for (const dg of d.Dungeons) add('zone', AREA[dg.key]);
+for (const r of d.Raids) {
+	add('zone', AREA[r.key]);
+	for (const b of r.bosses ?? []) {
+		add('npc', b.npcID);
+		for (const e of b.loot ?? []) add('item', first(e));
+	}
+	add('item', r.attunement?.item);
+}
+for (const ev of d.EventList) add('item', ev.item);
 
 // --- fetch ---
 const strip = (html) => html.replace(/<!--.*?-->/gs, '').replace(/\s+/g, ' ').trim();
@@ -60,6 +70,11 @@ const tip = async (env, type, id, locale) => {
 const untranslated = (name) => /^\[.*\]$/.test(name);
 const get = async (type, id, locale) => {
 	const j = await tip('forever', type, id, locale);
+	// not in Forever yet (raid loot still from Classic): the whole Classic tooltip
+	if (j === null && type === 'item') {
+		const c = await tip('classic', type, id, locale);
+		return c && !untranslated(c.name) ? { n: c.name, q: c.quality, i: c.icon, t: strip(c.tooltip ?? ''), src: 'classic' } : c && null;
+	}
 	if (!j) return j;
 	const z = type === 'npc' || type === 'object' ? { z: j.map?.zone ?? null } : {}; // zone, for "where"
 	if (!untranslated(j.name)) return { n: j.name, q: j.quality, i: j.icon, t: strip(j.tooltip ?? ''), ...z };
@@ -78,7 +93,7 @@ for (const lang of langs) {
 	const cache = existsSync(file) && !process.env.REFRESH ? JSON.parse(readFileSync(file, 'utf8')) : {};
 	const todo = Object.entries(ids).flatMap(([type, set]) => [...set].map((id) => `${type}:${id}`)).filter(
 		// untranslated ones are asked again each run; NPCs and objects cached before zones were kept, once more
-		(k) => !(k in cache) || (cache[k] && (!cache[k].n || (/^(npc|object):/.test(k) && !('z' in cache[k])))),
+		(k) => !(k in cache) || cache[k] === null || !cache[k].n || (/^(npc|object):/.test(k) && !('z' in cache[k])),
 	);
 	// keeps only what the addon still uses, so removed IDs drop out of the cache
 	const wanted = new Set(Object.entries(ids).flatMap(([type, set]) => [...set].map((id) => `${type}:${id}`)));

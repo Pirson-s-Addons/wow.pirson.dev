@@ -1,7 +1,7 @@
 ---
 // Atlas home: every dungeon, the new Forever ones first, by level.
-import { T, fmt, wow, type Lang } from '../../lib/atlas/i18n';
-import { addon, dungeonName, href, L } from '../../lib/atlas/data';
+import { T, T2, fmt, wow, LANG, type Lang } from '../../lib/atlas/i18n';
+import { addon, dungeonName, raidName, eventName, eventQuests, href, L } from '../../lib/atlas/data';
 import { art } from '../../lib/atlas/view';
 
 interface Props {
@@ -9,6 +9,8 @@ interface Props {
 }
 const { lang } = Astro.props;
 const t = T[lang];
+const opens = (d?: string) => (d ? new Intl.DateTimeFormat(LANG[lang].html, { dateStyle: 'long' }).format(new Date(`${d}T12:00:00Z`)) : L(lang, 'RAID_TBA'));
+const events = addon.EventList.filter((e) => eventQuests(e).length);
 const byLevel = [...addon.Dungeons].sort((a, b) => a.minLevel - b.minLevel || a.maxLevel - b.maxLevel);
 const groups = [
 	{ title: t.newDungeons, list: byLevel.filter((d) => d.isForever) },
@@ -47,3 +49,47 @@ const groups = [
 		</section>
 	))
 }
+
+<section class="atlas-section">
+	<h2>{L(lang, 'TAB_RAIDS')}</h2>
+	<ul class="dungeon-grid">
+		{
+			addon.Raids.map((r) => (
+				<li>
+					<a class="dungeon-card" href={href(lang, { kind: 'raid', r })}>
+						<img src={art(r.key)} alt="" width="512" height="256" loading="lazy" />
+						<span class="name">{raidName(lang, r)}</span>
+						<span class="meta">
+							{wow(L(lang, 'RAID_PLAYERS'), r.size)} · {wow(L(lang, 'RAID_OPENS'), opens(r.unlock))}
+						</span>
+					</a>
+				</li>
+			))
+		}
+	</ul>
+</section>
+
+<section class="atlas-section">
+	<h2>{L(lang, 'TAB_EVENTS')}</h2>
+	<ul class="quest-list event-list">
+		{
+			events.map((e) => (
+				<li class="quest-row">
+					<a href={href(lang, { kind: 'event', e })}>{eventName(lang, e)}</a>
+					<small>
+						{eventQuests(e).length} {L(lang, 'TAB_QUESTS')}
+					</small>
+				</li>
+			))
+		}
+	</ul>
+</section>
+
+<section class="atlas-section">
+	<h2>{T2[lang].more}</h2>
+	<nav class="jump" aria-label={T2[lang].more}>
+		<a href={href(lang, { kind: 'tiers' })}>{L(lang, 'TIER_TITLE')}</a>
+		<a href={href(lang, { kind: 'reputations' })}>{T2[lang].repsTitle}</a>
+		<a href={href(lang, { kind: 'search' })}>{T2[lang].searchTitle}</a>
+	</nav>
+</section>

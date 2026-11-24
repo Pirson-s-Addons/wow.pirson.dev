@@ -2,14 +2,19 @@
 // Every Atlas page in every language: /dungeons/…, /es/mazmorras/…, /de/dungeons/… (src/lib/atlas/data.ts
 // builds the paths). Starlight keeps the other URLs: its pages and these never share a path.
 import assert from 'node:assert/strict';
-import { T, fmt, type Lang } from '../lib/atlas/i18n';
-import { pages, dungeonName, questName, itemName, href, addon, type Page } from '../lib/atlas/data';
+import { T, T2, fmt, type Lang } from '../lib/atlas/i18n';
+import { pages, dungeonName, questName, itemName, raidName, eventName, eventQuests, href, addon, L, type Page } from '../lib/atlas/data';
 import Layout from '../components/atlas/Layout.astro';
 import Home from '../components/atlas/Home.astro';
 import DungeonView from '../components/atlas/DungeonView.astro';
 import QuestView from '../components/atlas/QuestView.astro';
 import ItemView from '../components/atlas/ItemView.astro';
 import ChainView from '../components/atlas/ChainView.astro';
+import RaidView from '../components/atlas/RaidView.astro';
+import EventView from '../components/atlas/EventView.astro';
+import TierView from '../components/atlas/TierView.astro';
+import RepView from '../components/atlas/RepView.astro';
+import SearchView from '../components/atlas/SearchView.astro';
 
 export function getStaticPaths() {
 	const list = pages();
@@ -43,6 +48,22 @@ const head = (() => {
 			const n = questName(lang, page.steps.at(-1)!);
 			return { title: fmt(t.chainTitle, n), description: fmt(t.chainDesc, n, page.steps.length), crumbs: [{ label: n }] };
 		}
+		case 'raid': {
+			const n = raidName(lang, page.r);
+			return { title: fmt(T2[lang].raidTitle, n), description: fmt(T2[lang].raidDesc, n, page.r.size), crumbs: [{ label: n }] };
+		}
+		case 'event': {
+			const n = eventName(lang, page.e);
+			return { title: fmt(T2[lang].eventTitle, n), description: fmt(T2[lang].eventDesc, n, eventQuests(page.e).length), crumbs: [{ label: n }] };
+		}
+		case 'tiers': {
+			const n = L(lang, 'TIER_TITLE');
+			return { title: `${n} (Tier 0, Tier 0.5) - WoW Forever`, description: T2[lang].tiersDesc, crumbs: [{ label: n }] };
+		}
+		case 'reputations':
+			return { title: T2[lang].repsTitle, description: T2[lang].repsDesc, crumbs: [{ label: T2[lang].repsTitle }] };
+		case 'search':
+			return { title: `${T2[lang].searchTitle} - WoW Forever`, description: t.homeDesc, crumbs: [{ label: T2[lang].searchTitle }] };
 	}
 })();
 ---
@@ -53,4 +74,9 @@ const head = (() => {
 	{page.kind === 'quest' && <QuestView lang={lang} id={page.id} />}
 	{page.kind === 'item' && <ItemView lang={lang} id={page.id} />}
 	{page.kind === 'chain' && <ChainView lang={lang} steps={page.steps} />}
+	{page.kind === 'raid' && <RaidView lang={lang} r={page.r} />}
+	{page.kind === 'event' && <EventView lang={lang} e={page.e} />}
+	{page.kind === 'tiers' && <TierView lang={lang} />}
+	{page.kind === 'reputations' && <RepView lang={lang} />}
+	{page.kind === 'search' && <SearchView lang={lang} />}
 </Layout>

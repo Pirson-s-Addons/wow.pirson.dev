@@ -60,7 +60,7 @@ const bossName = (b: Boss) => {
 					{b.kind === 'rare' && <small class="tag">{L(lang, 'RARE')}</small>}
 					<Faction lang={lang} faction={b.faction} />
 				</h3>
-				<ul class="loot">
+				<ul class="atlas-loot">
 					{(b.loot ?? []).map((e) => {
 						const c = lootChance(e);
 						return (

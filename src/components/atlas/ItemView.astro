@@ -1,7 +1,7 @@
 ---
 // An item: its tooltip, the bosses that drop it (with chance), the quests that give it or need it.
 import { T, type Lang } from '../../lib/atlas/i18n';
-import { addon, itemName, itemDrops, itemRewards, itemNeeded, dungeonName, href, name, questName, L } from '../../lib/atlas/data';
+import { addon, itemName, itemDrops, itemRewards, itemNeeded, dungeonName, raidName, href, name, questName, L } from '../../lib/atlas/data';
 import { icon, itemIcon, quality, tooltipHtml } from '../../lib/atlas/view';
 
 interface Props {
@@ -43,7 +43,11 @@ const quests = (list: number[]) => list.map((q) => ({ id: q, level: addon.Quests
 							<tr>
 								<td>{bossName(s.boss)}</td>
 								<td>
-									<a href={href(lang, { kind: 'dungeon', d: s.dungeon })}>{dungeonName(lang, s.dungeon)}</a>
+									{s.dungeon ? (
+										<a href={href(lang, { kind: 'dungeon', d: s.dungeon })}>{dungeonName(lang, s.dungeon)}</a>
+									) : (
+										s.raid && <a href={href(lang, { kind: 'raid', r: s.raid })}>{raidName(lang, s.raid)}</a>
+									)}
 								</td>
 								<td>{s.chance ? `${s.chance}%` : '—'}</td>
 							</tr>
