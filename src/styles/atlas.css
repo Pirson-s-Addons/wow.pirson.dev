@@ -2542,3 +2542,42 @@ body.atlas {
 :root:is(:lang(ko), :lang(zh-CN), :lang(zh-TW)) :is(.panel-title, .page-head h1, .boss-title h3, .card .name) {
 	font-variant-caps: normal;
 }
+/* an item's page: its icon by the name, the tooltip at the game's width on dark stone, the sources beside it */
+.item-head {
+	align-items: center;
+}
+.item-head .icon40 {
+	position: relative;
+	left: auto;
+	top: auto;
+	flex: none;
+}
+.item-head h1 {
+	font-family: var(--friz);
+	font-variant-caps: normal;
+}
+.item-split {
+	grid-template-columns: minmax(0, 380px) minmax(0, 1fr);
+	align-items: start;
+}
+.item-card {
+	display: grid;
+	justify-items: center;
+	gap: 14px;
+	padding: 22px 18px 18px;
+}
+.gtt.static {
+	position: static;
+	display: block;
+	box-sizing: border-box;
+	width: calc(100% - 44px); /* the icon hangs outside on the left */
+	max-width: 320px;
+	margin: 0 0 0 44px;
+	opacity: 1;
+	translate: none;
+}
+@media (max-width: 900px) {
+	.item-split {
+		grid-template-columns: minmax(0, 1fr);
+	}
+}

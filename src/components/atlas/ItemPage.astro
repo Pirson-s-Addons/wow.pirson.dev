@@ -1,10 +1,9 @@
 ---
-// An item: its game tooltip and loot row; where it drops (boss, dungeon, chance) and the quests that give
+// An item: its game tooltip as the game draws it, and beside it where it drops (boss, dungeon, chance) and the quests that give
 // it or need it.
 import { T, type Lang } from '../../lib/atlas/i18n';
 import { addon, itemName, itemDrops, itemRewards, itemNeeded, dungeonName, raidName, href, name, L } from '../../lib/atlas/data';
-import { icon, itemIcon, itemType, quality, tooltipHtml, portrait } from '../../lib/atlas/view';
-import LootRow from './LootRow.astro';
+import { icon, itemIcon, itemType, quality, tooltipHtml, portrait, QUALITY } from '../../lib/atlas/view';
 import QuestRow from './QuestRow.astro';
 
 interface Props {
@@ -19,11 +18,21 @@ const bossName = (b: (typeof drops)[number]['boss']) => (b.kind === 'trash' ? L(
 const html = tooltipHtml(lang, `item:${id}`);
 ---
 
-<header class="page-head">
-	<h1 class:list={[`q${quality(lang, id)}`]} style="font-family:var(--friz);font-variant-caps:normal">{itemName(lang, id)}</h1>
+<header class="page-head item-head">
+	<span class="icon40" style={`--qc:${QUALITY[quality(lang, id)]}`}><img src={icon(itemIcon(id), 'large')} alt="" width="40" height="40" /></span>
+	<h1 style={`color:${QUALITY[quality(lang, id)]}`}>{itemName(lang, id)}</h1>
 	<span class="lv">{itemType(lang, id)}</span>
 </header>
-<div class="split">
+<div class="split item-split">
+	<div class="panel-box item-card">
+		<div class="gtt static">
+			<div class="box">
+				<img class="ico" src={icon(itemIcon(id), 'large')} alt="" width="40" height="40" />
+				{html ? <Fragment set:html={html} /> : <b class={`q${quality(lang, id)}`}>{itemName(lang, id)}</b>}
+			</div>
+		</div>
+		<a class="redbtn" href={`https://www.wowhead.com/${lang === 'en' ? '' : `${lang === 'zh' ? 'cn' : lang}/`}forever/item=${id}`} rel="noopener">{L(lang, 'WOWHEAD')}</a>
+	</div>
 	<div>
 		{
 			drops.length > 0 && (
@@ -72,14 +81,5 @@ const html = tooltipHtml(lang, `item:${id}`);
 				) : null,
 			)
 		}
-	</div>
-	<div class="parchment">
-		<div class="gtt" style="position:static;max-width:none;width:auto;margin:0 0 14px 46px;opacity:1">
-			<div class="box">
-				<img class="ico" src={icon(itemIcon(id), 'large')} alt="" width="40" height="40" />
-				{html ? <Fragment set:html={html} /> : <b class={`q${quality(lang, id)}`}>{itemName(lang, id)}</b>}
-			</div>
-		</div>
-		<ul class="loot"><li><LootRow lang={lang} id={id} /></li></ul>
 	</div>
 </div>
