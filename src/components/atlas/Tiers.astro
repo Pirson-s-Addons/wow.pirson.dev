@@ -18,7 +18,7 @@ const source = (id: number) => {
 	const boss = s.boss.npcID ? name(lang, `npc:${s.boss.npcID}`, s.boss.name) : s.boss.name;
 	return L(lang, 'DROPS_FROM').replace('%s', `${boss} - ${s.dungeon ? dungeonName(lang, s.dungeon) : raidName(lang, s.raid!)}`);
 };
-const CLASS_COLOR: Record<string, string> = { WARRIOR: '#c69b6d', PALADIN: '#f48cba', HUNTER: '#aad372', ROGUE: '#fff468', PRIEST: '#ffffff', SHAMAN: '#0070dd', MAGE: '#3fc7eb', WARLOCK: '#8788ee', DRUID: '#ff7c0a' };
+const CLASS_COLOR: Record<string, string> = { WARRIOR: '#c69b6d', PALADIN: '#f48cba', HUNTER: '#aad372', ROGUE: '#fff468', PRIEST: '#ffffff', SHAMAN: '#3d9bff', MAGE: '#3fc7eb', WARLOCK: '#8788ee', DRUID: '#ff7c0a' };
 ---
 
 <div class="panel-box panel-pad">

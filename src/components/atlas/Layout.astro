@@ -28,6 +28,7 @@ const canonical = site + url(lang, page);
 const curse = addons.find((a) => a.id === 'dq')?.url ?? 'https://www.curseforge.com/members/pirson/projects';
 const discord = 'https://discord.gg/BM3hXNZXTh';
 const home = url(lang, { kind: 'home' })!;
+const COPIED: Record<Lang, [string, string]> = { en: ['Copied: paste it in the game chat', 'Copy failed'], es: ['Copiado: pégalo en el chat del juego', 'No se pudo copiar'], de: ['Kopiert: im Spielchat einfügen', 'Kopieren fehlgeschlagen'], fr: ['Copié : collez-le dans le chat du jeu', 'Échec de la copie'], it: ['Copiato: incollalo nella chat del gioco', 'Copia non riuscita'], pt: ['Copiado: cole no chat do jogo', 'Falha ao copiar'], ru: ['Скопировано: вставьте в чат игры', 'Не удалось скопировать'], ko: ['복사됨: 게임 채팅에 붙여 넣으세요', '복사 실패'], zh: ['已复制：粘贴到游戏聊天框', '复制失败'], tw: ['已複製：貼到遊戲聊天框', '複製失敗'] };
 const DOWNLOAD: Record<Lang, string> = { en: 'Download', es: 'Descargar', de: 'Herunterladen', fr: 'Télécharger', it: 'Scarica', pt: 'Baixar', ru: 'Скачать', ko: '다운로드', zh: '下载', tw: '下載' };
 const nav: { key: Section; label: string; href: string }[] = [
 	{ key: 'raids', label: L(lang, 'TAB_RAIDS'), href: url(lang, { kind: 'raids' })! },
@@ -59,7 +60,7 @@ const nav: { key: Section; label: string; href: string }[] = [
 		<meta name="twitter:card" content="summary_large_image" />
 		<script defer src="/_vercel/insights/script.js"></script>
 	</head>
-	<body class="atlas">
+	<body class="atlas" data-copied={COPIED[lang][0]} data-copy-failed={COPIED[lang][1]}>
 		<header class="site-top">
 			<a class="brand" href={home}><img src="/atlas/art/logo_dqa.webp" alt="" width="40" height="40" /><span>Dungeon Quest Atlas</span></a>
 			<a class="btn-icon" href={discord} rel="noopener" aria-label="Discord" title="Discord">
@@ -156,6 +157,50 @@ const nav: { key: Section; label: string; href: string }[] = [
 					true,
 				);
 			}
+			// copy buttons (command="--copy" commandfor=<the text>): the /way waypoints for the game chat
+			const timers = new WeakMap<Element, number>();
+			const report = (button: HTMLElement, ok: boolean) => {
+				const tip = button.nextElementSibling as HTMLElement;
+				clearTimeout(timers.get(button));
+				button.removeAttribute('data-copied');
+				button.removeAttribute('data-failed');
+				tip.textContent = '';
+				void button.offsetWidth;
+				button.setAttribute(ok ? 'data-copied' : 'data-failed', '');
+				requestAnimationFrame(() => (tip.textContent = ok ? document.body.dataset.copied! : document.body.dataset.copyFailed!));
+				timers.set(
+					button,
+					window.setTimeout(() => {
+						button.removeAttribute('data-copied');
+						button.removeAttribute('data-failed');
+						tip.textContent = '';
+					}, 2500),
+				);
+			};
+			const copy = async (button: HTMLElement, target: HTMLElement) => {
+				const text = target.innerText.trim();
+				if (!text) return;
+				try {
+					await navigator.clipboard.writeText(text);
+					report(button, true);
+				} catch {
+					report(button, false);
+				}
+			};
+			if ('CommandEvent' in window) {
+				document.addEventListener('command', (e) => {
+					const ev = e as Event & { command: string; source: HTMLElement };
+					if (ev.command === '--copy') copy(ev.source, e.target as HTMLElement);
+				}, true);
+			} else {
+				document.addEventListener('click', (e) => {
+					if (e.defaultPrevented) return;
+					const button = (e.target as Element).closest<HTMLElement>('button[command="--copy"]');
+					const target = button && document.getElementById(button.getAttribute('commandfor')!);
+					if (button && target) copy(button, target);
+				});
+			}
+
 			// the tabs of a page: selection follows focus; panels hidden="until-found" stay searchable
 			for (const tabs of document.querySelectorAll<HTMLElement>('[data-tabs]')) {
 				const buttons = [...tabs.querySelectorAll<HTMLButtonElement>('button')];

@@ -5,7 +5,8 @@
 // hidden with hidden="until-found", so their text stays in the page for search engines.
 import { T, wow, type Lang } from '../../lib/atlas/i18n';
 import { addon, dungeonName, name, href, questName, itemName, L, lootId, lootChance, type Boss } from '../../lib/atlas/data';
-import { intro, portrait, quality } from '../../lib/atlas/view';
+import { intro, portrait, quality, way } from '../../lib/atlas/view';
+import Way from './Way.astro';
 import BossRow from './BossRow.astro';
 import LootRow from './LootRow.astro';
 import QuestRow from './QuestRow.astro';
@@ -39,6 +40,7 @@ const tabs = [
 	<h1>{title}</h1>
 	<span class="lv"><b>{wow(L(lang, 'LEVEL'))}</b>{d.minLevel}-{d.maxLevel}</span>
 	{d.faction !== 'Both' && <span class:list={['fac', d.faction.toLowerCase()]} title={L(lang, `FACTION_${d.faction.toUpperCase()}`)} />}
+	{d.entrance && <Way id={`way-entrance-${d.key}`} text={way(d.entrance.mapID, d.entrance.x, d.entrance.y, title)} label={`${L(lang, 'MAP_ENTRANCE')}: ${title}`} />}
 </header>
 <p class="intro">
 	{text.lead}

@@ -1,30 +1,55 @@
 ---
-// A quest row of the left page (QuestPanel list, 44 high): status icon, title in gold, "Requires level N
-// · Chain x/y", faction crest and level. A link to the quest's page.
+// A quest row of the list (QuestPanel, dark row): status icon, title in gold, "Requires level N · Chain x/y",
+// faction crest and level; a link to the quest's page. A quest of a chain carries the whole chain under
+// it, as the addon unfolds it under the chosen quest: open on that quest, a click away on the others.
 import { wow, type Lang } from '../../lib/atlas/i18n';
-import { addon, href, questName, L } from '../../lib/atlas/data';
+import { addon, href, questName, chainOf, L } from '../../lib/atlas/data';
 
 interface Props {
 	lang: Lang;
 	id: number;
 	current?: boolean;
+	fold?: boolean; // false: no chain under the row (a list that is itself a chain)
 }
-const { lang, id, current } = Astro.props;
+const { lang, id, current, fold = true } = Astro.props;
 const q = addon.Quests[id] ?? {};
-const chain = Array.isArray(q.chain) ? q.chain : null;
-const second = [q.minLevel && wow(L(lang, 'REQUIRES_LEVEL'), q.minLevel)].filter(Boolean).join('');
+const own = Array.isArray(q.chain) ? q.chain : null;
+const chain = fold ? chainOf(id) : null;
+const second = q.minLevel ? wow(L(lang, 'REQUIRES_LEVEL'), q.minLevel) : '';
+const level = (s: number) => addon.Quests[s]?.level;
 ---
 
 <li>
-	<a class:list={['qrow', chain && 'chain']} href={href(lang, { kind: 'quest', id })} aria-current={current ? 'page' : undefined}>
+	<a class:list={['qrow', own && 'chain']} href={href(lang, { kind: 'quest', id })} aria-current={current ? 'page' : undefined}>
 		<span class:list={['st', q.repeatable && 'repeat']} aria-hidden="true"></span>
 		<span class="tt">{questName(lang, id)}</span>
 		<span class="s2">
 			{second}
-			{chain && <>{second && '  ·  '}<span class="ch">{wow(L(lang, 'CHAIN_SHORT'), chain.indexOf(id) + 1, chain.length)}</span></>}
+			{own && <>{second && '  ·  '}<span class="ch">{wow(L(lang, 'CHAIN_SHORT'), own.indexOf(id) + 1, own.length)}</span></>}
 		</span>
 		{q.faction === 'Alliance' && <span class="fac alliance" title={L(lang, 'FACTION_ALLIANCE')} />}
 		{q.faction === 'Horde' && <span class="fac horde" title={L(lang, 'FACTION_HORDE')} />}
 		<span class="lv">{q.level ?? ''}</span>
 	</a>
+	{
+		chain && chain.length > 1 && (
+			<details class="chain-exp" open={current}>
+				<summary>
+					{L(lang, 'CHAIN_PART')} · {chain.length}
+				</summary>
+				<ol>
+					{chain.map((s, i) => (
+						<li>
+							<a href={href(lang, { kind: 'quest', id: s })} aria-current={s === id ? 'step' : undefined}>
+								<b>{i + 1}.</b>
+								<span class="st" aria-hidden="true" />
+								<span class="nm">{questName(lang, s)}</span>
+								{level(s) && <span class="lv">{level(s)}</span>}
+							</a>
+						</li>
+					))}
+				</ol>
+			</details>
+		)
+	}
 </li>

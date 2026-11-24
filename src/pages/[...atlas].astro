@@ -138,10 +138,11 @@ const q = page.kind === 'quest' ? questHome(page.id) : undefined;
 				list={q.d ? q.d.quests.filter((x) => addon.Quests[x]) : q.e ? eventQuests(q.e) : (q.chain ?? [page.id])}
 				listTitle={q.d ? dungeonName(lang, q.d) : q.e ? eventName(lang, q.e) : L(lang, 'CHAIN_PART')}
 				listHref={q.d ? href(lang, { kind: 'dungeon', d: q.d }) : q.e ? href(lang, { kind: 'event', e: q.e }) : q.chain ? href(lang, { kind: 'chain', steps: q.chain }) : undefined}
+				fold={!!(q.d || q.e)}
 			/>
 		)
 	}
-	{page.kind === 'chain' && <QuestPage lang={lang} id={page.steps.at(-1)!} list={page.steps} listTitle={`${L(lang, 'CHAIN_PART')} · ${fmt(t.chainSteps, page.steps.length)}`} />}
+	{page.kind === 'chain' && <QuestPage lang={lang} id={page.steps.at(-1)!} list={page.steps} listTitle={`${L(lang, 'CHAIN_PART')} · ${fmt(t.chainSteps, page.steps.length)}`} fold={false} />}
 	{page.kind === 'item' && <ItemPage lang={lang} id={page.id} />}
 	{page.kind === 'raid' && <RaidPage lang={lang} r={page.r} />}
 	{page.kind === 'event' && <EventPage lang={lang} e={page.e} />}

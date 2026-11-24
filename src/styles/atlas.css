@@ -1806,3 +1806,338 @@ body.atlas {
 .tutorial p {
 	font-size: 15px;
 }
+
+/* ---------- /way waypoints and their copy buttons ---------- */
+.way {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	margin-left: 6px;
+	vertical-align: middle;
+}
+.way code {
+	padding: 2px 6px;
+	color: #f3e7c9;
+	font: 12px/1.4 ui-monospace, 'Cascadia Mono', Consolas, monospace;
+	background: rgb(20 13 5 / 0.85);
+	border: 1px solid #6b5228;
+	border-radius: 3px;
+	white-space: nowrap;
+}
+.copy {
+	position: relative;
+	display: inline-flex;
+}
+.copy-button {
+	display: grid;
+	place-items: center;
+	min-inline-size: 26px;
+	min-block-size: 26px;
+	padding: 0;
+	cursor: pointer;
+	color: var(--gold);
+	background: #1d150c;
+	border: 1px solid #8b7546;
+	border-radius: 4px;
+}
+.copy-button svg {
+	width: 15px;
+	height: 15px;
+	fill: currentColor;
+}
+.copy-button:hover {
+	color: #fff;
+}
+.copy-button[data-copied] {
+	color: #40c040;
+	border-color: #40c040;
+}
+.copy-button[data-failed] {
+	color: #ff6060;
+	border-color: #ff6060;
+}
+.copy .tip {
+	position: absolute;
+	z-index: 5;
+	inset: auto auto calc(100% + 6px) 50%;
+	translate: -50% 0;
+	padding: 4px 8px;
+	color: #fff;
+	font: 12px var(--friz);
+	white-space: nowrap;
+	background: rgb(9 9 25 / 0.95);
+	border: 1px solid #6c6c8c;
+	border-radius: 4px;
+	opacity: 0;
+	pointer-events: none;
+}
+.copy .tip:not(:empty) {
+	opacity: 1;
+}
+@media (prefers-reduced-motion: no-preference) {
+	.copy .tip {
+		transition: opacity 0.15s;
+	}
+}
+.btns .copy {
+	display: flex;
+}
+.btns .copy .redbtn {
+	flex: 1;
+}
+.page-head .way {
+	margin-left: auto;
+}
+
+/* ---------- a quest's chain unfolded under its row (QuestPanel: steps 20 high, indent 26, blue bar) ---------- */
+.chain-exp {
+	margin: -2px 0 4px 26px;
+	background: rgb(15 10 5 / 0.82);
+	border-left: 2px solid #66b8ff;
+}
+.chain-exp summary {
+	padding: 4px 10px;
+	color: #66b8ff;
+	font: 12px var(--friz);
+	cursor: pointer;
+}
+.chain-exp summary:hover {
+	color: #9fd2ff;
+}
+.chain-exp ol {
+	margin: 0;
+	padding: 0 6px 6px;
+	list-style: none;
+}
+.chain-exp a {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	min-height: 26px;
+	padding: 2px 6px;
+	color: #d9c9a8;
+	font: 13px var(--friz);
+	border-radius: 2px;
+}
+.chain-exp a:hover {
+	background: rgb(255 255 255 / 0.06);
+	color: #fff;
+}
+.chain-exp a[aria-current] {
+	color: var(--gold);
+	background: rgb(255 209 0 / 0.08);
+}
+.chain-exp b {
+	min-width: 2.2ch;
+	color: #b3a383;
+	font-weight: 400;
+}
+.chain-exp .st {
+	flex: none;
+	width: 12px;
+	height: 12px;
+}
+.chain-exp .nm {
+	flex: 1;
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.chain-exp .lv {
+	color: #ffff00;
+}
+
+/* ---------- contrast ---------- */
+/* the parchment's dark patches under thin ink: an even light wash over the texture, the ink a touch
+   darker and heavier */
+.parchment {
+	background:
+		linear-gradient(rgb(236 218 176 / 0.5), rgb(226 204 158 / 0.5)),
+		url('/atlas/ui/ej-book.webp') right center / 205% 112% no-repeat,
+		#d8bd8c;
+	--ink: #1f1102;
+	--ink-light: #4a2e10;
+	--ink-header: #5a0e02;
+	--link: #6a1d00;
+}
+.parchment .qsheet,
+.parchment .paper,
+.parchment .where,
+.parchment .chain-links,
+.parchment .rewards-label {
+	text-shadow: 0 0 0.6px currentColor;
+}
+.parchment .paper-header {
+	text-shadow: 0 0 0.8px currentColor;
+}
+.chain-links a {
+	text-decoration: underline;
+	text-decoration-color: rgb(106 29 0 / 0.35);
+	text-underline-offset: 3px;
+}
+/* a red button that is a link keeps the button's gold (".atlas a" would hand it the ink colour) */
+.atlas .redbtn {
+	color: var(--gold);
+	text-decoration: none;
+	text-shadow: 1px 1px 0 #000;
+}
+.atlas .redbtn:hover {
+	color: #fff;
+}
+.site-foot .legal {
+	color: #8a7f6c;
+}
+.crumbs {
+	color: #b3a68d;
+}
+
+/* the boss button stretched as the game does it: the 72 px cap with the hole stays, the body stretches,
+   the right end stays (one border-image instead of two overlapping pictures) */
+.boss-row {
+	box-sizing: border-box;
+	background: none;
+	border-style: solid;
+	border-width: 0 14px 0 72px;
+	border-image: url('/atlas/ui/ej-boss-button-up.webp') 0 14 0 72 fill / 0 14px 0 72px stretch;
+}
+.boss-row .creature {
+	left: -76px;
+}
+.boss-row .hole {
+	left: -58px;
+}
+.boss-row .label,
+.boss-row .meta {
+	left: 0;
+	right: 0;
+}
+.boss-row .badge {
+	left: -30px;
+}
+/* the game's rare blue and epic purple are too dark on the dark rows: the lighter shades of the site */
+.loot-row .q3,
+.reward .q3,
+.chain-exp .q3 {
+	color: #3d9bff;
+}
+.loot-row .q4,
+.reward .q4 {
+	color: #c27bff;
+}
+
+/* the spellbook page arrows (pagers) */
+.page-arrow {
+	flex: none;
+	width: 32px;
+	height: 32px;
+	padding: 0;
+	border: 0;
+	cursor: pointer;
+	background: url('/atlas/ui/page-prev.webp') center / 32px no-repeat;
+}
+.page-arrow.next {
+	background-image: url('/atlas/ui/page-next.webp');
+}
+.page-arrow:hover {
+	filter: brightness(1.25);
+}
+.page-arrow:active {
+	background-image: url('/atlas/ui/page-prev-down.webp');
+}
+.page-arrow.next:active {
+	background-image: url('/atlas/ui/page-next-down.webp');
+}
+.tutorial .txt {
+	right: 64px;
+	top: 40px;
+}
+.tutorial .art {
+	left: 44px;
+}
+.sec-head {
+	color: var(--gold);
+	font: 22px var(--morpheus);
+	font-variant-caps: small-caps;
+	border-bottom-color: #3a2c18;
+}
+/* the header's nav must shrink so its menu can scroll, and grid columns must allow shrinking */
+.site-top > nav {
+	min-width: 0;
+	margin-left: auto;
+}
+.split > * {
+	min-width: 0;
+}
+@media (max-width: 900px) {
+	.site-top > nav {
+		order: 6;
+		flex: 1 1 100%;
+		margin: 0;
+	}
+	.site-nav {
+		margin: 0;
+	}
+	.page-head .way {
+		margin-left: 0;
+		max-width: 100%;
+		overflow-x: auto;
+	}
+}
+@media (max-width: 900px) {
+	/* a compact header that scrolls away: brand, Discord, download and language on one line */
+	.site-top {
+		position: static;
+		gap: 8px;
+		padding: 8px 12px;
+	}
+	.site-top > .dropdown {
+		width: auto !important;
+		margin-left: auto;
+	}
+	.site-top .btn-dl {
+		height: 34px;
+		padding: 0 12px;
+	}
+	/* the sheet is the page: before the list of its siblings */
+	.split > .parchment {
+		order: -1;
+	}
+	.page-head h1 {
+		font-size: 26px;
+	}
+}
+@media (max-width: 420px) {
+	.brand img {
+		width: 34px;
+		height: 34px;
+	}
+	.btn-icon {
+		display: none;
+	}
+}
+/* header in two rows: tools on top, the menu under them (one row overflowed into the language box) */
+.site-top {
+	flex-wrap: wrap;
+	row-gap: 4px;
+}
+.site-top > nav {
+	order: 6;
+	flex: 1 1 100%;
+	margin: 0;
+}
+.site-top > .dropdown {
+	margin-left: auto;
+}
+.site-nav {
+	margin: 0;
+}
+/* the map pin's ring (MiniMap-TrackingBorder): 63.6 px at -8.4, +6 over a 24 px face, scaled to 34 px */
+.pin::after {
+	inset: auto;
+	left: -12px;
+	top: -8.5px;
+	width: 90px;
+	height: 90px;
+	background-size: 100% 100%;
+}

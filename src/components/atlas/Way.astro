@@ -1,0 +1,34 @@
+---
+// A waypoint for the game: the "/way #map x y Name" command and a button that copies it to paste in chat
+// (copy-button pattern: command="--copy" on the text's id, a role="status" bubble for the feedback).
+interface Props {
+	id: string;
+	text: string;
+	label: string; // what is copied, for screen readers: "Copy waypoint: Name"
+	button?: string; // a red button with this text instead of the icon
+	icon?: string;
+}
+const { id, text, label, button, icon } = Astro.props;
+---
+
+{
+	button ? (
+		<span class="copy">
+			<button type="button" class="redbtn" command="--copy" commandfor={id} title={text}>
+				{icon && <img src={icon} alt="" width="16" height="16" />}
+				{button}
+			</button>
+			<span class="tip" role="status" />
+		</span>
+	) : (
+		<span class="way">
+			<code id={id}>{text}</code>
+			<span class="copy">
+				<button type="button" class="copy-button" command="--copy" commandfor={id} aria-label={label}>
+					<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3h9a2 2 0 0 1 2 2v12h-2V5H8V3Zm-3 4h9a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Zm0 2v11h9V9H5Z" /></svg>
+				</button>
+				<span class="tip" role="status" />
+			</span>
+		</span>
+	)
+}

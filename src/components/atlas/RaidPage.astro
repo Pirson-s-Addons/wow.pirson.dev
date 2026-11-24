@@ -2,7 +2,8 @@
 // A raid: opening date and size, then tabs for Bosses (with loot when known) and the Attunement chain.
 import { LANG, wow, type Lang } from '../../lib/atlas/i18n';
 import { raidName, name, questName, href, itemName, L, lootId, lootChance, type Raid } from '../../lib/atlas/data';
-import { icon, itemIcon } from '../../lib/atlas/view';
+import { icon, itemIcon, way } from '../../lib/atlas/view';
+import Way from './Way.astro';
 import BossRow from './BossRow.astro';
 import LootRow from './LootRow.astro';
 
@@ -22,6 +23,7 @@ const tabs = [{ key: 'bosses', label: L(lang, 'TAB_BOSSES') }, ...(att ? [{ key:
 <header class="page-head">
 	<h1>{title}</h1>
 	<span class="lv"><b>{wow(L(lang, 'RAID_PLAYERS'), r.size)}</b> {wow(L(lang, 'RAID_OPENS'), when)}</span>
+	{r.entrance && <Way id={`way-entrance-${r.key}`} text={way(r.entrance.mapID, r.entrance.x, r.entrance.y, title)} label={`${L(lang, 'MAP_ENTRANCE')}: ${title}`} />}
 </header>
 <p class="intro">{r.isForever && <>{L(lang, 'KIND_FOREVER')} · </>}{wow(L(lang, 'BOSS_COUNT'), bosses.length)}{r.lootSource === 'classic' && <> · {L(lang, 'RAID_LOOT_CLASSIC')}</>}</p>
 

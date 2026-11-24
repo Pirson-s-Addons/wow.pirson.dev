@@ -11,8 +11,9 @@ interface Props {
 	list: number[];
 	listTitle: string;
 	listHref?: string;
+	fold?: boolean; // false when the list is the chain itself
 }
-const { lang, id, list, listTitle, listHref } = Astro.props;
+const { lang, id, list, listTitle, listHref, fold = true } = Astro.props;
 const q = addon.Quests[id] ?? {};
 ---
 
@@ -25,7 +26,7 @@ const q = addon.Quests[id] ?? {};
 		<h2 class="panel-title">{listHref ? <a href={listHref}>{listTitle}</a> : listTitle}</h2>
 		<div class="panel-pad">
 			<ul class="quest-list">
-				{list.map((q) => <QuestRow lang={lang} id={q} current={q === id} />)}
+				{list.map((q) => <QuestRow lang={lang} id={q} current={q === id} fold={fold} />)}
 			</ul>
 		</div>
 	</div>

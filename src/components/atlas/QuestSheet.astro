@@ -5,6 +5,7 @@ import { T, wow, className, type Lang } from '../../lib/atlas/i18n';
 import { addon, questName, href, chainOf, L } from '../../lib/atlas/data';
 import { questText, place, money } from '../../lib/atlas/view';
 import Reward from './Reward.astro';
+import Way from './Way.astro';
 
 interface Props {
 	lang: Lang;
@@ -16,6 +17,8 @@ const { objective, needs } = questText(lang, id);
 const chain = chainOf(id);
 const count = (i: number) => q.counts?.[i];
 const where = (keys: string[] | undefined) => (keys ?? []).map((k) => place(lang, k));
+const startWay = where(q.starts)[0]?.way;
+const endWay = where(q.ends)[0]?.way;
 const faction = q.faction === 'Alliance' ? 'ALLIANCE' : q.faction === 'Horde' ? 'HORDE' : null;
 // Wowhead puts the language first: /es/forever/quest=…; Simplified Chinese is "cn"
 const wowhead = `https://www.wowhead.com/${lang === 'en' ? '' : `${lang === 'zh' ? 'cn' : lang}/`}forever/quest=${id}`;
@@ -89,14 +92,15 @@ const wowhead = `https://www.wowhead.com/${lang === 'en' ? '' : `${lang === 'zh'
 				<div class="where">
 					{(
 						[
-							['STARTS', where(q.starts)],
-							['ENDS', where(q.ends)],
+							['STARTS', 's', where(q.starts)],
+							['ENDS', 'e', where(q.ends)],
 						] as const
-					).map(([k, list]) =>
-						list.map((p) => (
+					).map(([k, tag, list]) =>
+						list.map((p, i) => (
 							<p>
 								{wow(L(lang, k))} {p.href ? <a href={p.href}>{p.name}</a> : <strong>{p.name}</strong>}
 								{p.where && ` (${p.where})`}
+								{p.way && <Way id={`way-${id}-${tag}${i}`} text={p.way} label={`${L(lang, k === 'STARTS' ? 'MARK_START' : 'MARK_END')}: ${p.name}`} />}
 							</p>
 						)),
 					)}
@@ -106,6 +110,8 @@ const wowhead = `https://www.wowhead.com/${lang === 'en' ? '' : `${lang === 'zh'
 	}
 
 	<div class="btns">
+		{startWay && <Way id={`way-${id}-s0`} text={startWay} label={L(lang, 'MARK_START')} button={L(lang, 'MARK_START')} icon="/atlas/ui/quest-available.webp" />}
+		{endWay && <Way id={`way-${id}-e0`} text={endWay} label={L(lang, 'MARK_END')} button={L(lang, 'MARK_END')} icon="/atlas/ui/quest-active.webp" />}
 		<a class="redbtn" href={wowhead} rel="noopener"><img src="https://wow.zamimg.com/images/wow/icons/small/inv_misc_note_01.jpg" alt="" width="16" height="16" />{L(lang, 'WOWHEAD')}</a>
 		{chain && <a class="redbtn" href={href(lang, { kind: 'chain', steps: chain })}>{T[lang].wholeChain}</a>}
 	</div>
@@ -128,7 +134,7 @@ const wowhead = `https://www.wowhead.com/${lang === 'en' ? '' : `${lang === 'zh'
 				)}
 				{!!(q.rewards?.length || q.xp || q.money) && (
 					<>
-						<p class="rewards-label">{L(lang, q.choice?.length ? 'ALSO_RECEIVE' : 'REWARDS')}</p>
+						{!!q.choice?.length && <p class="rewards-label">{L(lang, 'ALSO_RECEIVE')}</p>}
 						<ul class="rewards">
 							{(q.rewards ?? []).map((i) => (
 								<li>
