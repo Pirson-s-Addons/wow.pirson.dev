@@ -3,6 +3,14 @@
    sheet and the game tooltip. Textures are the WoW Forever client's (scripts/atlas/ui.py -> public/atlas/ui/).
    Fonts: Friz Quadrata -> Marcellus, Morpheus -> Goodmountain (free look-alikes; the game's are licensed). */
 /* Goodmountain by Hermann S Designs (served unmodified, licence in public/fonts/goodmountain/) */
+/* the digits alone, upright and even (the game prints numbers in a plain face): Marcellus's old-style
+   figures dip and rise, so 19 or 20 read squashed */
+@font-face {
+	font-family: 'Atlas Digits';
+	src: url('@fontsource/forum/files/forum-latin-400-normal.woff2') format('woff2');
+	unicode-range: U+0030-0039;
+	font-display: swap;
+}
 @font-face {
 	font-family: 'Goodmountain';
 	src: url('/fonts/goodmountain/Goodmountain-Regular.woff2') format('woff2');
@@ -20,8 +28,8 @@
 	--link: #5c1d00;
 	--brand: #d597ff;
 	/* a letter Marcellus or Goodmountain lack falls to the next: Cyrillic to Forum, Korean and Chinese to Noto Serif */
-	--friz: 'Marcellus', 'Forum', 'Noto Serif KR', 'Noto Serif SC', 'Palatino Linotype', serif;
-	--morpheus: 'Goodmountain', 'Marcellus', 'Forum', 'Noto Serif KR', 'Noto Serif SC', serif;
+	--friz: 'Atlas Digits', 'Marcellus', 'Forum', 'Noto Serif KR', 'Noto Serif SC', 'Palatino Linotype', serif;
+	--morpheus: 'Atlas Digits', 'Goodmountain', 'Marcellus', 'Forum', 'Noto Serif KR', 'Noto Serif SC', serif;
 	--q0: #9d9d9d;
 	--q1: #ffffff;
 	--q2: #1eff00;
@@ -2520,8 +2528,8 @@ body.atlas {
 
 /* Traditional Chinese takes its own glyph shapes */
 :root:lang(zh-TW) {
-	--friz: 'Marcellus', 'Noto Serif TC', serif;
-	--morpheus: 'Goodmountain', 'Marcellus', 'Noto Serif TC', serif;
+	--friz: 'Atlas Digits', 'Marcellus', 'Noto Serif TC', serif;
+	--morpheus: 'Atlas Digits', 'Goodmountain', 'Marcellus', 'Noto Serif TC', serif;
 }
 /* the quest sheet as the game sets it: the title and the section heads in the title font (QuestTitleFont,
    Morpheus), the text in Friz (QuestFont) */
