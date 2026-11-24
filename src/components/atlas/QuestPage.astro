@@ -1,0 +1,33 @@
+---
+// A quest: its sheet on the parchment, and the other quests of its dungeon, event or chain on the left.
+import { wow, type Lang } from '../../lib/atlas/i18n';
+import { addon, questName, dungeonName, eventName, href, L } from '../../lib/atlas/data';
+import QuestRow from './QuestRow.astro';
+import QuestSheet from './QuestSheet.astro';
+
+interface Props {
+	lang: Lang;
+	id: number;
+	list: number[];
+	listTitle: string;
+	listHref?: string;
+}
+const { lang, id, list, listTitle, listHref } = Astro.props;
+const q = addon.Quests[id] ?? {};
+---
+
+<header class="page-head">
+	<h1>{questName(lang, id)}</h1>
+	{q.level && <span class="lv"><b>{wow(L(lang, 'LEVEL'))}</b>{q.level}</span>}
+</header>
+<div class="split">
+	<div class="panel-box list-col">
+		<h2 class="panel-title">{listHref ? <a href={listHref}>{listTitle}</a> : listTitle}</h2>
+		<div class="panel-pad">
+			<ul class="quest-list">
+				{list.map((q) => <QuestRow lang={lang} id={q} current={q === id} />)}
+			</ul>
+		</div>
+	</div>
+	<div class="parchment"><QuestSheet lang={lang} id={id} /></div>
+</div>

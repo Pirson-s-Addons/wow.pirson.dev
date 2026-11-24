@@ -1,0 +1,28 @@
+---
+// A boss button of the Journal (UI/BossPanel.lua): the creature picture (or the round portrait in the
+// hole), the name in parchment gold, "Level: N · Rare · N items", the level badge.
+import { wow, type Lang } from '../../lib/atlas/i18n';
+import { L, name, type Boss } from '../../lib/atlas/data';
+import { creature, portrait } from '../../lib/atlas/view';
+
+interface Props {
+	lang: Lang;
+	boss: Boss & { display?: number };
+	index: number;
+	meta?: string;
+	href?: string; // a link instead of a static row
+}
+const { lang, boss, index, meta, href } = Astro.props;
+const label = boss.kind === 'trash' ? L(lang, 'TRASH') : boss.kind === 'recipes' ? L(lang, 'RECIPES') : boss.npcID ? name(lang, `npc:${boss.npcID}`, boss.name) : boss.name;
+const pic = creature(boss);
+const Tag = href ? 'a' : 'div';
+const items = (boss.loot ?? []).length;
+const info = meta ?? [boss.level && `${wow(L(lang, 'LEVEL'))} ${boss.level}`, boss.kind === 'rare' && L(lang, 'RARE'), items && wow(L(lang, 'ITEMS'), items)].filter(Boolean).join('  ·  ');
+---
+
+<Tag class="boss-row" id={href ? undefined : `boss-${index}`} href={href}>
+		{pic ? <img class="creature" src={pic} alt="" width="128" height="64" loading="lazy" /> : <img class="hole" src={portrait(boss)} alt="" width="46" height="46" loading="lazy" />}
+		<span class="label">{boss.kind === 'rare' ? <span class="rare">{label}</span> : label}</span>
+		<span class="meta">{info}</span>
+		{(!boss.kind || boss.kind === 'rare') && <span class="badge">{boss.level ?? '??'}</span>}
+</Tag>

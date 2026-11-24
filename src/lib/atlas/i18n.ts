@@ -4,19 +4,19 @@
 
 export const LANGS = ['en', 'es', 'de', 'fr', 'it', 'pt', 'ru', 'ko', 'zh', 'tw'] as const;
 export type Lang = (typeof LANGS)[number];
-export type Section = 'dungeons' | 'quests' | 'items' | 'chains' | 'raids' | 'events' | 'tiers' | 'reputations' | 'search';
+export type Section = 'dungeons' | 'quests' | 'items' | 'chains' | 'raids' | 'events' | 'tiers' | 'reputations' | 'search' | 'tutorials';
 
 export const LANG: Record<Lang, { name: string; html: string; og: string; sections: Record<Section, string> }> = {
-	en: { name: 'English', html: 'en', og: 'en_US', sections: { dungeons: 'dungeons', quests: 'quests', items: 'items', chains: 'quest-chains', raids: 'raids', events: 'events', tiers: 'tier-sets', reputations: 'reputations', search: 'search' } },
-	es: { name: 'Español', html: 'es', og: 'es_ES', sections: { dungeons: 'mazmorras', quests: 'misiones', items: 'objetos', chains: 'cadenas', raids: 'bandas', events: 'eventos', tiers: 'conjuntos-de-tier', reputations: 'reputaciones', search: 'buscar' } },
-	de: { name: 'Deutsch', html: 'de', og: 'de_DE', sections: { dungeons: 'dungeons', quests: 'quests', items: 'gegenstaende', chains: 'questreihen', raids: 'schlachtzuege', events: 'weltereignisse', tiers: 'tier-sets', reputations: 'ruf', search: 'suche' } },
-	fr: { name: 'Français', html: 'fr', og: 'fr_FR', sections: { dungeons: 'donjons', quests: 'quetes', items: 'objets', chains: 'suites-de-quetes', raids: 'raids', events: 'evenements', tiers: 'ensembles-de-tier', reputations: 'reputations', search: 'recherche' } },
-	it: { name: 'Italiano', html: 'it', og: 'it_IT', sections: { dungeons: 'spedizioni', quests: 'missioni', items: 'oggetti', chains: 'catene', raids: 'incursioni', events: 'eventi', tiers: 'set-tier', reputations: 'reputazioni', search: 'cerca' } },
-	pt: { name: 'Português', html: 'pt-BR', og: 'pt_BR', sections: { dungeons: 'masmorras', quests: 'missoes', items: 'itens', chains: 'cadeias', raids: 'raides', events: 'eventos', tiers: 'conjuntos-de-tier', reputations: 'reputacoes', search: 'busca' } },
-	ru: { name: 'Русский', html: 'ru', og: 'ru_RU', sections: { dungeons: 'подземелья', quests: 'задания', items: 'предметы', chains: 'цепочки', raids: 'рейды', events: 'события', tiers: 'комплекты-тира', reputations: 'репутация', search: 'поиск' } },
-	ko: { name: '한국어', html: 'ko', og: 'ko_KR', sections: { dungeons: '던전', quests: '퀘스트', items: '아이템', chains: '연계-퀘스트', raids: '공격대', events: '이벤트', tiers: '티어-세트', reputations: '평판', search: '검색' } },
-	zh: { name: '简体中文', html: 'zh-CN', og: 'zh_CN', sections: { dungeons: '地下城', quests: '任务', items: '物品', chains: '任务链', raids: '团队副本', events: '节日活动', tiers: '套装', reputations: '声望', search: '搜索' } },
-	tw: { name: '繁體中文', html: 'zh-TW', og: 'zh_TW', sections: { dungeons: '地城', quests: '任務', items: '物品', chains: '任務鏈', raids: '團隊副本', events: '節慶活動', tiers: '套裝', reputations: '聲望', search: '搜尋' } },
+	en: { name: 'English', html: 'en', og: 'en_US', sections: { dungeons: 'dungeons', quests: 'quests', items: 'items', chains: 'quest-chains', raids: 'raids', events: 'events', tiers: 'tier-sets', reputations: 'reputations', search: 'search', tutorials: 'tutorials' } },
+	es: { name: 'Español', html: 'es', og: 'es_ES', sections: { dungeons: 'mazmorras', quests: 'misiones', items: 'objetos', chains: 'cadenas', raids: 'bandas', events: 'eventos', tiers: 'conjuntos-de-tier', reputations: 'reputaciones', search: 'buscar', tutorials: 'tutoriales' } },
+	de: { name: 'Deutsch', html: 'de', og: 'de_DE', sections: { dungeons: 'dungeons', quests: 'quests', items: 'gegenstaende', chains: 'questreihen', raids: 'schlachtzuege', events: 'weltereignisse', tiers: 'tier-sets', reputations: 'ruf', search: 'suche', tutorials: 'anleitungen' } },
+	fr: { name: 'Français', html: 'fr', og: 'fr_FR', sections: { dungeons: 'donjons', quests: 'quetes', items: 'objets', chains: 'suites-de-quetes', raids: 'raids', events: 'evenements', tiers: 'ensembles-de-tier', reputations: 'reputations', search: 'recherche', tutorials: 'tutoriels' } },
+	it: { name: 'Italiano', html: 'it', og: 'it_IT', sections: { dungeons: 'spedizioni', quests: 'missioni', items: 'oggetti', chains: 'catene', raids: 'incursioni', events: 'eventi', tiers: 'set-tier', reputations: 'reputazioni', search: 'cerca', tutorials: 'tutorial' } },
+	pt: { name: 'Português', html: 'pt-BR', og: 'pt_BR', sections: { dungeons: 'masmorras', quests: 'missoes', items: 'itens', chains: 'cadeias', raids: 'raides', events: 'eventos', tiers: 'conjuntos-de-tier', reputations: 'reputacoes', search: 'busca', tutorials: 'tutoriais' } },
+	ru: { name: 'Русский', html: 'ru', og: 'ru_RU', sections: { dungeons: 'подземелья', quests: 'задания', items: 'предметы', chains: 'цепочки', raids: 'рейды', events: 'события', tiers: 'комплекты-тира', reputations: 'репутация', search: 'поиск', tutorials: 'обучение' } },
+	ko: { name: '한국어', html: 'ko', og: 'ko_KR', sections: { dungeons: '던전', quests: '퀘스트', items: '아이템', chains: '연계-퀘스트', raids: '공격대', events: '이벤트', tiers: '티어-세트', reputations: '평판', search: '검색', tutorials: '튜토리얼' } },
+	zh: { name: '简体中文', html: 'zh-CN', og: 'zh_CN', sections: { dungeons: '地下城', quests: '任务', items: '物品', chains: '任务链', raids: '团队副本', events: '节日活动', tiers: '套装', reputations: '声望', search: '搜索', tutorials: '教程' } },
+	tw: { name: '繁體中文', html: 'zh-TW', og: 'zh_TW', sections: { dungeons: '地城', quests: '任務', items: '物品', chains: '任務鏈', raids: '團隊副本', events: '節慶活動', tiers: '套裝', reputations: '聲望', search: '搜尋', tutorials: '教學' } },
 };
 
 type Texts = {
@@ -569,4 +569,26 @@ export const T2: Record<Lang, Texts2> = {
 		more: '圖鑑中的更多內容',
 		items: '物品',
 	},
+};
+
+// Intro of a dungeon page, built from its data (no invented text). %1.. as in fmt().
+type Intro = {
+	kind: [classic: string, forever: string]; // %1 name, %2 levels
+	only: [alliance: string, horde: string]; // appended to the first sentence
+	bosses: string; // %1 bosses, %2 first, %3 last, %4 quests
+	split: string; // %1 alliance quests, %2 horde quests
+	best: string; // %1 item, %2 quest
+	chains: string; // %1 quests that need a chain
+};
+export const INTRO: Record<Lang, Intro> = {
+	en: { kind: ['%1 is a classic WoW Forever dungeon for levels %2', '%1 is one of the new WoW Forever dungeons, for levels %2'], only: [', for the Alliance only', ', for the Horde only'], bosses: 'It has %1 bosses, from %2 to %3, and %4 quests', split: ' (%1 for the Alliance and %2 for the Horde)', best: 'The best quest reward is %1, from %2.', chains: '%1 of its quests need earlier steps of a chain: pick them up before you go in.' },
+	es: { kind: ['%1 es una mazmorra clásica de WoW Forever para niveles %2', '%1 es una de las mazmorras nuevas de WoW Forever, para niveles %2'], only: [', solo para la Alianza', ', solo para la Horda'], bosses: 'Tiene %1 jefes, de %2 a %3, y %4 misiones', split: ' (%1 de la Alianza y %2 de la Horda)', best: 'La mejor recompensa de misión es %1, de %2.', chains: '%1 de sus misiones piden pasos anteriores de una cadena: cógelos antes de entrar.' },
+	de: { kind: ['%1 ist ein klassischer Dungeon in WoW Forever für Stufe %2', '%1 ist einer der neuen Dungeons von WoW Forever, für Stufe %2'], only: [', nur für die Allianz', ', nur für die Horde'], bosses: 'Er hat %1 Bosse, von %2 bis %3, und %4 Quests', split: ' (%1 für die Allianz und %2 für die Horde)', best: 'Die beste Questbelohnung ist %1, aus %2.', chains: '%1 seiner Quests brauchen frühere Schritte einer Questreihe: hol sie dir, bevor du hineingehst.' },
+	fr: { kind: ['%1 est un donjon classique de WoW Forever pour les niveaux %2', '%1 est l’un des nouveaux donjons de WoW Forever, pour les niveaux %2'], only: [', pour l’Alliance uniquement', ', pour la Horde uniquement'], bosses: 'Il compte %1 boss, de %2 à %3, et %4 quêtes', split: ' (%1 pour l’Alliance et %2 pour la Horde)', best: 'La meilleure récompense de quête est %1, de %2.', chains: '%1 de ses quêtes demandent des étapes précédentes d’une suite : prenez-les avant d’entrer.' },
+	it: { kind: ['%1 è una spedizione classica di WoW Forever per i livelli %2', '%1 è una delle nuove spedizioni di WoW Forever, per i livelli %2'], only: [', solo per l’Alleanza', ', solo per l’Orda'], bosses: 'Ha %1 boss, da %2 a %3, e %4 missioni', split: ' (%1 per l’Alleanza e %2 per l’Orda)', best: 'La migliore ricompensa di missione è %1, da %2.', chains: '%1 delle sue missioni richiedono passi precedenti di una catena: prendili prima di entrare.' },
+	pt: { kind: ['%1 é uma masmorra clássica de WoW Forever para os níveis %2', '%1 é uma das novas masmorras de WoW Forever, para os níveis %2'], only: [', só para a Aliança', ', só para a Horda'], bosses: 'Tem %1 chefes, de %2 a %3, e %4 missões', split: ' (%1 da Aliança e %2 da Horda)', best: 'A melhor recompensa de missão é %1, de %2.', chains: '%1 das suas missões pedem etapas anteriores de uma cadeia: pegue-as antes de entrar.' },
+	ru: { kind: ['%1 — классическое подземелье WoW Forever для уровней %2', '%1 — одно из новых подземелий WoW Forever для уровней %2'], only: [', только для Альянса', ', только для Орды'], bosses: 'В нем %1 боссов, от %2 до %3, и %4 заданий', split: ' (%1 для Альянса и %2 для Орды)', best: 'Лучшая награда за задание — %1, из «%2».', chains: 'Для %1 его заданий нужны предыдущие шаги цепочки: возьмите их до входа.' },
+	ko: { kind: ['%1: 레벨 %2용 WoW Forever 클래식 던전', '%1: 레벨 %2용 WoW Forever 신규 던전'], only: [' (얼라이언스 전용)', ' (호드 전용)'], bosses: '우두머리 %1명(%2부터 %3까지)과 퀘스트 %4개가 있습니다', split: ' (얼라이언스 %1개, 호드 %2개)', best: '가장 좋은 퀘스트 보상은 %2의 %1입니다.', chains: '퀘스트 %1개는 연계의 이전 단계가 필요합니다. 들어가기 전에 받아 두세요.' },
+	zh: { kind: ['%1 是 WoW Forever 的经典地下城，适合 %2 级', '%1 是 WoW Forever 的新地下城之一，适合 %2 级'], only: ['，仅限联盟', '，仅限部落'], bosses: '共有 %1 个首领（从 %2 到 %3）和 %4 个任务', split: '（联盟 %1 个，部落 %2 个）', best: '最好的任务奖励是 %1，来自“%2”。', chains: '其中 %1 个任务需要先完成任务链的前置步骤：进本前先接好。' },
+	tw: { kind: ['%1 是 WoW Forever 的經典地城，適合 %2 級', '%1 是 WoW Forever 的新地城之一，適合 %2 級'], only: ['，僅限聯盟', '，僅限部落'], bosses: '共有 %1 個首領（從 %2 到 %3）和 %4 個任務', split: '（聯盟 %1 個，部落 %2 個）', best: '最好的任務獎勵是 %1，來自「%2」。', chains: '其中 %1 個任務需要先完成任務鏈的前置步驟：進本前先接好。' },
 };

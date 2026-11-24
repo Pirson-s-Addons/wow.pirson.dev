@@ -1,0 +1,60 @@
+---
+// Tier sets (TierSets.lua): per class, the eight pieces of Tier 0 and Tier 0.5 with their tooltips.
+import { className, type Lang } from '../../lib/atlas/i18n';
+import { addon, tierPieces, itemDrops, dungeonName, raidName, href, name, L } from '../../lib/atlas/data';
+import { icon, itemIcon, quality, QUALITY } from '../../lib/atlas/view';
+import { wow } from '../../lib/atlas/i18n';
+import ItemTip from './ItemTip.astro';
+
+interface Props {
+	lang: Lang;
+}
+const { lang } = Astro.props;
+const sets = addon.TierSets.map((s) => ({ set: s, classes: tierPieces(s) }));
+const classes = sets[0].classes.map((c) => c.cls).sort((a, b) => className(lang, a).localeCompare(className(lang, b)));
+const source = (id: number) => {
+	const s = itemDrops.get(id)?.[0];
+	if (!s) return undefined;
+	const boss = s.boss.npcID ? name(lang, `npc:${s.boss.npcID}`, s.boss.name) : s.boss.name;
+	return L(lang, 'DROPS_FROM').replace('%s', `${boss} - ${s.dungeon ? dungeonName(lang, s.dungeon) : raidName(lang, s.raid!)}`);
+};
+const CLASS_COLOR: Record<string, string> = { WARRIOR: '#c69b6d', PALADIN: '#f48cba', HUNTER: '#aad372', ROGUE: '#fff468', PRIEST: '#ffffff', SHAMAN: '#0070dd', MAGE: '#3fc7eb', WARLOCK: '#8788ee', DRUID: '#ff7c0a' };
+---
+
+<div class="panel-box panel-pad">
+	<div>
+		<h1 class="sec-head">{L(lang, 'TIER_TITLE')}</h1>
+		<ul class="tier-list">
+			{
+				classes.map((cls) => (
+					<li>
+						<h3 style={`color:${CLASS_COLOR[cls]}`}>{className(lang, cls)}</h3>
+						{sets.map(({ set, classes }) => {
+							const c = classes.find((x) => x.cls === cls);
+							if (!c) return null;
+							return (
+								<div class="tier-row">
+									<span>{L(lang, set.key === 'T0' ? 'TIER_0' : 'TIER_05')}</span>
+									{c.items.map((id, i) => {
+										const step = set.pieceQuest ? set.pieceQuest[i] - 1 : -1;
+										const q = set.quests?.[step];
+										const src = q ? wow(L(lang, 'TIER05_FROM'), name(lang, `quest:${q}`, set.questNames?.[step])) : (source(id) ?? L(lang, 'TIER_NO_SOURCE'));
+										return (
+											<>
+												<a href={href(lang, { kind: 'item', id })} interestfor={`tt-${id}`} aria-describedby={`tt-${id}`} style={`--qc:${QUALITY[quality(lang, id)]}`}>
+													<img src={icon(itemIcon(id), 'medium')} alt="" width="34" height="34" loading="lazy" />
+												</a>
+												<ItemTip lang={lang} id={id} src={src} />
+											</>
+										);
+									})}
+									<em>{c.name}</em>
+								</div>
+							);
+						})}
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</div>

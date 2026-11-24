@@ -1,0 +1,42 @@
+---
+// A world event of the Traveler's Log: its dates, its quests, and the first quest's sheet.
+import { T2, fmt, LANG, wow, type Lang } from '../../lib/atlas/i18n';
+import { addon, eventName, eventQuests, L, type GameEvent } from '../../lib/atlas/data';
+import QuestRow from './QuestRow.astro';
+import QuestSheet from './QuestSheet.astro';
+
+interface Props {
+	lang: Lang;
+	e: GameEvent;
+}
+const { lang, e } = Astro.props;
+const quests = eventQuests(e).sort((a, b) => (addon.Quests[a].level ?? 0) - (addon.Quests[b].level ?? 0));
+const days = e.hours ? Math.round(e.hours / 24) : undefined;
+const when = (() => {
+	const f = new Intl.DateTimeFormat(LANG[lang].html, { day: 'numeric', month: 'long' });
+	if (e.yearly) return fmt(T2[lang].yearly, f.format(new Date(Date.UTC(2027, e.yearly[0] - 1, e.yearly[1]))), days ?? '?');
+	if (e.monthly) return fmt(T2[lang].monthly, days ?? 7);
+	if (e.dates?.length) {
+		const next = e.dates.find(([, end]) => new Date(end) > new Date()) ?? e.dates.at(-1)!;
+		return `${f.format(new Date(next[0]))} – ${f.format(new Date(next[1]))}`;
+	}
+	return '';
+})();
+---
+
+<header class="page-head">
+	<h1>{eventName(lang, e)}</h1>
+	<span class="lv">{when}</span>
+</header>
+<p class="intro">{fmt(T2[lang].eventDesc, eventName(lang, e), quests.length)}</p>
+<div class="split">
+	<div class="panel-box list-col">
+		<h2 class="panel-title">{L(lang, 'TAB_QUESTS')}</h2>
+		<div class="panel-pad">
+			<ul class="quest-list">
+				{quests.map((id, i) => <QuestRow lang={lang} id={id} current={i === 0} />)}
+			</ul>
+		</div>
+	</div>
+	<div class="parchment">{quests[0] && <QuestSheet lang={lang} id={quests[0]} />}</div>
+</div>

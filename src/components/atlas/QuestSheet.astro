@@ -1,0 +1,154 @@
+---
+// The quest sheet of the right page (QuestPanel.lua CreateDetail): title, level line, the chain with its
+// steps, objectives, items needed, where it starts and ends, the Wowhead button, rewards.
+import { T, wow, className, type Lang } from '../../lib/atlas/i18n';
+import { addon, questName, href, chainOf, L } from '../../lib/atlas/data';
+import { questText, place, money } from '../../lib/atlas/view';
+import Reward from './Reward.astro';
+
+interface Props {
+	lang: Lang;
+	id: number;
+}
+const { lang, id } = Astro.props;
+const q = addon.Quests[id] ?? {};
+const { objective, needs } = questText(lang, id);
+const chain = chainOf(id);
+const count = (i: number) => q.counts?.[i];
+const where = (keys: string[] | undefined) => (keys ?? []).map((k) => place(lang, k));
+const faction = q.faction === 'Alliance' ? 'ALLIANCE' : q.faction === 'Horde' ? 'HORDE' : null;
+// Wowhead puts the language first: /es/forever/quest=…; Simplified Chinese is "cn"
+const wowhead = `https://www.wowhead.com/${lang === 'en' ? '' : `${lang === 'zh' ? 'cn' : lang}/`}forever/quest=${id}`;
+---
+
+<div class="qsheet">
+	<h2>{questName(lang, id)}</h2>
+	<p class="meta">
+		{q.level && wow(L(lang, 'LEVEL')) + ' ' + q.level}
+		{q.minLevel && <>{'  ·  '}{wow(L(lang, 'REQUIRES_LEVEL'), q.minLevel)}</>}
+		{faction && <>{'  ·  '}<span class:list={['fac', faction.toLowerCase()]} /> {L(lang, `FACTION_${faction}`)}</>}
+		{q.classes && <>{'  ·  '}{q.classes.map((c) => className(lang, c)).join(', ')}</>}
+	</p>
+
+	{
+		chain && (
+			<>
+				<h3 class="paper-header">{wow(L(lang, 'CHAIN'), chain.indexOf(id) + 1, chain.length)}</h3>
+				<ol class="chain-links">
+					{chain.map((s, i) => (
+						<li>
+							{s === id ? (
+								<span>
+									<b>{i + 1}.</b> {questName(lang, s)}
+								</span>
+							) : (
+								<a href={href(lang, { kind: 'quest', id: s })}>
+									<b>{i + 1}.</b> {questName(lang, s)}
+								</a>
+							)}
+						</li>
+					))}
+				</ol>
+			</>
+		)
+	}
+
+	{
+		(objective || needs.length > 0) && (
+			<>
+				<h3 class="paper-header">{L(lang, 'OBJECTIVES')}</h3>
+				<div class="paper">
+					{objective && <p>{objective}</p>}
+					{needs.map((n) => (
+						<p>- {n}</p>
+					))}
+				</div>
+			</>
+		)
+	}
+
+	{
+		!!q.need?.length && (
+			<>
+				<h3 class="paper-header">{L(lang, 'NEEDS')}</h3>
+				<ul class="rewards">
+					{q.need.map(([i, n]) => (
+						<li>
+							<Reward lang={lang} id={i} count={n} />
+						</li>
+					))}
+				</ul>
+			</>
+		)
+	}
+
+	{
+		!!(q.starts?.length || q.ends?.length) && (
+			<>
+				<h3 class="paper-header">{L(lang, 'WHERE')}</h3>
+				<div class="where">
+					{(
+						[
+							['STARTS', where(q.starts)],
+							['ENDS', where(q.ends)],
+						] as const
+					).map(([k, list]) =>
+						list.map((p) => (
+							<p>
+								{wow(L(lang, k))} {p.href ? <a href={p.href}>{p.name}</a> : <strong>{p.name}</strong>}
+								{p.where && ` (${p.where})`}
+							</p>
+						)),
+					)}
+				</div>
+			</>
+		)
+	}
+
+	<div class="btns">
+		<a class="redbtn" href={wowhead} rel="noopener"><img src="https://wow.zamimg.com/images/wow/icons/small/inv_misc_note_01.jpg" alt="" width="16" height="16" />{L(lang, 'WOWHEAD')}</a>
+		{chain && <a class="redbtn" href={href(lang, { kind: 'chain', steps: chain })}>{T[lang].wholeChain}</a>}
+	</div>
+
+	{
+		!!(q.choice?.length || q.rewards?.length || q.xp || q.money) && (
+			<>
+				<h3 class="paper-header">{L(lang, 'REWARDS')}</h3>
+				{!!q.choice?.length && (
+					<>
+						<p class="rewards-label">{L(lang, 'CHOOSE_ONE')}</p>
+						<ul class="rewards">
+							{q.choice.map((i) => (
+								<li>
+									<Reward lang={lang} id={i} count={count(i)} />
+								</li>
+							))}
+						</ul>
+					</>
+				)}
+				{!!(q.rewards?.length || q.xp || q.money) && (
+					<>
+						<p class="rewards-label">{L(lang, q.choice?.length ? 'ALSO_RECEIVE' : 'REWARDS')}</p>
+						<ul class="rewards">
+							{(q.rewards ?? []).map((i) => (
+								<li>
+									<Reward lang={lang} id={i} count={count(i)} />
+								</li>
+							))}
+							{!!q.xp && (
+								<li>
+									<Reward lang={lang} label={wow(L(lang, 'XP'), q.xp.toLocaleString(lang === 'tw' ? 'zh-TW' : lang))} iconFile="xp_icon" />
+								</li>
+							)}
+							{!!q.money && (
+								<li>
+									<Reward lang={lang} label={money(q.money)} iconFile="inv_misc_coin_01" />
+								</li>
+							)}
+						</ul>
+					</>
+				)}
+			</>
+		)
+	}
+</div>

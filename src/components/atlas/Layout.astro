@@ -1,31 +1,41 @@
 ---
-// The Atlas pages' own frame (not Starlight): the addon's journal look, the language switcher with each
-// page's URL in every language, and the CurseForge + Discord call to action at the end of every page.
-import '../../styles/custom.css';
+// The Atlas site frame: header (logo, Discord, download, search, menu with every dungeon, language),
+// breadcrumbs, the page, and the footer with the atlas and addon links. Game tooltips: popover="hint"
+// shown by the item links (interestfor), polyfilled where missing.
+import '@fontsource/marcellus/400.css';
 import '../../styles/atlas.css';
 import { LANGS, LANG, T, T2, type Lang } from '../../lib/atlas/i18n';
-import { url, type Page } from '../../lib/atlas/data';
+import { url, L, type Page } from '../../lib/atlas/data';
 import addons from '../../data/addons.json';
 
+export type Crumb = { label: string; href?: string };
+export type Section = 'dungeons' | 'raids' | 'events' | 'journeys' | 'tiers' | 'tutorials' | 'search';
 interface Props {
 	lang: Lang;
 	page: Page;
 	title: string;
 	description: string;
-	image?: string;
-	crumbs?: { label: string; href?: string }[];
+	section?: Section;
+	crumbs?: Crumb[];
 }
-const { lang, page, title, description, image, crumbs = [] } = Astro.props;
-const t = T[lang];
+const { lang, page, title, description, section = 'dungeons', crumbs = [] } = Astro.props;
 const site = 'https://wow.pirson.dev';
 const alternates = LANGS.flatMap((l) => {
 	const u = url(l, page);
 	return u ? [{ lang: l, href: u }] : [];
 });
 const canonical = site + url(lang, page);
-const og = image ?? `${site}/og/dungeon-quest-atlas-${lang === 'es' ? 'es' : 'en'}.jpg`;
 const curse = addons.find((a) => a.id === 'dq')?.url ?? 'https://www.curseforge.com/members/pirson/projects';
+const discord = 'https://discord.gg/BM3hXNZXTh';
 const home = url(lang, { kind: 'home' })!;
+const DOWNLOAD: Record<Lang, string> = { en: 'Download', es: 'Descargar', de: 'Herunterladen', fr: 'Télécharger', it: 'Scarica', pt: 'Baixar', ru: 'Скачать', ko: '다운로드', zh: '下载', tw: '下載' };
+const nav: { key: Section; label: string; href: string }[] = [
+	{ key: 'raids', label: L(lang, 'TAB_RAIDS'), href: url(lang, { kind: 'raids' })! },
+	{ key: 'events', label: L(lang, 'TAB_EVENTS'), href: url(lang, { kind: 'events' })! },
+	{ key: 'journeys', label: L(lang, 'TAB_JOURNEYS'), href: url(lang, { kind: 'reputations' })! },
+	{ key: 'tiers', label: L(lang, 'TIER_TITLE'), href: url(lang, { kind: 'tiers' })! },
+	{ key: 'tutorials', label: L(lang, 'TAB_TUTORIALS'), href: url(lang, { kind: 'tutorials' })! },
+];
 ---
 
 <!doctype html>
@@ -45,26 +55,32 @@ const home = url(lang, { kind: 'home' })!;
 		<meta property="og:description" content={description} />
 		<meta property="og:url" content={canonical} />
 		<meta property="og:locale" content={LANG[lang].og} />
-		<meta property="og:image" content={og} />
+		<meta property="og:image" content={`${site}/og/dungeon-quest-atlas-${lang === 'es' ? 'es' : 'en'}.jpg`} />
 		<meta name="twitter:card" content="summary_large_image" />
 		<script defer src="/_vercel/insights/script.js"></script>
 	</head>
 	<body class="atlas">
-		<header class="atlas-top">
-			<a class="atlas-brand" href={lang === 'es' ? '/es/' : '/'}>
-				<img src="/favicon.png" alt="" width="28" height="28" />
-				<span>Pirson's Addons</span>
+		<header class="site-top">
+			<a class="brand" href={home}><img src="/atlas/art/logo_dqa.webp" alt="" width="40" height="40" /><span>Dungeon Quest Atlas</span></a>
+			<a class="btn-icon" href={discord} rel="noopener" aria-label="Discord" title="Discord">
+				<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.3 4.4A19.8 19.8 0 0 0 15.4 3l-.6 1.3a18.3 18.3 0 0 0-5.6 0L8.6 3a19.7 19.7 0 0 0-4.9 1.5C.6 9.1-.3 13.6.1 18a19.9 19.9 0 0 0 6 3l1.3-2.1a12.9 12.9 0 0 1-2-1l.5-.4a14.2 14.2 0 0 0 12.2 0l.5.4c-.6.4-1.3.7-2 1l1.3 2.1a19.8 19.8 0 0 0 6-3c.5-5.2-.9-9.6-3.6-13.6ZM8 15.3c-1.2 0-2.2-1.1-2.2-2.4S6.8 10.5 8 10.5s2.2 1.1 2.2 2.4-1 2.4-2.2 2.4Zm8 0c-1.2 0-2.2-1.1-2.2-2.4s1-2.4 2.2-2.4 2.2 1.1 2.2 2.4-1 2.4-2.2 2.4Z" /></svg>
 			</a>
-			<a class="atlas-home" href={home}>{t.atlas}</a>
+			<a class="btn-dl" href={curse} rel="noopener">⬇ {DOWNLOAD[lang]}</a>
 			{
 				page.kind !== 'search' && (
-					<form role="search" class="atlas-search" action={url(lang, { kind: 'search' })}>
+					<form class="searchbox" role="search" action={url(lang, { kind: 'search' })}>
 						<input type="search" name="q" placeholder={T2[lang].searchLabel} aria-label={T2[lang].searchTitle} />
 					</form>
 				)
 			}
-			<details class="atlas-langs">
-				<summary aria-label={t.language}>{LANG[lang].name}</summary>
+			<nav aria-label="Dungeon Quest Atlas">
+				<ul class="site-nav">
+					<li><a href={home} aria-current={section === 'dungeons' ? 'page' : undefined}>{L(lang, 'TAB_DUNGEONS')}</a></li>
+					{nav.map((n) => <li><a href={n.href} aria-current={n.key === section ? 'page' : undefined}>{n.label}</a></li>)}
+				</ul>
+			</nav>
+			<details class="dropdown" style="width: 150px">
+				<summary aria-label={T[lang].language}>{LANG[lang].name}</summary>
 				<ul>
 					{
 						alternates.map((a) => (
@@ -79,42 +95,127 @@ const home = url(lang, { kind: 'home' })!;
 			</details>
 		</header>
 
-		{
-			crumbs.length > 0 && (
-				<nav class="atlas-crumbs" aria-label="Breadcrumb">
-					<ol>
-						<li>
-							<a href={home}>{t.atlas}</a>
-						</li>
-						{crumbs.map((c) => (
-							<li>{c.href ? <a href={c.href}>{c.label}</a> : <span aria-current="page">{c.label}</span>}</li>
-						))}
-					</ol>
-				</nav>
-			)
-		}
-
-		<main class="atlas-main">
+		<main class="site-main">
+			{
+				crumbs.length > 0 && (
+					<nav aria-label="Breadcrumb">
+						<ol class="crumbs">
+							<li><a href={home}>{T[lang].atlas}</a></li>
+							{crumbs.map((c) => <li>{c.href ? <a href={c.href}>{c.label}</a> : <span aria-current="page">{c.label}</span>}</li>)}
+						</ol>
+					</nav>
+				)
+			}
 			<slot />
 		</main>
 
-		<aside class="atlas-cta">
-			<img src="/logos/dq.webp" alt="" width="72" height="72" loading="lazy" />
-			<div>
-				<h2>{t.ctaTitle}</h2>
-				<p>{t.ctaText}</p>
+		<footer class="site-foot">
+			<div class="cols">
+				<div>
+					<a class="brand" href={home}><img src="/atlas/art/logo_dqa.webp" alt="" width="40" height="40" loading="lazy" /><span>Dungeon Quest Atlas</span></a>
+					<p>{T[lang].ctaText}</p>
+				</div>
+				<nav aria-label={T[lang].atlas}>
+					<h2>{T[lang].atlas}</h2>
+					<ul>
+						<li><a href={home}>{L(lang, 'TAB_DUNGEONS')}</a></li>
+						{nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+					</ul>
+				</nav>
+				<nav aria-label="Dungeon Quest Atlas">
+					<h2>{T[lang].ctaTitle}</h2>
+					<ul>
+						<li><a href={curse} rel="noopener">CurseForge</a></li>
+						<li><a href={discord} rel="noopener">Discord</a></li>
+						<li><a href={lang === 'es' ? '/es/addons/dungeon-quest-atlas/' : '/addons/dungeon-quest-atlas/'}>{lang === 'es' ? 'Guía del addon' : 'Addon guide'}</a></li>
+						<li><a href={lang === 'es' ? '/es/' : '/'}>Pirson's Addons</a></li>
+					</ul>
+				</nav>
 			</div>
-			<div class="atlas-cta-actions">
-				<a class="btn btn-gold" href={curse} rel="noopener">{t.ctaCurse}</a>
-				<a class="btn btn-glass" href="https://discord.gg/BM3hXNZXTh" rel="noopener">{t.ctaDiscord}</a>
-			</div>
-		</aside>
-
-		<footer class="atlas-foot">
-			<p>
-				Dungeon Quest Atlas · World of Warcraft® is a trademark of Blizzard Entertainment, Inc. Item, quest and NPC names: Blizzard
-				Entertainment, via Wowhead.
-			</p>
+			<p class="legal">World of Warcraft® © Blizzard Entertainment. Names, art and tooltips: Blizzard Entertainment, via Wowhead and the game client. Dungeon Quest Atlas is not affiliated with Blizzard.</p>
 		</footer>
+
+		<script>
+			// popover="hint" + interestfor show the game tooltips. Polyfills only where the browser lacks them.
+			if (!Object.hasOwn(HTMLElement.prototype, 'popover')) await import('@oddbird/popover-polyfill');
+			if (!('interestForElement' in HTMLButtonElement.prototype)) await import('interestfor');
+			// Without anchor positioning the tooltip would sit in the middle of the screen: put it next to its link.
+			if (!CSS.supports('position-area: block-end')) {
+				document.addEventListener(
+					'toggle',
+					(e) => {
+						const tip = e.target as HTMLElement;
+						if ((e as ToggleEvent).newState !== 'open' || !tip.classList?.contains('gtt')) return;
+						const link = document.querySelector<HTMLElement>(`[interestfor="${tip.id}"]:hover, [interestfor="${tip.id}"]:focus`);
+						if (!link) return;
+						const r = link.getBoundingClientRect();
+						const w = tip.offsetWidth;
+						const left = r.right + 8 + w > innerWidth ? Math.max(4, r.left - w - 8) : r.right + 8;
+						Object.assign(tip.style, { position: 'fixed', inset: 'auto', margin: '0', left: `${left + 46}px`, top: `${Math.max(4, Math.min(r.top, innerHeight - tip.offsetHeight - 4))}px` });
+					},
+					true,
+				);
+			}
+			// the tabs of a page: selection follows focus; panels hidden="until-found" stay searchable
+			for (const tabs of document.querySelectorAll<HTMLElement>('[data-tabs]')) {
+				const buttons = [...tabs.querySelectorAll<HTMLButtonElement>('button')];
+				const panels = [...document.querySelectorAll<HTMLElement>(`[data-tab-of="${tabs.dataset.tabs}"]`)];
+				const select = (key: string) => {
+					for (const b of buttons) {
+						b.ariaSelected = String(b.dataset.tab === key);
+						b.toggleAttribute('focusgroupstart', b.dataset.tab === key);
+					}
+					for (const p of panels) p.dataset.tab === key ? p.removeAttribute('hidden') : p.setAttribute('hidden', 'until-found');
+				};
+				for (const b of buttons) {
+					b.addEventListener('click', () => select(b.dataset.tab!));
+					b.addEventListener('focus', () => select(b.dataset.tab!));
+				}
+				for (const p of panels) p.addEventListener('beforematch', () => select(p.dataset.tab!));
+				if (!('focusgroup' in HTMLElement.prototype)) {
+					tabs.setAttribute('role', 'tablist');
+					for (const b of buttons) {
+						b.setAttribute('role', 'tab');
+						b.tabIndex = b.ariaSelected === 'true' ? 0 : -1;
+					}
+					tabs.addEventListener('keydown', (e) => {
+						const i = buttons.indexOf(document.activeElement as HTMLButtonElement);
+						if (i < 0 || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)) return;
+						e.preventDefault();
+						const n = e.key === 'Home' ? 0 : e.key === 'End' ? buttons.length - 1 : (i + (e.key === 'ArrowLeft' ? -1 : 1) + buttons.length) % buttons.length;
+						for (const b of buttons) b.tabIndex = -1;
+						buttons[n].tabIndex = 0;
+						buttons[n].focus();
+					});
+				}
+				// a link to #bosses or to something inside a panel (#boss-3): open that tab
+				const fromHash = () => {
+					const key = decodeURIComponent(location.hash.slice(1));
+					if (buttons.some((b) => b.dataset.tab === key)) return select(key);
+					const panel = key && document.getElementById(key)?.closest<HTMLElement>(`[data-tab-of="${tabs.dataset.tabs}"]`);
+					if (panel) select(panel.dataset.tab!);
+				};
+				fromHash();
+				addEventListener('hashchange', fromHash);
+			}
+			// card grid filters: kind (round icons) and faction
+			for (const grid of document.querySelectorAll<HTMLElement>('[data-grid]')) {
+				const state = { kind: 'all', faction: 'Both' };
+				const apply = () => {
+					for (const li of grid.querySelectorAll<HTMLElement>('.cards > li')) {
+						const f = li.dataset.faction ?? 'Both';
+						li.hidden = (state.faction !== 'Both' && f !== 'Both' && f !== state.faction) || (state.kind === 'classic' && li.dataset.forever === 'true') || (state.kind === 'forever' && li.dataset.forever !== 'true');
+					}
+				};
+				for (const b of grid.querySelectorAll<HTMLButtonElement>('[data-filter]')) {
+					b.addEventListener('click', () => {
+						const [key, value] = b.dataset.filter!.split(':') as ['kind' | 'faction', string];
+						state[key] = value;
+						for (const o of grid.querySelectorAll<HTMLButtonElement>(`[data-filter^="${key}:"]`)) o.ariaPressed = String(o === b);
+						apply();
+					});
+				}
+			}
+		</script>
 	</body>
 </html>

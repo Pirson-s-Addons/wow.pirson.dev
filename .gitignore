@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # Vercel build output
 .vercel/
+
+# downloaded client files (scripts/atlas/ui.py)
+.cache/

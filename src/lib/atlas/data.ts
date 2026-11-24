@@ -11,7 +11,7 @@ const read = (f: string) => JSON.parse(readFileSync(join(DIR, f), 'utf8'));
 
 type Tip = { n: string | null; q?: number; i?: string; t?: string; z?: number | null; src?: string } | null;
 type Loot = [number, number?] | { 1: number; 2?: number; quest?: boolean; probable?: boolean; mobs?: string; all?: boolean; from?: unknown };
-export type Boss = { name: string; npcID?: number; level?: number; kind?: string; loot?: Loot[]; faction?: string; optional?: boolean };
+export type Boss = { name: string; npcID?: number; level?: number; kind?: string; loot?: Loot[]; faction?: string; optional?: boolean; display?: number };
 export type Quest = {
 	level?: number; minLevel?: number; faction?: string; classes?: string[]; chain?: number[] | true; after?: number[];
 	rewards?: number[]; choice?: number[]; counts?: Record<string, number>; need?: [number, number][]; xp?: number; money?: number;
@@ -138,7 +138,10 @@ export type Page =
 	| { kind: 'event'; e: GameEvent }
 	| { kind: 'tiers' }
 	| { kind: 'reputations' }
-	| { kind: 'search' };
+	| { kind: 'search' }
+	| { kind: 'raids' }
+	| { kind: 'events' }
+	| { kind: 'tutorials' };
 
 const base = (lang: Lang, section?: Section) => '/' + [lang === 'en' ? '' : lang, section && LANG[lang].sections[section]].filter(Boolean).join('/');
 const at = (lang: Lang, section: Section, s: string) => `${base(lang, section)}/${s}/`;
@@ -165,6 +168,9 @@ export function url(lang: Lang, p: Page): string | null {
 		case 'tiers':
 		case 'reputations':
 		case 'search':
+		case 'raids':
+		case 'events':
+		case 'tutorials':
 			return base(lang, p.kind) + '/';
 	}
 }
@@ -191,6 +197,9 @@ export function pages(): { lang: Lang; path: string; page: Page }[] {
 		{ kind: 'tiers' },
 		{ kind: 'reputations' },
 		{ kind: 'search' },
+		{ kind: 'raids' },
+		{ kind: 'events' },
+		{ kind: 'tutorials' },
 	];
 	const out = [];
 	for (const page of list) {

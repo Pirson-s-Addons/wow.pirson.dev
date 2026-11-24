@@ -32,4 +32,8 @@ art = sorted((SRC.parent / "UI").glob("[cl][ao][r]*_*.tga"))
 for f in art:
     Image.open(f).convert("RGB").save(ART / f"{f.stem}.webp", quality=82, method=6)
 
+# the addon's logo and map pin
+for f in sorted((SRC.parent.parent / "img").glob("*.tga")):
+    Image.open(f).save(ART / f"{f.stem}.webp", quality=90, method=6)
+
 print(f"{len(floors)} floors -> {OUT}, {len(art)} cards -> {ART}")

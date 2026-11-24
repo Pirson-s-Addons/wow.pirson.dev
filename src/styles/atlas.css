@@ -1,18 +1,26 @@
-/* The Atlas pages: the addon's journal. Dark frame and rows with gold text, parchment pages with dark ink
-   and maroon headers (UI/Theme.lua: INK, INK_HEADER, PARCHMENT_GOLD). Colour on parchment is only ink;
-   quality and status colours sit on the dark rows. */
+/* The Atlas: a website in the addon's look. Site header, panels and tabs (as foreverjournal.pro lays out its
+   journal), with the game's own pieces inside: Journal cards, boss buttons, loot rows, the parchment quest
+   sheet and the game tooltip. Textures are the WoW Forever client's (scripts/atlas/ui.py -> public/atlas/ui/).
+   Fonts: Friz Quadrata -> Marcellus, Morpheus -> Goodmountain (free look-alikes; the game's are licensed). */
+/* Goodmountain by Hermann S Designs (served unmodified, licence in public/fonts/goodmountain/) */
+@font-face {
+	font-family: 'Goodmountain';
+	src: url('/fonts/goodmountain/Goodmountain-Regular.woff2') format('woff2');
+	font-display: swap;
+}
 :root {
-	--paper: #e8d5ad;
-	--paper-edge: #c9ae7c;
-	--ink: #2a1703;
-	--ink-soft: #543514;
-	--ink-head: #6b1405;
-	--ink-link: #5c1d00;
-	--row: #1a1209;
-	--row-line: #3b2a14;
-	--gold-soft: #d3a876;
-	--title-light: #e6c9ab;
-	/* Wowhead/game item qualities */
+	--ink: #291702; /* INK 0.16, 0.09, 0.01 */
+	--ink-light: #543515; /* INK_LIGHT */
+	--ink-header: #6b1405; /* INK_HEADER */
+	--on-dark: #dbd1bd; /* TEXT_ON_DARK */
+	--parch-gold: #d3a876; /* PARCHMENT_GOLD */
+	--title-light: #e6c9ab; /* TITLE_LIGHT */
+	--parch-sub: #c7b399; /* PARCHMENT_SUB */
+	--gold: #ffd100;
+	--link: #5c1d00;
+	--brand: #d597ff;
+	--friz: 'Marcellus', 'Palatino Linotype', serif;
+	--morpheus: 'Goodmountain', 'Marcellus', serif;
 	--q0: #9d9d9d;
 	--q1: #ffffff;
 	--q2: #1eff00;
@@ -21,625 +29,1780 @@
 	--q5: #ff8000;
 	--q6: #e6cc80;
 }
-/* the qualities on dark ground, a touch lighter where the game's blue is too dark to read */
 .q0 { color: var(--q0); }
 .q1 { color: var(--q1); }
 .q2 { color: var(--q2); }
-.q3 { color: #3d9bff; }
-.q4 { color: #c27bff; }
+.q3 { color: var(--q3); }
+.q4 { color: var(--q4); }
 .q5 { color: var(--q5); }
 .q6 { color: var(--q6); }
 
+html,
 body.atlas {
 	margin: 0;
-	color: var(--text);
-	background: radial-gradient(120% 60% at 50% 0%, #1b1426 0%, var(--obsidian) 60%) fixed, var(--obsidian);
-	font-family: var(--sl-font);
-	line-height: 1.55;
+	min-height: 100%;
+	background: #050405;
+	color: #fff;
+	font: 12px/1.25 var(--friz);
+	-webkit-font-smoothing: antialiased;
+}
+body.atlas {
+	font-size: 15px;
+	background: #0b0908;
 }
 .atlas a {
-	color: var(--gold-soft);
-}
-.atlas h1,
-.atlas h2,
-.atlas h3 {
-	font-family: var(--display);
-	font-weight: 400;
-	line-height: 1.2;
-}
-
-/* ---------- top bar ---------- */
-.atlas-top {
-	position: sticky;
-	top: 0;
-	z-index: 10;
-	display: flex;
-	align-items: center;
-	gap: 1rem;
-	padding: 0.6rem max(1rem, calc((100% - 72rem) / 2));
-	background: rgb(7 8 12 / 0.8);
-	backdrop-filter: blur(14px) saturate(1.3);
-	border-bottom: 1px solid var(--glass-line);
-}
-.atlas-brand {
-	display: flex;
-	align-items: center;
-	gap: 0.5rem;
-	color: var(--text) !important;
+	color: inherit;
 	text-decoration: none;
-	font-family: var(--display);
-	font-size: 1.15rem;
 }
-.atlas-home {
-	text-decoration: none;
-	font-weight: 700;
-}
-.atlas-search {
-	flex: 1;
-	max-width: 22rem;
-	margin-inline-start: auto;
-}
-.atlas-search input {
-	box-sizing: border-box;
-	width: 100%;
-	padding: 0.45rem 0.9rem;
-	color: var(--text);
-	background: rgb(255 255 255 / 0.06);
-	border: 1px solid var(--glass-line);
-	border-radius: 999px;
-	font: inherit;
-}
-.atlas-search input:focus-visible {
-	outline: 2px solid var(--arcane);
+.atlas :focus-visible {
+	outline: 2px solid var(--gold);
 	outline-offset: 1px;
 }
-.atlas-search.big {
-	max-width: 36rem;
-	margin: 1rem 0 0;
+/* hidden always wins over the display of a class (hidden="until-found" keeps its own behaviour) */
+.atlas [hidden]:not([hidden='until-found']) {
+	display: none !important;
 }
-.atlas-search.big input {
-	padding: 0.8rem 1.2rem;
-	font-size: 1.1rem;
-}
-.atlas-langs {
-	position: relative;
-	margin-inline-start: auto;
-}
-.atlas-search + .atlas-langs {
-	margin-inline-start: 0;
-}
-.atlas-langs summary {
-	cursor: pointer;
-	padding: 0.35rem 0.8rem;
-	border: 1px solid var(--glass-line);
-	border-radius: 999px;
-	list-style: none;
-}
-.atlas-langs summary::after {
-	content: ' ▾';
-	color: var(--muted);
-}
-.atlas-langs ul {
+.sr-only {
 	position: absolute;
-	inset-inline-end: 0;
-	margin: 0.4rem 0 0;
-	padding: 0.4rem;
-	list-style: none;
-	background: var(--night);
-	border: 1px solid var(--line);
-	border-radius: 0.6rem;
-	min-width: 11rem;
-	box-shadow: 0 12px 40px rgb(0 0 0 / 0.5);
-}
-.atlas-langs a {
-	display: block;
-	padding: 0.35rem 0.7rem;
-	border-radius: 0.4rem;
-	color: var(--text);
-	text-decoration: none;
-}
-.atlas-langs a:hover,
-.atlas-langs a[aria-current] {
-	background: rgb(196 127 243 / 0.14);
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
 }
 
-/* ---------- frame ---------- */
-.atlas-crumbs,
-.atlas-main,
-.atlas-cta,
-.atlas-foot {
-	box-sizing: border-box;
-	width: min(72rem, 100% - 2rem);
-	margin-inline: auto;
-}
-.page {
-	box-sizing: border-box;
-}
-.atlas-crumbs ol {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 0.4rem;
-	margin: 1rem 0 0;
-	padding: 0;
-	list-style: none;
-	color: var(--muted);
-	font-size: 0.9rem;
-}
-.atlas-crumbs li + li::before {
-	content: '›';
-	margin-inline-end: 0.4rem;
-}
-.atlas-hero {
-	padding: 2rem 0 1.5rem;
-}
-.atlas-hero h1 {
-	margin: 0 0 0.4rem;
-	font-size: clamp(1.9rem, 4vw, 3rem);
-	color: var(--title-light);
-}
-.atlas-hero p {
-	margin: 0.2rem 0;
-	color: var(--muted);
-	max-width: 60ch;
-}
-.meta strong {
-	color: var(--text);
-}
-.dungeon-hero {
-	display: grid;
-	grid-template-columns: minmax(0, 22rem) 1fr;
-	gap: 1.5rem;
-	align-items: center;
-}
-.dungeon-hero img {
-	width: 100%;
-	height: auto;
-	border-radius: 0.8rem;
-	border: 1px solid var(--row-line);
-	box-shadow: 0 18px 50px rgb(0 0 0 / 0.5);
-}
-.item-hero {
+/* ---------- site header ---------- */
+.site-top {
+	position: sticky;
+	top: 0;
+	z-index: 30;
 	display: flex;
 	align-items: center;
-	gap: 1rem;
+	gap: 14px;
+	padding: 10px max(16px, calc((100% - 1240px) / 2));
+	background: rgb(9 7 6 / 0.92);
+	backdrop-filter: blur(10px);
+	border-bottom: 1px solid #3a2c18;
 }
-.item-hero img {
-	border-radius: 0.5rem;
-	border: 1px solid var(--row-line);
-}
-.item-hero h1 {
-	margin: 0;
-}
-.jump {
+.brand {
 	display: flex;
-	flex-wrap: wrap;
-	gap: 0.5rem;
-	margin-top: 1rem;
+	align-items: center;
+	gap: 10px;
+	color: var(--gold) !important;
+	font: 21px var(--friz);
+	white-space: nowrap;
 }
-.jump a {
-	padding: 0.3rem 0.9rem;
-	border-radius: 999px;
-	background: rgb(255 255 255 / 0.06);
-	border: 1px solid rgb(255 255 255 / 0.12);
-	text-decoration: none;
-}
-.faction {
-	vertical-align: middle;
-	margin-inline-start: 0.4rem;
+.brand img {
+	width: 40px;
+	height: 40px;
 	border-radius: 50%;
+	box-shadow: 0 0 0 2px #8a6a3a;
 }
-
-/* ---------- the parchment page ---------- */
-.page {
-	margin: 0 0 1.5rem;
-	padding: clamp(1rem, 3vw, 2rem);
-	color: var(--ink);
+.btn-dl {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	height: 36px;
+	padding: 0 16px;
+	color: #241600 !important;
+	font: 700 14px var(--sl-font, system-ui);
+	background: linear-gradient(#ffe08a, #e5a92a);
+	border-radius: 6px;
+	box-shadow: 0 0 0 1px #6b4a12 inset, 0 4px 14px rgb(229 169 42 / 0.25);
+}
+.btn-dl:hover {
+	filter: brightness(1.08);
+}
+.btn-icon {
+	display: grid;
+	place-items: center;
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	background: #1c1610;
+	border: 1px solid #3a2c18;
+}
+.btn-icon svg {
+	width: 18px;
+	height: 18px;
+	fill: #cfc3ad;
+}
+.site-top .searchbox {
+	width: 230px;
+	height: 34px;
+}
+.site-top .searchbox input {
+	height: 34px;
+	font-size: 14px;
 	background:
-		radial-gradient(120% 90% at 50% 40%, transparent 55%, rgb(120 80 30 / 0.28)),
-		linear-gradient(var(--paper), #dcc497);
-	border: 1px solid var(--paper-edge);
-	border-radius: 0.6rem;
-	box-shadow: 0 20px 60px rgb(0 0 0 / 0.45), inset 0 0 0 4px rgb(60 35 10 / 0.12);
-	scroll-margin-top: 4.5rem;
+		url('/atlas/ui/search-glass.webp') 10px center / 14px no-repeat,
+		#16110c;
+	border: 1px solid #4a3a22;
+	border-radius: 6px;
+	padding-left: 32px;
 }
-.page h2 {
-	margin: 0 0 0.8rem;
-	padding-bottom: 0.3rem;
-	color: var(--ink-head);
-	font-size: 1.6rem;
-	border-bottom: 1px solid rgb(107 20 5 / 0.35);
-}
-.page section + section {
-	margin-top: 1.8rem;
-}
-.page a {
-	color: var(--ink-link);
-	font-weight: 700;
-}
-.page .meta,
-.page small {
-	color: var(--ink-soft);
-}
-
-/* rows: dark plates on the parchment, like the addon's quest buttons */
-.quest-list,
-.atlas-loot,
-.chain-steps,
-.needs {
-	margin: 0;
+.site-nav {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	margin: 0 0 0 auto;
 	padding: 0;
 	list-style: none;
 }
-.quest-row {
+.site-nav > li {
+	position: relative;
+}
+.site-nav a,
+.site-nav summary {
+	display: block;
+	padding: 8px 10px;
+	color: #e9dcc2;
+	font: 13px var(--friz);
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	white-space: nowrap;
+	border-radius: 4px;
+}
+.site-nav a:hover,
+.site-nav summary:hover,
+.site-nav [aria-current] {
+	color: var(--gold);
+}
+.site-nav details summary::after {
+	content: ' ▾';
+}
+.site-nav details ul {
+	top: 38px;
+	left: 0;
+	right: auto;
+	min-width: 260px;
+	max-height: 70vh;
+}
+.site-top .dropdown > summary {
+	height: 34px;
+	font-size: 14px;
+}
+
+/* ---------- page frame ---------- */
+.site-main {
+	width: min(1240px, 100% - 32px);
+	margin: 0 auto;
+	padding: 18px 0 40px;
+}
+.crumbs {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	margin: 4px 0 10px;
+	padding: 0;
+	list-style: none;
+	color: #9c8f78;
+	font: 12px var(--friz);
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+.crumbs li + li::before {
+	content: '›';
+	margin-right: 6px;
+}
+.crumbs a:hover {
+	color: var(--gold);
+}
+.page-head {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: baseline;
-	gap: 0.3rem 0.7rem;
-	padding: 0.55rem 0.9rem;
-	margin-bottom: 0.35rem;
-	background: linear-gradient(90deg, #24180b, var(--row));
-	border: 1px solid var(--row-line);
-	border-radius: 0.4rem;
+	gap: 6px 16px;
+	margin: 0 0 6px;
 }
-.page .quest-row a {
+.page-head h1 {
+	margin: 0;
 	color: var(--gold);
-	font-weight: 600;
+	font: 38px/1.05 var(--morpheus);
+	font-variant-caps: small-caps;
+	text-shadow: 2px 2px 0 #000;
 }
-.page .quest-row small {
-	color: var(--muted);
+.page-head .lv {
+	color: #ffff00;
+	font: 15px var(--friz);
 }
-.page .quest-row .chain {
-	color: #7fb8ff;
+.page-head .lv b {
+	color: #c8bba3;
+	font-weight: 400;
+	margin-right: 4px;
 }
-.quest-row .lvl {
-	min-width: 2ch;
+.intro {
+	max-width: 80ch;
+	margin: 0 0 16px;
+	color: #d8ccb5;
+	font: 15px/1.6 var(--friz);
+}
+.intro a {
 	color: var(--gold);
-	font-weight: 800;
-	font-variant-numeric: tabular-nums;
 }
-.atlas-loot {
+
+/* a framed panel: dark stone, gold hairline, the Journal's look */
+.panel-box {
+	position: relative;
+	margin: 0 0 18px;
+	background: url('/atlas/ui/bg-rock.webp') 0 0 / 512px, #15110d;
+	border: 1px solid #5a4424;
+	border-radius: 6px;
+	box-shadow: 0 0 0 1px #000, 0 12px 40px rgb(0 0 0 / 0.55);
+}
+.panel-box > h2,
+.panel-title {
+	margin: 0;
+	padding: 12px 18px;
+	color: var(--gold);
+	font: 22px var(--morpheus);
+	font-variant-caps: small-caps;
+	text-align: center;
+	border-bottom: 1px solid #3a2c18;
+	background: linear-gradient(rgb(0 0 0 / 0.45), rgb(0 0 0 / 0.15));
+}
+.panel-pad {
+	padding: 16px 18px;
+}
+
+/* hero of the home page */
+.hero {
+	position: relative;
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
-	gap: 0.4rem;
+	place-items: center;
+	min-height: 300px;
+	margin: -18px calc(50% - 50vw) 22px;
+	padding: 40px 16px;
+	text-align: center;
+	background:
+		linear-gradient(rgb(11 9 8 / 0.35), #0b0908),
+		var(--hero) center / cover no-repeat;
 }
-.item {
+.hero h1 {
+	margin: 0 0 8px;
+	color: var(--gold);
+	font: 52px/1 var(--morpheus);
+	font-variant-caps: small-caps;
+	text-shadow: 2px 2px 0 #000, 0 0 30px #000;
+}
+.hero p {
+	max-width: 60ch;
+	margin: 0 auto 18px;
+	color: #efe5d0;
+	font: 17px/1.5 var(--friz);
+	text-shadow: 1px 1px 0 #000;
+}
+.hero .actions {
 	display: flex;
-	align-items: center;
-	gap: 0.6rem;
-	padding: 0.3rem 0.6rem 0.3rem 0.3rem;
-	background: var(--row);
-	border: 1px solid var(--row-line);
-	border-radius: 0.4rem;
-	text-decoration: none;
-	height: 100%;
-	box-sizing: border-box;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 10px;
 }
-.item img {
+.hero .redbtn {
+	height: 40px;
+	padding: 0 20px;
+	font-size: 15px;
+}
+
+/* tabs (Map, Bosses, Quests, Loot): the Journal's red buttons; real tabs over panels */
+.tabs {
+	display: flex;
+	gap: 6px;
+	margin: 0 0 14px;
+	overflow-x: auto;
+}
+.tabs button {
 	flex: none;
-	border-radius: 0.3rem;
-	border: 1px solid #000;
+	height: 34px;
+	padding: 0 18px;
+	font-size: 13px;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	filter: saturate(0.35) brightness(0.8);
 }
-.page .item span {
-	font-weight: 600;
+.tabs [aria-selected='true'] {
+	filter: none;
+	color: #fff;
+	box-shadow: 0 2px 0 var(--gold);
 }
-.page .item small {
-	margin-inline-start: auto;
-	color: var(--muted);
-	font-variant-numeric: tabular-nums;
+.tab-panel[hidden] {
+	pointer-events: none;
 }
-.boss + .boss {
-	margin-top: 1.4rem;
-}
-.boss h3 {
+
+/* filters over a card grid: round icons and the faction crests */
+.filters {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-	gap: 0.5rem;
-	margin: 0 0 0.6rem;
-	color: var(--ink-head);
-	font-size: 1.25rem;
-	scroll-margin-top: 4.5rem;
+	gap: 8px;
+	padding: 14px 18px 0;
 }
-.boss h3 small {
-	font-family: var(--sl-font);
-	font-size: 0.85rem;
+.filters .sep {
+	width: 1px;
+	height: 28px;
+	margin: 0 6px;
+	background: #3a2c18;
 }
-.tag {
-	padding: 0.05rem 0.5rem;
-	border-radius: 999px;
-	background: var(--row);
-	color: var(--gold) !important;
-}
-.pin-n,
-.pin {
-	display: inline-grid;
-	place-items: center;
-	width: 1.6rem;
-	height: 1.6rem;
+.round {
+	width: 44px;
+	height: 44px;
+	padding: 0;
+	border: 0;
 	border-radius: 50%;
-	background: radial-gradient(circle at 35% 30%, #ffdb8a, #b3731a);
-	color: #2a1703 !important;
-	font: 800 0.85rem/1 var(--sl-font);
-	border: 2px solid #2a1703;
-	text-decoration: none;
+	cursor: pointer;
+	background: #000 center / cover;
+	box-shadow: 0 0 0 2px #5a4424;
+	filter: saturate(0.2) brightness(0.7);
+}
+.round[aria-pressed='true'] {
+	filter: none;
+	box-shadow: 0 0 0 2px var(--gold), 0 0 12px rgb(255 209 0 / 0.4);
+}
+.cards {
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)) !important;
+	gap: 14px !important;
+	padding: 16px 18px 18px !important;
+}
+.card {
+	width: auto !important;
+	height: auto !important;
+	aspect-ratio: 236 / 130;
+}
+.card .name {
+	font-size: 22px !important;
+	text-align: left !important;
+	left: 16px !important;
+	top: 12px !important;
+}
+.card .info,
+.card .prog {
+	font-size: 12px !important;
+	bottom: 12px !important;
 }
 
-/* map floors with the bosses pinned (x, y: 0-1 over the floor) */
-.floor {
-	margin: 0 0 1rem;
+/* two columns: dark rows on the left, the parchment sheet on the right */
+.split {
+	display: grid;
+	grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+	gap: 16px;
+	align-items: start;
 }
-.floor-map {
+.parchment {
 	position: relative;
+	padding: 18px 20px;
+	background: url('/atlas/ui/ej-book.webp') 75% 50% / 200% 120%, #c9a877;
+	border-radius: 4px;
+	box-shadow: inset 0 0 40px rgb(80 45 10 / 0.6), 0 0 0 1px #000;
 }
-.floor-map img {
+.parchment .qsheet {
+	padding: 0;
+}
+.list-col .quest-list,
+.list-col .boss-list {
+	display: grid;
+	gap: 4px;
+	padding: 0;
+}
+.qrow {
+	height: 48px;
+}
+.qrow .tt {
+	font-size: 14px;
+}
+.qrow .s2 {
+	top: 26px;
+	font-size: 11px;
+}
+.next-link {
+	display: inline-block;
+	margin-top: 10px;
+	color: var(--gold);
+	font: 14px var(--friz);
+}
+
+/* bosses tab: one Journal boss button per boss, its loot under it */
+.boss-block {
+	margin: 0 0 18px;
+}
+.boss-block .boss-row {
+	max-width: 420px;
+	cursor: default;
+}
+.boss-block .loot {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+	gap: 4px 10px;
+	margin-top: 8px;
+}
+.loot-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+	gap: 4px 10px;
+}
+
+/* the map: floors one under the other, the bosses pinned */
+.maps {
+	display: grid;
+	gap: 12px;
+}
+.floor {
+	position: relative;
+	margin: 0;
+	aspect-ratio: 1002 / 668;
+}
+.floor > img {
 	display: block;
 	width: 100%;
-	height: auto;
-	border-radius: 0.4rem;
+	height: 100%;
+	border-radius: 4px;
+}
+.floor figcaption {
+	position: absolute;
+	left: 10px;
+	top: 10px;
+	padding: 3px 10px;
 }
 .pin {
 	position: absolute;
+	z-index: 1;
+	width: 34px;
+	height: 34px;
 	translate: -50% -50%;
-	box-shadow: 0 2px 6px rgb(0 0 0 / 0.6);
+	border-radius: 50%;
 }
-.pin:hover,
-.pin:focus-visible {
-	scale: 1.2;
-}
-.floor figcaption {
-	margin-top: 0.3rem;
-	color: var(--ink-soft);
-	font-weight: 700;
-}
-
-.where dt {
-	margin-top: 0.6rem;
-	color: var(--ink-head);
-	font-weight: 800;
-}
-.where dd {
-	margin: 0.1rem 0 0;
-}
-.where small {
-	margin-inline-start: 0.5rem;
-}
-.needs li::before {
-	content: '• ';
-	color: var(--ink-head);
-}
-.chain-steps {
-	counter-reset: step;
-}
-.chain-steps li {
-	counter-increment: step;
-	padding: 0.25rem 0;
-}
-.chain-steps li::before {
-	content: counter(step) '. ';
-	color: var(--ink-head);
-	font-weight: 800;
-}
-.chain-steps small {
-	margin-inline-start: 0.5rem;
-}
-.chain-full {
-	padding-inline-start: clamp(2rem, 5vw, 3rem);
-}
-.chain-full > li + li {
-	margin-top: 1.4rem;
-}
-.chain-full h2 {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	gap: 0.6rem;
-	font-size: 1.3rem;
-}
-.chain-full h2 small {
-	font: 600 0.9rem var(--sl-font);
-}
-.chain-full > li::marker {
-	color: var(--ink-head);
-	font-weight: 800;
-}
-
-/* Wowhead's item tooltip, on its dark plate */
-.wh-tooltip {
-	display: inline-block;
-	max-width: 100%;
-	margin-bottom: 1.5rem;
-	padding: 0.6rem 0.9rem;
-	color: #fff;
-	background: #070c21f0;
-	border: 1px solid #5b6ba1;
-	border-radius: 0.4rem;
-	font-size: 0.9rem;
-	line-height: 1.45;
-}
-.wh-tooltip table {
-	border-collapse: collapse;
+.pin img {
 	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	object-fit: cover;
+	background: #000;
 }
-.wh-tooltip td,
-.wh-tooltip th {
-	padding: 0;
-	vertical-align: top;
-	text-align: start;
-}
-.wh-tooltip th {
-	text-align: end;
-	padding-inline-start: 1rem;
-	font-weight: 400;
-}
-.wh-tooltip .q {
-	color: #ffd100;
-}
-/* coins: Wowhead marks them with classes, the game draws them as icons */
-.wh-tooltip .moneygold::after { content: 'g'; color: #ffd100; }
-.wh-tooltip .moneysilver::after { content: 's'; color: #c7c7cf; }
-.wh-tooltip .moneycopper::after { content: 'c'; color: #c47b4c; }
-
-.drops {
-	width: 100%;
-	border-collapse: collapse;
-}
-.drops th {
-	text-align: start;
-	color: var(--ink-head);
-	border-bottom: 1px solid rgb(107 20 5 / 0.35);
-	padding: 0.3rem 0.5rem;
-}
-.drops td {
-	padding: 0.4rem 0.5rem;
-	border-bottom: 1px solid rgb(84 53 20 / 0.2);
-}
-.drops td:last-child {
-	font-variant-numeric: tabular-nums;
+.pin::after {
+	content: '';
+	position: absolute;
+	inset: -12px -15px -15px -12px;
+	background: url('/atlas/ui/tracking-border.webp') 0 0 / 100% 100% no-repeat;
+	pointer-events: none;
 }
 
-/* ---------- home ---------- */
-.atlas-section h2 {
-	color: var(--title-light);
-	font-size: 1.7rem;
+/* ---------- footer ---------- */
+.site-foot {
+	margin-top: 30px;
+	padding: 28px max(16px, calc((100% - 1240px) / 2)) 40px;
+	color: #9c8f78;
+	font: 13px/1.6 var(--friz);
+	background: #070605;
+	border-top: 1px solid #2a2014;
 }
-.dungeon-grid {
+.site-foot .cols {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
-	gap: 1rem;
-	margin: 0 0 2rem;
+	grid-template-columns: 2fr 1fr 1fr;
+	gap: 24px;
+}
+.site-foot h2 {
+	margin: 0 0 8px;
+	color: var(--gold);
+	font: 13px var(--friz);
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+}
+.site-foot ul {
+	margin: 0;
 	padding: 0;
 	list-style: none;
 }
-.dungeon-card {
+.site-foot a:hover {
+	color: var(--gold);
+}
+.site-foot .legal {
+	margin-top: 18px;
+	font-size: 11px;
+	color: #6f6556;
+}
+/* WowStyle1DropdownTemplate: dark field, gold rim, yellow arrow button */
+.dropdown {
 	position: relative;
-	display: grid;
-	align-content: end;
-	aspect-ratio: 2 / 1;
-	overflow: hidden;
-	padding: 0.8rem 1rem;
-	border-radius: 0.7rem;
-	border: 1px solid var(--row-line);
-	text-decoration: none;
-	isolation: isolate;
 }
-.dungeon-card img {
-	position: absolute;
-	inset: 0;
-	z-index: -1;
+.dropdown > summary {
+	display: flex;
+	align-items: center;
+	box-sizing: border-box;
+	height: 26px;
+	padding: 0 30px 0 9px;
+	color: #fff;
+	font: 13px var(--friz);
+	white-space: nowrap;
+	background:
+		url('/atlas/ui/dropdown.webp') right 1px center / 25px no-repeat,
+		linear-gradient(#1b1610, #0b0907);
+	border: 1px solid #8b7546;
+	border-radius: 4px;
+	box-shadow: inset 0 0 0 1px #000;
+	text-shadow: 1px 1px 0 #000;
+}
+.dropdown > summary:hover {
+	background-image: url('/atlas/ui/dropdown-hover.webp'), linear-gradient(#1b1610, #0b0907);
+}
+.dropdown[open] > summary {
+	background-image: url('/atlas/ui/dropdown-open.webp'), linear-gradient(#1b1610, #0b0907);
+}
+.dropdown ul {
+	top: 28px;
+	left: auto;
+	right: 0;
+}
+
+/* SearchBoxTemplate 160x20 */
+.searchbox {
+	position: relative;
+	width: 160px;
+	height: 22px;
+	margin: 0;
+}
+.searchbox input {
+	box-sizing: border-box;
 	width: 100%;
-	height: 100%;
-	object-fit: cover;
-	transition: scale 0.3s;
+	height: 22px;
+	padding: 0 6px 0 22px;
+	color: #fff;
+	font: 12px var(--friz);
+	border: 0;
+	background:
+		url('/atlas/ui/search-glass.webp') 5px center / 12px no-repeat,
+		url('/atlas/ui/search-left.webp') left center / 8px 22px no-repeat,
+		url('/atlas/ui/search-right.webp') right center / 8px 22px no-repeat,
+		url('/atlas/ui/search-middle.webp') 8px center / calc(100% - 16px) 22px no-repeat;
 }
-.dungeon-card::after {
+.searchbox input::placeholder {
+	color: #8f8f8f;
+}
+
+
+/* ---------- shared pieces ---------- */
+.scroll {
+	overflow-x: hidden;
+	overflow-y: auto;
+	scrollbar-width: thin;
+	scrollbar-color: #9a7b33 rgb(0 0 0 / 0.35);
+	overscroll-behavior: contain;
+}
+.darkbox {
+	background: rgb(10 8 5 / 0.85);
+	border: 3px solid transparent;
+	border-image: url('/atlas/ui/tooltip-9slice.webp') 16 / 8px stretch;
+}
+.redbtn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 4px;
+	box-sizing: border-box;
+	height: 22px;
+	padding: 0 10px;
+	color: var(--gold);
+	font: 11px var(--friz);
+	white-space: nowrap;
+	text-shadow: 1px 1px 0 #000;
+	border: 0;
+	border-radius: 3px;
+	cursor: pointer;
+	background:
+		url('/atlas/ui/btn-left.webp') left center / auto 100% no-repeat,
+		url('/atlas/ui/btn-right.webp') right center / auto 100% no-repeat,
+		url('/atlas/ui/btn-center.webp') center / 100% 100%;
+}
+.redbtn:hover {
+	color: #fff;
+}
+.redbtn img {
+	width: 16px;
+	height: 16px;
+}
+.paper-header {
+	margin: 14px 0 6px;
+	padding-bottom: 3px;
+	color: var(--ink-header);
+	font: 15px var(--friz);
+	border-bottom: 1px solid rgb(107 20 5 / 0.45);
+}
+.paper,
+.paper p {
+	color: var(--ink);
+	font: 13px/1.4 var(--friz);
+}
+.ink-light {
+	color: var(--ink-light);
+}
+
+/* status icons and faction crests */
+.st {
+	display: inline-block;
+	width: 14px;
+	height: 14px;
+	vertical-align: -2px;
+	background: url('/atlas/ui/quest-available.webp') center / contain no-repeat;
+}
+.st.repeat {
+	background-image: url('/atlas/ui/status-repeat.webp');
+}
+.fac {
+	display: inline-block;
+	width: 18px;
+	height: 18px;
+	vertical-align: middle;
+	background: center / contain no-repeat;
+}
+.fac.alliance {
+	background-image: url('/atlas/ui/faction-alliance.webp');
+}
+.fac.horde {
+	background-image: url('/atlas/ui/faction-horde.webp');
+}
+
+
+.card {
+	position: relative;
+	display: block;
+	width: 236px;
+	height: 130px;
+	background: url('/atlas/ui/ej-instance-button.webp') 0 0 / 100% 100%;
+}
+.card > img {
+	position: absolute;
+	inset: 6px;
+	width: calc(100% - 12px);
+	height: calc(100% - 12px);
+	object-fit: cover;
+}
+.card::before {
+	content: '';
+	position: absolute;
+	inset: 6px;
+	background: linear-gradient(rgb(0 0 0 / 0.1), rgb(0 0 0 / 0.85));
+}
+.card::after {
 	content: '';
 	position: absolute;
 	inset: 0;
-	z-index: -1;
-	background: linear-gradient(transparent 35%, rgb(0 0 0 / 0.85));
+	background: url('/atlas/ui/ej-dungeon-button-highlight.webp') 0 0 / 100% 100%;
+	mix-blend-mode: plus-lighter;
+	opacity: 0;
 }
-.dungeon-card:hover img {
-	scale: 1.05;
+.card:hover::after,
+.card:focus-visible::after {
+	opacity: 1;
 }
-.dungeon-card .name {
-	color: var(--title-light);
-	font: 1.3rem var(--display);
+.card .name {
+	font-variant-caps: small-caps;
+	position: absolute;
+	inset: 14px 8px auto;
+	color: var(--gold);
+	font: 18px/1.05 var(--morpheus);
+	text-align: center;
+	text-shadow: 1px 1px 0 #000, 0 0 6px #000;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
 }
-.dungeon-card .meta {
-	color: var(--gold-soft);
-	font-size: 0.85rem;
+.card .info,
+.card .prog {
+	position: absolute;
+	bottom: 11px;
+	font: 10px var(--friz);
+	text-shadow: 1px 1px 0 #000;
+}
+.card .info {
+	left: 12px;
+	color: #ffff00;
+}
+.card .info .new {
+	color: var(--brand);
+	margin-left: 6px;
+}
+.card .prog {
+	right: 12px;
+	color: #fff;
+}
+.card .when {
+	color: #40c040;
+}
+.card .lock {
+	position: absolute;
+	top: 9px;
+	right: 9px;
+	width: 16px;
+	height: 16px;
+	background: url('/atlas/ui/pet-lock.webp') center / contain no-repeat;
+}
+.card[hidden] {
+	display: none;
 }
 
-/* ---------- call to action and footer ---------- */
-.atlas-cta {
-	display: grid;
-	grid-template-columns: auto 1fr auto;
-	align-items: center;
-	gap: 1.2rem;
-	margin-block: 2.5rem 1.5rem;
-	padding: 1.4rem 1.6rem;
-	background: var(--glass);
-	border: 1px solid var(--glass-line);
-	border-radius: 1rem;
-}
-.atlas-cta img {
-	border-radius: 0.8rem;
-}
-.atlas-cta h2 {
-	margin: 0 0 0.3rem;
-	color: var(--title-light);
-}
-.atlas-cta p {
+
+/* boss list: the Journal's boss button, cap 72 px with the round hole, the rest stretched */
+.boss-list {
 	margin: 0;
-	color: var(--muted);
+	padding: 14px 0 0;
+	list-style: none;
 }
-.atlas-cta-actions {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 0.6rem;
+.boss-row {
+	position: relative;
+	display: block;
+	width: 100%;
+	height: 55px;
+	margin-bottom: -1px;
+	padding: 0;
+	border: 0;
+	cursor: pointer;
+	text-align: left;
+	background:
+		url('/atlas/ui/ej-boss-button-up.webp') 0 0 / 325px 55px no-repeat,
+		url('/atlas/ui/ej-boss-button-up.webp') right 0 / 100% 55px no-repeat;
 }
-.atlas .btn-gold {
-	color: #241600;
+.boss-row[aria-pressed='true'] {
+	background-image: url('/atlas/ui/ej-boss-button-down.webp'), url('/atlas/ui/ej-boss-button-down.webp');
 }
-.atlas .btn-glass {
-	color: var(--text);
+.boss-row:hover::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: url('/atlas/ui/ej-boss-button-highlight.webp') 0 0 / 100% 100%;
+	mix-blend-mode: plus-lighter;
+	opacity: 0.8;
 }
-.atlas-foot {
-	padding: 1rem 0 2rem;
-	color: var(--muted);
-	font-size: 0.8rem;
+.boss-row .creature {
+	position: absolute;
+	left: -4px;
+	top: -13px;
+	width: 128px;
+	height: 64px;
+	object-fit: contain;
+	object-position: left bottom;
 }
-.source {
-	color: var(--muted);
-	font-size: 0.8rem;
+.boss-row .hole {
+	position: absolute;
+	left: 14px;
+	top: 4px;
+	width: 46px;
+	height: 46px;
+	border-radius: 50%;
+	object-fit: cover;
+	background: #000;
+}
+.boss-row .label,
+.boss-row .meta {
+	z-index: 1;
+}
+.boss-row .label {
+	position: absolute;
+	left: 72px;
+	right: 12px;
+	top: 11px;
+	color: var(--parch-gold);
+	font: 14px var(--friz);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	text-shadow: 1px 1px 0 #000;
+}
+.boss-row .label .rare {
+	color: #c0c0ff;
+}
+.boss-row .meta {
+	position: absolute;
+	left: 72px;
+	right: 12px;
+	top: 30px;
+	color: var(--parch-sub);
+	font: 10px var(--friz);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.boss-row .badge {
+	position: absolute;
+	left: 42px;
+	top: 28px;
+	width: 22px;
+	height: 22px;
+	display: grid;
+	place-items: center;
+	color: #fff;
+	font: 9px var(--friz);
+	background: url('/atlas/ui/boss-iconring.webp') center / 100% no-repeat;
 }
 
-.set-title {
-	margin: 1rem 0 0.5rem;
-	color: var(--ink-head);
-	font-size: 1.15rem;
-}
-.rep-list {
+/* loot rows (Items.lua): LootFrame 321x45, 40 px icon with quality border */
+.loot {
 	margin: 0;
 	padding: 0;
 	list-style: none;
 }
-.rep-list .quest-row {
-	align-items: center;
+.loot li {
+	margin-bottom: 2px;
 }
-.rep-list img {
-	border-radius: 0.3rem;
+.loot li[hidden] {
+	display: none;
 }
-.atlas-section .quest-row a {
-	color: var(--gold);
-	font-weight: 600;
+.loot-row {
+	position: relative;
+	display: block;
+	height: 45px;
+	background: url('/atlas/ui/ej-loot-frame.webp') 0 0 / 100% 45px no-repeat;
 }
-.atlas-section .quest-row small {
-	color: var(--muted);
+.loot-row.with-boss {
+	height: 61px;
+}
+/* a boss chosen: its loot only, without the "Loot: Boss" line */
+[data-boss] .loot-row.with-boss {
+	height: 45px;
+}
+[data-boss] .loot-row .from {
+	display: none;
+}
+.icon40 {
+	position: absolute;
+	left: 3px;
+	top: 2px;
+	width: 40px;
+	height: 40px;
+}
+.icon40 img {
+	width: 100%;
+	height: 100%;
+	border-radius: 2px;
+}
+.icon40::after {
+	content: '';
+	position: absolute;
+	inset: -1px;
+	border: 2px solid var(--qc, #9d9d9d);
+	border-radius: 3px;
+	box-shadow: inset 0 0 0 1px #000;
+}
+.loot-row:hover .icon40 img {
+	filter: brightness(1.25);
+}
+.loot-row .nm {
+	position: absolute;
+	left: 51px;
+	right: 64px;
+	top: 6px;
+	font: 14px var(--friz);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	text-shadow: 1px 1px 0 #000;
+}
+.loot-row .ty {
+	position: absolute;
+	left: 51px;
+	top: 26px;
+	color: var(--on-dark);
+	font: 11px var(--friz);
+	white-space: nowrap;
+}
+.loot-row .rt {
+	position: absolute;
+	right: 12px;
+	top: 26px;
+	color: var(--on-dark);
+	font: 11px var(--friz);
+}
+.loot-row .from {
+	position: absolute;
+	left: 52px;
+	top: 46px;
+	color: var(--ink);
+	font: 11px var(--friz);
 }
 
-@media (max-width: 48rem) {
-	.atlas-top {
-		flex-wrap: wrap;
+
+/* boss overview */
+.boss-head {
+	position: relative;
+	height: 64px;
+	isolation: isolate;
+}
+.boss-head .ring {
+	position: absolute;
+	left: -4px;
+	top: -2px;
+	width: 64px;
+	height: 61px;
+	background: url('/atlas/ui/ej-boss-model-button.webp') 0 0 / 100% 100%;
+}
+.boss-head .ring img {
+	position: absolute;
+	left: 12px;
+	top: 10px;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	object-fit: cover;
+	z-index: -1;
+}
+.boss-head h2 {
+	position: absolute;
+	left: 62px;
+	top: 10px;
+	margin: 0;
+	color: var(--ink);
+	font: 18px var(--friz);
+}
+.boss-head p {
+	position: absolute;
+	left: 62px;
+	top: 36px;
+	margin: 0;
+	color: var(--ink);
+	font: 12px var(--friz);
+}
+
+/* quest list rows (44 high, dark) */
+.quest-list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.qrow {
+	position: relative;
+	display: block;
+	height: 42px;
+	margin: 1px 0 2px;
+	background: rgb(26 18 10 / 0.78);
+}
+.qrow[aria-current] {
+	background: rgb(26 18 10 / 0.95);
+}
+.qrow[aria-current]::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: url('/atlas/ui/quest-row-glow.webp') 0 0 / 100% 100%;
+	mix-blend-mode: plus-lighter;
+	opacity: 0.5;
+}
+.qrow:hover {
+	background-color: rgb(46 36 24 / 0.9);
+}
+.qrow.chain::after {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: 4px;
+	background: #66b8ff;
+}
+.qrow .st {
+	position: absolute;
+	left: 10px;
+	top: 9px;
+	width: 24px;
+	height: 24px;
+}
+.qrow .tt {
+	position: absolute;
+	left: 42px;
+	right: 64px;
+	top: 6px;
+	color: var(--gold);
+	font: 12px var(--friz);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	text-shadow: 1px 1px 0 #000;
+}
+.qrow .s2 {
+	position: absolute;
+	left: 42px;
+	right: 64px;
+	top: 23px;
+	color: #c7bda8;
+	font: 10px var(--friz);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.qrow .s2 .ch {
+	color: #66b8ff;
+}
+.qrow .lv {
+	position: absolute;
+	right: 10px;
+	top: 11px;
+	color: #ffff00;
+	font: 16px var(--friz);
+	text-shadow: 1px 1px 0 #000;
+}
+.qrow .fac {
+	position: absolute;
+	right: 36px;
+	top: 12px;
+}
+.legend {
+	position: absolute;
+	inset: auto 18px 0 0;
+	height: 36px;
+	box-sizing: border-box;
+	border-top: 1px solid rgb(41 23 2 / 0.3);
+	color: var(--ink);
+	font: 10px/14px var(--friz);
+	text-align: center;
+	padding-top: 6px;
+}
+.legend .bar {
+	display: inline-block;
+	width: 4px;
+	height: 12px;
+	margin: 0 2px 0 10px;
+	background: #66b8ff;
+	vertical-align: -2px;
+}
+
+/* quest sheet (QuestPanel CreateDetail) */
+.qsheet {
+	padding: 6px 4px 24px;
+	color: var(--ink);
+}
+.qsheet h2 {
+	margin: 0 0 6px;
+	color: var(--ink);
+	font: 18px var(--friz);
+}
+.qsheet .meta {
+	margin: 0 0 6px;
+	font: 12px var(--friz);
+}
+.qsheet .meta .fac {
+	width: 14px;
+	height: 14px;
+}
+.chain-links {
+	margin: 0;
+	padding: 4px;
+	list-style: none;
+	background: rgb(51 89 140 / 0.14);
+}
+.chain-links a,
+.chain-links span {
+	display: block;
+	height: 20px;
+	padding: 0 4px;
+	color: var(--link);
+	font: 13px/20px var(--friz);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.chain-links span {
+	color: #000;
+}
+.chain-links a:hover {
+	background: rgb(41 23 2 / 0.12);
+}
+.chain-links b {
+	color: #402608;
+	font-weight: 400;
+}
+.where p {
+	margin: 2px 0;
+	font: 13px var(--friz);
+}
+.where strong,
+.where a {
+	color: var(--link);
+	font-weight: 400;
+}
+.btns {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 4px;
+	margin-top: 10px;
+}
+.btns .redbtn {
+	height: 24px;
+}
+.rewards-label {
+	margin: 8px 0 4px;
+	font: 12px var(--friz);
+}
+.rewards {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 8px 6px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.reward {
+	position: relative;
+	display: block;
+	height: 40px;
+}
+.reward .icon40 {
+	left: 0;
+	top: 0;
+	width: 39px;
+	height: 39px;
+	z-index: 1;
+}
+.reward .plate {
+	position: absolute;
+	left: 29px;
+	right: -6px;
+	top: -12px;
+	height: 64px;
+	background: url('/atlas/ui/reward-plate.webp') 0 0 / 100% 100%;
+}
+.reward .nm {
+	position: absolute;
+	left: 45px;
+	right: 2px;
+	top: 50%;
+	translate: 0 -50%;
+	font: 10px/1.15 var(--friz);
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-shadow: 1px 1px 0 #000;
+}
+.reward .nm.white {
+	color: #fff;
+}
+.reward .cnt {
+	position: absolute;
+	left: 22px;
+	top: 24px;
+	color: #fff;
+	font: 11px var(--friz);
+	text-shadow: 1px 1px 0 #000;
+	z-index: 2;
+}
+
+
+/* model tab: the boss's model (Wowhead viewer) over the dungeon background, name over the shadow */
+.model-stage {
+	position: absolute;
+	inset: -8px -8px -6px;
+	overflow: hidden;
+	background: #000 center / cover no-repeat;
+}
+.model-stage .viewer {
+	position: absolute;
+	inset: 0 0 36px;
+}
+.model-stage .thumb {
+	position: absolute;
+	left: 50%;
+	top: 44%;
+	width: 230px;
+	translate: -50% -50%;
+}
+.model-stage .shadow {
+	position: absolute;
+	inset: auto 0 0;
+	height: 76px;
+	background: url('/atlas/ui/ej-boss-name-shadow.webp') 0 0 / 100% 100%;
+}
+.model-stage h2 {
+	position: absolute;
+	inset: auto 0 26px;
+	margin: 0;
+	color: var(--gold);
+	font: 22px var(--morpheus);
+	text-align: center;
+	text-shadow: 1px 1px 0 #000;
+}
+
+/* ---------- game tooltip (GameTooltip): popover="hint" shown by the item links ---------- */
+.gtt {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background: none;
+	overflow: visible;
+	color: #fff;
+	font: 12px/1.3 var(--friz);
+	width: max-content;
+	max-width: 300px;
+}
+@supports (position-area: block-end) {
+	.gtt {
+		inset: auto;
+		margin: 0 0 0 50px;
+		position-area: right span-bottom;
+		position-try-fallbacks: flip-inline, flip-block, flip-inline flip-block;
 	}
-	.atlas-search {
-		order: 3;
-		flex-basis: 100%;
-		max-width: none;
+}
+.gtt .box {
+	position: relative;
+	padding: 6px 9px 8px;
+	background: rgb(9 9 25 / 0.94);
+	border: 4px solid transparent;
+	border-image: url('/atlas/ui/tooltip-9slice.webp') 16 / 12px stretch;
+	border-radius: 4px;
+}
+.gtt .ico {
+	position: absolute;
+	right: calc(100% + 2px);
+	top: -4px;
+	width: 40px;
+	height: 40px;
+	border: 2px solid #3c3c55;
+	border-radius: 4px;
+	background: #000;
+}
+.gtt table {
+	border-collapse: collapse;
+	width: 100%;
+}
+.gtt td,
+.gtt th {
+	padding: 0;
+	text-align: left;
+	vertical-align: top;
+	font-weight: 400;
+}
+.gtt th {
+	padding-left: 18px;
+	text-align: right;
+}
+.gtt b {
+	font-size: 14px;
+	font-weight: 400;
+}
+.gtt .q {
+	color: var(--gold);
+}
+.gtt .q1 {
+	color: #fff;
+}
+.gtt .moneygold::after,
+.gtt .moneysilver::after,
+.gtt .moneycopper::after {
+	content: '';
+	display: inline-block;
+	width: 12px;
+	height: 12px;
+	margin: 0 3px 0 2px;
+	vertical-align: -1px;
+	border-radius: 50%;
+	background: radial-gradient(#ffe58a, #c99a14);
+}
+.gtt .moneysilver::after {
+	background: radial-gradient(#fff, #9a9aa8);
+}
+.gtt .moneycopper::after {
+	background: radial-gradient(#f0b07a, #9b5426);
+}
+.gtt .src {
+	margin-top: 2px;
+	color: #40ff40;
+}
+@media (prefers-reduced-motion: no-preference) {
+	.gtt {
+		opacity: 0;
+		transition: opacity, display, overlay;
+		transition-duration: 0.12s;
+		transition-behavior: allow-discrete;
 	}
-	.atlas-search + .atlas-langs {
-		margin-inline-start: auto;
+	.gtt:is(:popover-open, .\:popover-open) {
+		opacity: 1;
 	}
-	.dungeon-hero,
-	.atlas-cta {
-		grid-template-columns: 1fr;
+	@starting-style {
+		.gtt:is(:popover-open, .\:popover-open) {
+			opacity: 0;
+		}
 	}
-	.atlas-brand span {
+}
+[interestfor] {
+	--interest-delay-start: 0.15s;
+	interest-delay-start: var(--interest-delay-start);
+	--interest-delay-end: 0.05s;
+	interest-delay-end: var(--interest-delay-end);
+}
+@supports not selector(:popover-open) {
+	[popover]:not(.\:popover-open) {
 		display: none;
 	}
 }
-@media (prefers-reduced-motion: reduce) {
-	.dungeon-card img {
-		transition: none;
+
+
+/* ---------- other views ---------- */
+.flat {
+	position: absolute;
+	inset: 0;
+	background: #120f0c;
+}
+.flat > .scroll {
+	position: absolute;
+	inset: 12px 28px 10px 16px;
+}
+.sec-head {
+	margin: 4px 0 8px;
+	padding-bottom: 6px;
+	color: #fff;
+	font: 16px var(--friz);
+	border-bottom: 1px solid rgb(255 255 255 / 0.1);
+}
+.renown {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 10px;
+	margin: 0 0 16px;
+	padding: 0;
+	list-style: none;
+}
+.renown li {
+	position: relative;
+	height: 84px;
+	box-sizing: border-box;
+	padding: 14px 14px 0 82px;
+	background: rgb(82 56 10 / 0.95);
+	border: 4px solid transparent;
+	border-image: url('/atlas/ui/tooltip-9slice.webp') 16 / 12px stretch;
+}
+.renown img {
+	position: absolute;
+	left: 18px;
+	top: 18px;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+}
+.renown strong {
+	display: block;
+	color: #fff;
+	font: 15px var(--friz);
+}
+.renown small {
+	display: block;
+	color: var(--gold);
+	font: 11px var(--friz);
+}
+.renown .fac {
+	position: absolute;
+	right: 12px;
+	top: 10px;
+}
+.timeline {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.timeline li {
+	display: flex;
+	align-items: center;
+	height: 34px;
+	margin-bottom: 4px;
+	padding-left: 14px;
+	font: 12px var(--friz);
+}
+.timeline .when {
+	width: 176px;
+	color: var(--gold);
+}
+.timeline .soon {
+	color: #99d9ff;
+}
+.tier-list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.tier-list > li {
+	margin-bottom: 12px;
+}
+.tier-list h3 {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	margin: 0 0 6px;
+	font: 12px var(--friz);
+}
+.tier-row {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	margin: 0 0 6px 8px;
+}
+.tier-row > span {
+	width: 70px;
+	color: #fff;
+	font: 12px var(--friz);
+}
+.tier-row a {
+	position: relative;
+	width: 34px;
+	height: 34px;
+}
+.tier-row a img {
+	width: 100%;
+	height: 100%;
+}
+.tier-row a::after {
+	content: '';
+	position: absolute;
+	inset: -1px;
+	border: 2px solid var(--qc, #9d9d9d);
+	border-radius: 3px;
+}
+.tier-row em {
+	margin-left: 6px;
+	color: #aaa;
+	font: 11px var(--friz);
+	font-style: normal;
+}
+.tutorial {
+	position: absolute;
+	inset: 66px 26px 12px;
+	background: url('/atlas/ui/tutorial-pane.webp') 0 0 / 100% 100%;
+}
+.tutorial .art {
+	position: absolute;
+	left: 28px;
+	top: 50%;
+	width: 310px;
+	height: 207px;
+	translate: 0 -50%;
+	padding: 3px;
+	box-sizing: border-box;
+	background: rgb(31 18 5 / 0.9);
+}
+.tutorial .art img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+.tutorial .txt {
+	position: absolute;
+	left: 368px;
+	right: 20px;
+	top: 28px;
+	bottom: 20px;
+}
+.tutorial h2 {
+	margin: 0;
+	color: var(--ink-header);
+	font: 26px var(--morpheus);
+}
+.tutorial hr {
+	height: 9px;
+	margin: 10px 0 12px;
+	border: 0;
+	background: url('/atlas/ui/tutorial-divider.webp') 0 0 / 300px 9px no-repeat;
+}
+.tutorial p {
+	margin: 0 0 8px;
+	color: var(--ink);
+	font: 13px/1.45 var(--friz);
+}
+.pager {
+	position: absolute;
+	right: 16px;
+	top: 13px;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	color: #fff;
+	font: 12px var(--friz);
+}
+.search-results {
+	position: absolute;
+	inset: 72px 12px 8px;
+}
+.search-results .loot {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 6px 12px;
+}
+.search-results .rt {
+	color: var(--gold);
+}
+.empty {
+	margin: 40px 0;
+	color: #7f7f7f;
+	font: 16px var(--friz);
+	text-align: center;
+}
+
+
+/* views that were laid out inside the window, now in panels */
+.flat,
+.flat > .scroll,
+.search-results {
+	position: static;
+	inset: auto;
+	background: none;
+}
+.tutorial {
+	position: relative;
+	inset: auto;
+	min-height: 380px;
+	margin: 0 18px 18px;
+}
+.tutorial[hidden] {
+	display: none !important;
+}
+.pager {
+	position: static;
+	justify-content: flex-end;
+	padding: 12px 18px;
+}
+.search-results .loot {
+	padding: 0 18px 18px;
+}
+.atlas .searchbox.big {
+	width: min(520px, 100%);
+	height: 40px;
+	margin: 16px auto 4px;
+}
+.atlas .searchbox.big input {
+	height: 40px;
+	font-size: 16px;
+}
+
+/* ---------- small screens ---------- */
+@media (max-width: 900px) {
+	.site-top {
+		flex-wrap: wrap;
 	}
+	.site-top .searchbox {
+		order: 5;
+		flex: 1 1 100%;
+		width: auto;
+	}
+	.site-nav {
+		order: 6;
+		flex: 1 1 100%;
+		margin: 0;
+		overflow-x: auto;
+	}
+	.split,
+	.site-foot .cols {
+		grid-template-columns: 1fr;
+	}
+	.page-head h1 {
+		font-size: 30px;
+	}
+	.hero h1 {
+		font-size: 38px;
+	}
+	.tutorial .art,
+	.tutorial .txt {
+		position: relative;
+		inset: auto;
+		translate: none;
+		width: auto;
+	}
+	.tutorial {
+		padding: 16px;
+	}
+	.tutorial .art {
+		height: 200px;
+		margin-bottom: 12px;
+	}
+	.renown {
+		grid-template-columns: 1fr;
+	}
+}
+@media (max-width: 520px) {
+	.brand span {
+		display: none;
+	}
+	.rewards {
+		grid-template-columns: 1fr;
+	}
+}
+
+/* ---------- pieces the window used to carry ---------- */
+body.atlas {
+	overflow-x: clip;
+}
+.cards {
+	display: grid;
+	margin: 0;
+	list-style: none;
+}
+.cards > li[hidden] {
+	display: none;
+}
+.toggle {
+	display: flex;
+	gap: 6px;
+}
+.toggle button {
+	position: relative;
+	width: 34px;
+	height: 34px;
+	padding: 0;
+	cursor: pointer;
+	background: rgb(0 0 0 / 0.55);
+	border: 3px solid transparent;
+	border-image: url('/atlas/ui/tooltip-9slice.webp') 16 / 8px stretch;
+	filter: saturate(0) brightness(0.7);
+}
+.toggle button[aria-pressed='true'] {
+	filter: none;
+	box-shadow: 0 0 0 1px var(--gold), 0 0 10px rgb(255 209 0 / 0.35);
+}
+.toggle button i {
+	position: absolute;
+	width: 16px;
+	height: 20px;
+	background: center / contain no-repeat;
+}
+.toggle .both i:first-child {
+	left: 1px;
+	top: 1px;
+	background-image: url('/atlas/ui/crest-alliance.webp');
+}
+.toggle .both i:last-child {
+	right: 1px;
+	bottom: 1px;
+	background-image: url('/atlas/ui/crest-horde.webp');
+}
+.toggle .alliance i,
+.toggle .horde i {
+	inset: 3px 6px;
+	width: auto;
+	height: auto;
+	background-image: url('/atlas/ui/crest-alliance.webp');
+}
+.toggle .horde i {
+	background-image: url('/atlas/ui/crest-horde.webp');
+}
+.site-top .searchbox {
+	flex: 0 1 230px;
+	min-width: 140px;
+}
+.btn-dl {
+	white-space: nowrap;
+}
+.site-nav .dropdown > summary {
+	height: auto;
+	padding: 8px 10px;
+	background: none;
+	border: 0;
+	box-shadow: none;
+}
+.site-nav .dropdown > summary:hover {
+	background: none;
+}
+.site-nav .dropdown ul small {
+	color: #9c8f78;
+}
+
+/* ---------- sizes for the page (the game's sizes were for a zoomed window) ---------- */
+.parchment {
+	background: url('/atlas/ui/ej-book.webp') right center / 205% 112% no-repeat, #c9a877;
+}
+.qsheet h2 {
+	font-size: 26px;
+}
+.qsheet .meta,
+.where p,
+.rewards-label {
+	font-size: 15px;
+}
+.paper,
+.paper p,
+.chain-links a,
+.chain-links span {
+	font-size: 16px;
+}
+.chain-links a,
+.chain-links span {
+	height: 26px;
+	line-height: 26px;
+}
+.paper-header {
+	margin-top: 18px;
+	font-size: 19px;
+}
+.reward {
+	height: 48px;
+}
+.reward .icon40 {
+	width: 46px;
+	height: 46px;
+}
+.reward .plate {
+	left: 36px;
+	top: -10px;
+	height: 68px;
+}
+.reward .nm {
+	left: 54px;
+	font-size: 13px;
+}
+.reward .cnt {
+	left: 28px;
+	top: 30px;
+	font-size: 13px;
+}
+.btns .redbtn {
+	height: 32px;
+	font-size: 13px;
+}
+.qrow {
+	height: 52px;
+}
+.qrow .st {
+	top: 13px;
+}
+.qrow .tt {
+	top: 8px;
+	font-size: 15px;
+}
+.qrow .s2 {
+	top: 29px;
+	font-size: 12px;
+}
+.qrow .lv {
+	top: 13px;
+	font-size: 18px;
+}
+.qrow .fac {
+	top: 16px;
+}
+.boss-row .label {
+	font-size: 16px;
+}
+.boss-row .meta {
+	font-size: 12px;
+}
+.loot-row .nm {
+	font-size: 15px;
+}
+.loot-row .ty,
+.loot-row .rt,
+.loot-row .from {
+	font-size: 12px;
+}
+.gtt {
+	font-size: 14px;
+}
+.gtt b {
+	font-size: 16px;
+}
+.card .info,
+.card .prog {
+	font-size: 13px !important;
+}
+.renown strong {
+	font-size: 17px;
+}
+.renown small,
+.timeline li,
+.tier-row > span,
+.tier-list h3 {
+	font-size: 14px;
+}
+.tutorial p {
+	font-size: 15px;
 }

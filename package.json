@@ -14,7 +14,8 @@
     "atlas:extract": "node scripts/atlas/extract.mjs",
     "atlas:names": "node scripts/atlas/names.mjs",
     "atlas:maps": "python3 -I scripts/atlas/maps.py",
-    "atlas:check": "node --experimental-strip-types scripts/atlas/check.ts"
+    "atlas:check": "node --experimental-strip-types scripts/atlas/check.ts",
+    "atlas:ui": "python3 -I scripts/atlas/ui.py"
   },
   "dependencies": {
     "@astrojs/react": "^7.1.9",
@@ -25,7 +26,9 @@
     "@fontsource/marcellus": "^5.3.0",
     "@keystatic/astro": "^6.0.0",
     "@keystatic/core": "^0.6.10",
+    "@oddbird/popover-polyfill": "^0.7.3",
     "astro": "^7.4.12",
+    "interestfor": "^1.0.12",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "sharp": "^0.35.5",

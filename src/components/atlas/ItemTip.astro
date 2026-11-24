@@ -1,0 +1,31 @@
+---
+// The game tooltip of an item (GameTooltip with SetItemByID): its icon outside the box, Wowhead's tooltip
+// text, and the addon's green source line. One popover="hint" per item and page, shared by every link to
+// it (interestfor="tt-<id>").
+import type { Lang } from '../../lib/atlas/i18n';
+import { icon, itemIcon, tooltipHtml } from '../../lib/atlas/view';
+import { itemName } from '../../lib/atlas/data';
+
+interface Props {
+	lang: Lang;
+	id: number;
+	src?: string;
+}
+const { lang, id, src } = Astro.props;
+const seen: Set<number> = ((Astro.locals as { tips?: Set<number> }).tips ??= new Set());
+const first = !seen.has(id);
+seen.add(id);
+const html = tooltipHtml(lang, `item:${id}`);
+---
+
+{
+	first && (
+		<div class="gtt" id={`tt-${id}`} popover="hint" role="tooltip">
+			<div class="box">
+				<img class="ico" src={icon(itemIcon(id), 'large')} alt="" width="40" height="40" loading="lazy" />
+				{html ? <Fragment set:html={html} /> : <b>{itemName(lang, id)}</b>}
+				{src && <div class="src">{src}</div>}
+			</div>
+		</div>
+	)
+}

@@ -1,0 +1,82 @@
+---
+// A raid: opening date and size, then tabs for Bosses (with loot when known) and the Attunement chain.
+import { LANG, wow, type Lang } from '../../lib/atlas/i18n';
+import { raidName, name, questName, href, itemName, L, lootId, lootChance, type Raid } from '../../lib/atlas/data';
+import { icon, itemIcon } from '../../lib/atlas/view';
+import BossRow from './BossRow.astro';
+import LootRow from './LootRow.astro';
+
+interface Props {
+	lang: Lang;
+	r: Raid;
+}
+const { lang, r } = Astro.props;
+const bosses = r.bosses ?? [];
+const title = raidName(lang, r);
+const when = r.unlock ? new Intl.DateTimeFormat(LANG[lang].html, { dateStyle: 'long' }).format(new Date(`${r.unlock}T12:00:00Z`)) : L(lang, 'RAID_TBA');
+const bossName = (b: (typeof bosses)[number]) => (b.npcID ? name(lang, `npc:${b.npcID}`, b.name) : b.name);
+const att = r.attunement;
+const tabs = [{ key: 'bosses', label: L(lang, 'TAB_BOSSES') }, ...(att ? [{ key: 'attune', label: L(lang, 'RAID_TAB_ATTUNE') }] : [])];
+---
+
+<header class="page-head">
+	<h1>{title}</h1>
+	<span class="lv"><b>{wow(L(lang, 'RAID_PLAYERS'), r.size)}</b> {wow(L(lang, 'RAID_OPENS'), when)}</span>
+</header>
+<p class="intro">{r.isForever && <>{L(lang, 'KIND_FOREVER')} · </>}{wow(L(lang, 'BOSS_COUNT'), bosses.length)}{r.lootSource === 'classic' && <> · {L(lang, 'RAID_LOOT_CLASSIC')}</>}</p>
+
+<div class="tabs" data-tabs="raid" focusgroup="tablist nomemory" aria-label={title}>
+	{tabs.map((t, i) => <button type="button" class="redbtn" id={`tab-${t.key}`} data-tab={t.key} aria-selected={i === 0 ? 'true' : 'false'} focusgroupstart={i === 0 ? '' : undefined}>{t.label}</button>)}
+</div>
+<section class="tab-panel" data-tab-of="raid" data-tab="bosses" role="tabpanel" aria-labelledby="tab-bosses">
+	<div class="panel-box panel-pad">
+		{!bosses.length && <p>{L(lang, 'RAID_NO_BOSSES')}</p>}
+		{
+			bosses.map((b, i) => (
+				<div class="boss-block">
+					<BossRow lang={lang} boss={b} index={i + 1} meta={wow(L(lang, 'RAID_BOSS_N'), i + 1, bosses.length)} />
+					{!!b.loot?.length && (
+						<ul class="loot">
+							{b.loot.map((e) => (
+								<li>
+									<LootRow lang={lang} id={lootId(e)} right={lootChance(e) ? `${lootChance(e)}%` : undefined} src={L(lang, 'DROPS_FROM').replace('%s', bossName(b))} />
+								</li>
+							))}
+						</ul>
+					)}
+				</div>
+			))
+		}
+		{bosses.length > 0 && !bosses.some((b) => b.loot) && <p>{L(lang, 'RAID_NO_LOOT')}</p>}
+	</div>
+</section>
+{
+	att && (
+		<section class="tab-panel" data-tab-of="raid" data-tab="attune" role="tabpanel" aria-labelledby="tab-attune" hidden="until-found">
+			<div class="parchment qsheet">
+				<p class="paper">
+					<img src={icon(itemIcon(att.item), 'small')} alt="" width="18" height="18" style="vertical-align:-4px" /> {wow(L(lang, 'RAID_ATTUNE_KEY'), itemName(lang, att.item))}
+				</p>
+				{(['Alliance', 'Horde'] as const).map(
+					(side) =>
+						att[side] && (
+							<>
+								<h2 class="paper-header">
+									<span class:list={['fac', side.toLowerCase()]} /> {L(lang, `FACTION_${side.toUpperCase()}`)}
+								</h2>
+								<ol class="chain-links">
+									{att[side]!.map((id, i) => (
+										<li>
+											<a href={href(lang, { kind: 'quest', id })}>
+												<b>{i + 1}.</b> {questName(lang, id)}
+											</a>
+										</li>
+									))}
+								</ol>
+							</>
+						),
+				)}
+			</div>
+		</section>
+	)
+}

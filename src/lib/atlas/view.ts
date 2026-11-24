@@ -1,8 +1,8 @@
 // Small helpers the Atlas pages share: icons, money, quest text and item tooltips from Wowhead, places.
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import type { Lang } from './i18n';
-import { addon, name, tip, zoneName, itemName, href } from './data';
+import { INTRO, fmt, type Lang } from './i18n';
+import { addon, name, tip, zoneName, itemName, href, dungeonName } from './data';
 
 // shortcut: icons are hotlinked from Wowhead's CDN; self-host them under public/ if it ever blocks hotlinks
 export const icon = (file: string | undefined, size: 'small' | 'medium' | 'large' = 'medium') =>
@@ -42,6 +42,8 @@ export function tooltipHtml(lang: Lang, key: string) {
 	const t = tip(lang, key)?.t ?? tip('en', key)?.t ?? '';
 	return t
 		.replace(/<(script|style)[\s\S]*?<\/\1>/gi, '')
+		// Wowhead's own lines ("Dropped by", "Drop Chance"): not in the game's tooltip
+		.replace(/<div class="whtt-extra[^"]*">[\s\S]*?<\/div>/g, '')
 		.replace(/<(\/?)([a-z0-9]+)([^>]*)>/gi, (_, close: string, tag: string, attrs: string) => {
 			tag = tag.toLowerCase();
 			if (!KEEP.has(tag)) return '';
@@ -65,8 +67,73 @@ export const itemIcon = (id: number) => tip('en', `item:${id}`)?.i;
 
 // A dungeon's picture: its card art (the Forever ones) or its first map floor
 const pub = (f: string) => existsSync(join(process.cwd(), 'public', f));
-export const art = (key: string) => {
-	const card = `/atlas/art/card_${key}.webp`;
-	const map = `/atlas/maps/${addon.Maps[key]?.[0]?.id ?? key}.webp`;
-	return pub(card) ? card : pub(map) ? map : '/atlas/art/card_UPCOMING.webp';
+const UI = '/atlas/ui/';
+// The Journal file names per dungeon key (UI/Journal.lua): wings share their dungeon's art
+const EJ: Record<string, string> = {
+	SM_GY: 'SM', SM_LIB: 'SM', SM_ARM: 'SM', SM_CATH: 'SM', DM_E: 'DIREMAUL', DM_W: 'DIREMAUL', DM_N: 'DIREMAUL',
+	STRAT_LIVE: 'STRAT', STRAT_UD: 'STRAT',
 };
+const ej = (key: string) => EJ[key] ?? key;
+// The art of a dungeon or raid, first that exists, as in the addon (Core/Journal.lua): its own art
+// (Art/UI), the Journal's, then the default background. kind: card (grid), lore (overview), bg (model)
+export function art(key: string, kind: 'card' | 'lore' | 'bg' = 'card') {
+	const own = `/atlas/art/${kind === 'bg' ? 'lore' : kind}_${key}.webp`;
+	const game = `${UI}${kind}-${ej(key)}.webp`;
+	if (pub(own)) return own;
+	if (pub(game)) return game;
+	if (kind !== 'card' && pub(`${UI}card-${ej(key)}.webp`)) return `${UI}card-${ej(key)}.webp`;
+	return `${UI}ej-bg-default.webp`;
+}
+// the round icon of the book header: the LFG icon, else the addon's logo
+export const bookIcon = (key: string) => (pub(`${UI}icon-${ej(key)}.webp`) ? `${UI}icon-${ej(key)}.webp` : '/atlas/art/logo_dqa.webp');
+export const eventArt = (key: string, kind: 'card' | 'icon' = 'card') =>
+	pub(`${UI}event-${kind === 'icon' ? 'icon-' : ''}${key}.webp`) ? `${UI}event-${kind === 'icon' ? 'icon-' : ''}${key}.webp` : `${UI}ej-bg-default.webp`;
+
+// Bosses: the Journal's creature picture (128x64) when the game has one; the round portrait is
+// Wowhead's thumbnail of the boss's model (display id), else a fitting icon as in the addon
+const portraits = JSON.parse(readFileSync(join(process.cwd(), 'src/data/atlas/portraits.json'), 'utf8')) as Record<string, string>;
+export const creature = (b: { name: string }) => (portraits[b.name] ? `${UI}${portraits[b.name]}.webp` : undefined);
+export const portrait = (b: { name: string; display?: number; kind?: string }) => {
+	if (b.display) return `https://wow.zamimg.com/modelviewer/live/webthumbs/npc/${b.display % 256}/${b.display}.webp`;
+	const i = { trash: 'inv_misc_bone_humanskull_01', object: 'inv_box_01', recipes: 'inv_scroll_05' }[b.kind ?? ''];
+	return icon(i ?? 'inv_misc_questionmark', 'large');
+};
+
+// The slot and type line of an item ("Two-Hand, Axe"), from its tooltip
+export function itemType(lang: Lang, id: number) {
+	const t = tip(lang, `item:${id}`)?.t ?? tip('en', `item:${id}`)?.t ?? '';
+	const m = t.match(/<table width="100%"><tr><td>([^<]*)<\/td><th>(?:<span[^>]*>)?([^<]*)/);
+	return m ? [m[1], m[2]].filter(Boolean).join(', ') : '';
+}
+export const QUALITY = ['#9d9d9d', '#ffffff', '#1eff00', '#0070dd', '#a335ee', '#ff8000', '#e6cc80', '#e6cc80'];
+
+// The intro paragraph of a dungeon, from its data: kind and levels, bosses and quests, the best quest
+// reward and how many quests need a chain first. Returns text pieces and links for the page to render.
+export function intro(lang: Lang, d: { key: string; name: string; minLevel: number; maxLevel: number; isForever: boolean; faction: string; quests: number[] }) {
+	const t = INTRO[lang];
+	const end = lang === 'zh' || lang === 'tw' ? '。' : '. ';
+	const bosses = (addon.Bosses[d.key] ?? []).filter((b) => !b.kind);
+	const bossName = (b: { npcID?: number; name: string }) => (b.npcID ? name(lang, `npc:${b.npcID}`, b.name) : b.name);
+	const qs = d.quests.filter((id) => addon.Quests[id]);
+	// the faction split, only when every quest belongs to one side
+	const only = (f: string) => qs.filter((id) => addon.Quests[id].faction === f).length;
+	const a = only('Alliance');
+	const h = only('Horde');
+	let s1 = fmt(t.kind[d.isForever ? 1 : 0], dungeonName(lang, d), `${d.minLevel}-${d.maxLevel}`);
+	if (d.faction === 'Alliance') s1 += t.only[0];
+	if (d.faction === 'Horde') s1 += t.only[1];
+	let s2 = bosses.length ? fmt(t.bosses, bosses.length, bossName(bosses[0]), bossName(bosses.at(-1)!), qs.length) : '';
+	if (s2 && a && h && a + h === qs.length) s2 += fmt(t.split, a, h);
+	// the best reward: highest quality, then highest item level in its tooltip
+	let best: { item: number; quest: number; score: number } | undefined;
+	for (const id of qs) {
+		const q = addon.Quests[id];
+		for (const item of [...(q.choice ?? []), ...(q.rewards ?? [])]) {
+			const ilvl = Number((tip('en', `item:${item}`)?.t ?? '').match(/Item Level (\d+)/)?.[1] ?? 0);
+			const score = quality(lang, item) * 1000 + ilvl;
+			if (!best || score > best.score) best = { item, quest: id, score };
+		}
+	}
+	const chains = qs.filter((id) => Array.isArray(addon.Quests[id].chain) && (addon.Quests[id].chain as number[]).indexOf(id) > 0).length;
+	return { lead: s1 + end + (s2 ? s2 + end : ''), best, bestText: t.best, chains: chains ? fmt(t.chains, chains) : '' };
+}

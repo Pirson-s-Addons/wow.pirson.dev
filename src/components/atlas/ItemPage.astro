@@ -1,0 +1,85 @@
+---
+// An item: its game tooltip and loot row; where it drops (boss, dungeon, chance) and the quests that give
+// it or need it.
+import { T, type Lang } from '../../lib/atlas/i18n';
+import { addon, itemName, itemDrops, itemRewards, itemNeeded, dungeonName, raidName, href, name, L } from '../../lib/atlas/data';
+import { icon, itemIcon, itemType, quality, tooltipHtml, portrait } from '../../lib/atlas/view';
+import LootRow from './LootRow.astro';
+import QuestRow from './QuestRow.astro';
+
+interface Props {
+	lang: Lang;
+	id: number;
+}
+const { lang, id } = Astro.props;
+const drops = itemDrops.get(id) ?? [];
+const rewards = [...new Set(itemRewards.get(id) ?? [])].filter((q) => addon.Quests[q]);
+const needed = [...new Set(itemNeeded.get(id) ?? [])].filter((q) => addon.Quests[q]);
+const bossName = (b: (typeof drops)[number]['boss']) => (b.kind === 'trash' ? L(lang, 'TRASH') : b.npcID ? name(lang, `npc:${b.npcID}`, b.name) : b.name);
+const html = tooltipHtml(lang, `item:${id}`);
+---
+
+<header class="page-head">
+	<h1 class:list={[`q${quality(lang, id)}`]} style="font-family:var(--friz);font-variant-caps:normal">{itemName(lang, id)}</h1>
+	<span class="lv">{itemType(lang, id)}</span>
+</header>
+<div class="split">
+	<div>
+		{
+			drops.length > 0 && (
+				<div class="panel-box list-col">
+					<h2 class="panel-title">{T[lang].droppedBy}</h2>
+					<div class="panel-pad">
+						<ul class="boss-list">
+							{drops.map((s) => {
+								const where = s.dungeon ? { kind: 'dungeon' as const, d: s.dungeon } : { kind: 'raid' as const, r: s.raid! };
+								return (
+									<li>
+										<a class="boss-row" href={href(lang, where)}>
+											<img class="hole" src={portrait(s.boss as { name: string; display?: number; kind?: string })} alt="" width="46" height="46" loading="lazy" />
+											<span class="label">{bossName(s.boss)}</span>
+											<span class="meta">
+												{s.dungeon ? dungeonName(lang, s.dungeon) : raidName(lang, s.raid!)}
+												{s.chance ? `  ·  ${s.chance}%` : ''}
+											</span>
+										</a>
+									</li>
+								);
+							})}
+						</ul>
+					</div>
+				</div>
+			)
+		}
+		{
+			(
+				[
+					[T[lang].rewardOf, rewards],
+					[T[lang].neededFor, needed],
+				] as const
+			).map(([title, list]) =>
+				list.length ? (
+					<div class="panel-box list-col">
+						<h2 class="panel-title">{title}</h2>
+						<div class="panel-pad">
+							<ul class="quest-list">
+								{list.map((q) => (
+									<QuestRow lang={lang} id={q} />
+								))}
+							</ul>
+						</div>
+					</div>
+				) : null,
+			)
+		}
+	</div>
+	<div class="parchment">
+		<div class="gtt" style="position:static;max-width:none;width:auto;margin:0 0 14px 46px;opacity:1">
+			<div class="box">
+				<img class="ico" src={icon(itemIcon(id), 'large')} alt="" width="40" height="40" />
+				{html ? <Fragment set:html={html} /> : <b class={`q${quality(lang, id)}`}>{itemName(lang, id)}</b>}
+			</div>
+		</div>
+		<ul class="loot"><li><LootRow lang={lang} id={id} /></li></ul>
+	</div>
+</div>

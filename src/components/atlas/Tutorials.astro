@@ -1,0 +1,59 @@
+---
+// Tutorials (Tutorials.lua): the addon's six pages, art on the left and text on the parchment, with a pager.
+import { wow, type Lang } from '../../lib/atlas/i18n';
+import { L } from '../../lib/atlas/data';
+import { art } from '../../lib/atlas/view';
+
+interface Props {
+	lang: Lang;
+}
+const { lang } = Astro.props;
+const pages = [
+	['DUNGEONS', 'DM'],
+	['MARK', 'WC'],
+	['MAP', 'SFK'],
+	['BOSSES', 'BRD'],
+	['WORLDMAP', 'ST'],
+	['COMMANDS', null],
+] as const;
+const paras = (s: string) => wow(s).split(/\n+/).filter(Boolean);
+---
+
+<div class="panel-box" data-tutorials>
+	<h1 class="panel-title">{L(lang, 'TAB_TUTORIALS')}</h1>
+	<div class="pager">
+		<button type="button" class="page-arrow" data-step="-1" aria-label="‹"></button>
+		<span data-count>1 / {pages.length}</span>
+		<button type="button" class="page-arrow next" data-step="1" aria-label="›"></button>
+	</div>
+	{
+		pages.map(([k, key], i) => (
+			<section class="tutorial" data-page={i} hidden={i > 0 ? 'until-found' : undefined}>
+				<div class="art">
+					<img src={key ? art(key, 'lore') : '/atlas/art/logo_dqa.webp'} alt="" width="304" height="201" loading={i ? 'lazy' : undefined} />
+				</div>
+				<div class="txt">
+					<h2>{wow(L(lang, `TUT_${k}_TITLE`))}</h2>
+					<hr />
+					{paras(L(lang, `TUT_${k}_TEXT`)).map((p) => (
+						<p>{p}</p>
+					))}
+				</div>
+			</section>
+		))
+	}
+</div>
+
+<script>
+	for (const box of document.querySelectorAll<HTMLElement>('[data-tutorials]')) {
+		const pages = [...box.querySelectorAll<HTMLElement>('[data-page]')];
+		let at = 0;
+		const show = (i: number) => {
+			at = (i + pages.length) % pages.length;
+			pages.forEach((p, n) => (n === at ? p.removeAttribute('hidden') : p.setAttribute('hidden', 'until-found')));
+			box.querySelector('[data-count]')!.textContent = `${at + 1} / ${pages.length}`;
+		};
+		for (const b of box.querySelectorAll<HTMLElement>('[data-step]')) b.addEventListener('click', () => show(at + Number(b.dataset.step)));
+		for (const p of pages) p.addEventListener('beforematch', () => show(pages.indexOf(p)));
+	}
+</script>

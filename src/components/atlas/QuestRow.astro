@@ -1,23 +1,30 @@
 ---
-// One quest in a list: level, name and link, faction, and its step in a chain.
-import type { Lang } from '../../lib/atlas/i18n';
+// A quest row of the left page (QuestPanel list, 44 high): status icon, title in gold, "Requires level N
+// · Chain x/y", faction crest and level. A link to the quest's page.
+import { wow, type Lang } from '../../lib/atlas/i18n';
 import { addon, href, questName, L } from '../../lib/atlas/data';
-import { wow } from '../../lib/atlas/i18n';
-import Faction from './Faction.astro';
 
 interface Props {
 	lang: Lang;
 	id: number;
+	current?: boolean;
 }
-const { lang, id } = Astro.props;
+const { lang, id, current } = Astro.props;
 const q = addon.Quests[id] ?? {};
 const chain = Array.isArray(q.chain) ? q.chain : null;
+const second = [q.minLevel && wow(L(lang, 'REQUIRES_LEVEL'), q.minLevel)].filter(Boolean).join('');
 ---
 
-<li class="quest-row">
-	<span class="lvl">{q.level ?? ''}</span>
-	<a href={href(lang, { kind: 'quest', id })}>{questName(lang, id)}</a>
-	{q.minLevel && <small>{wow(L(lang, 'REQUIRES_LEVEL'), q.minLevel)}</small>}
-	{chain && <small class="chain">{wow(L(lang, 'CHAIN_SHORT'), chain.indexOf(id) + 1, chain.length)}</small>}
-	<Faction lang={lang} faction={q.faction} />
+<li>
+	<a class:list={['qrow', chain && 'chain']} href={href(lang, { kind: 'quest', id })} aria-current={current ? 'page' : undefined}>
+		<span class:list={['st', q.repeatable && 'repeat']} aria-hidden="true"></span>
+		<span class="tt">{questName(lang, id)}</span>
+		<span class="s2">
+			{second}
+			{chain && <>{second && '  ·  '}<span class="ch">{wow(L(lang, 'CHAIN_SHORT'), chain.indexOf(id) + 1, chain.length)}</span></>}
+		</span>
+		{q.faction === 'Alliance' && <span class="fac alliance" title={L(lang, 'FACTION_ALLIANCE')} />}
+		{q.faction === 'Horde' && <span class="fac horde" title={L(lang, 'FACTION_HORDE')} />}
+		<span class="lv">{q.level ?? ''}</span>
+	</a>
 </li>

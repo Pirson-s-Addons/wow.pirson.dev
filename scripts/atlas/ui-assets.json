@@ -1,0 +1,2448 @@
+[
+ {
+  "name": "ej-boss-button-up",
+  "file": "interface/encounterjournal/ui-encounterjournaltextures.blp",
+  "coords": [
+   0.00195313,
+   0.63671875,
+   0.21386719,
+   0.26757813
+  ]
+ },
+ {
+  "name": "ej-boss-button-down",
+  "file": "interface/encounterjournal/ui-encounterjournaltextures.blp",
+  "coords": [
+   0.00195313,
+   0.63671875,
+   0.10253906,
+   0.15625
+  ]
+ },
+ {
+  "name": "ej-boss-button-highlight",
+  "file": "interface/encounterjournal/ui-encounterjournaltextures.blp",
+  "coords": [
+   0.00195313,
+   0.63671875,
+   0.15820313,
+   0.21191406
+  ]
+ },
+ {
+  "name": "ej-loot-frame",
+  "file": "interface/encounterjournal/ui-encounterjournaltextures.blp",
+  "coords": [
+   0.00195313,
+   0.62890625,
+   0.61816406,
+   0.66210938
+  ]
+ },
+ {
+  "name": "ej-dungeon-name-bg",
+  "file": "interface/encounterjournal/ui-encounterjournaltextures.blp",
+  "coords": [
+   0.34570313,
+   0.84570313,
+   0.42871094,
+   0.49121094
+  ]
+ },
+ {
+  "name": "ej-instance-button",
+  "file": "interface/encounterjournal/ui-encounterjournaltextures.blp",
+  "coords": [
+   0.00195313,
+   0.34179688,
+   0.42871094,
+   0.52246094
+  ]
+ },
+ {
+  "name": "ej-instance-button-pushed",
+  "file": "interface/encounterjournal/ui-encounterjournaltextures.blp",
+  "coords": [
+   0.00195313,
+   0.34179688,
+   0.33300781,
+   0.42675781
+  ]
+ },
+ {
+  "name": "ej-dungeon-button-highlight",
+  "file": "interface/encounterjournal/ui-encounterjournaltextures.blp",
+  "coords": [
+   0.34570313,
+   0.68554688,
+   0.33300781,
+   0.42675781
+  ]
+ },
+ {
+  "name": "ej-boss-model-button",
+  "file": "interface/encounterjournal/ui-encounterjournaltextures.blp",
+  "coords": [
+   0.50585938,
+   0.63085938,
+   0.02246094,
+   0.08203125
+  ]
+ },
+ {
+  "name": "ej-boss-name-shadow",
+  "file": "interface/encounterjournal/ui-encounterjournaltextures.blp",
+  "coords": [
+   0.00195313,
+   0.7734375,
+   0.26953125,
+   0.33105469
+  ]
+ },
+ {
+  "name": "ej-left-page-header",
+  "file": "interface/encounterjournal/ui-encounterjournaltextures.blp",
+  "coords": [
+   0,
+   0.755859375,
+   0.9599609375,
+   1
+  ]
+ },
+ {
+  "name": "ej-tab-up",
+  "file": "interface/encounterjournal/ui-encounterjournaltextures.blp",
+  "coords": [
+   0.25585938,
+   0.37890625,
+   0.90332031,
+   0.95898438
+  ]
+ },
+ {
+  "name": "ej-tab-down",
+  "file": "interface/encounterjournal/ui-encounterjournaltextures.blp",
+  "coords": [
+   0.12890625,
+   0.25195313,
+   0.90332031,
+   0.95898438
+  ]
+ },
+ {
+  "name": "ej-tab-highlight",
+  "file": "interface/encounterjournal/ui-encounterjournaltextures.blp",
+  "coords": [
+   0.00195313,
+   0.125,
+   0.90332031,
+   0.95898438
+  ]
+ },
+ {
+  "name": "ej-tab-overview-up",
+  "file": "interface/encounterjournal/ui-encounterjournaltextures.blp",
+  "coords": [
+   0.85546875,
+   0.94921875,
+   0.52441406,
+   0.56640625
+  ]
+ },
+ {
+  "name": "ej-tab-overview-down",
+  "file": "interface/encounterjournal/ui-encounterjournaltextures.blp",
+  "coords": [
+   0.90234375,
+   0.99609375,
+   0.26953125,
+   0.31152344
+  ]
+ },
+ {
+  "name": "ej-tab-loot-up",
+  "file": "interface/encounterjournal/ui-encounterjournaltextures.blp",
+  "coords": [
+   0.73046875,
+   0.82421875,
+   0.61816406,
+   0.66015625
+  ]
+ },
+ {
+  "name": "ej-tab-loot-down",
+  "file": "interface/encounterjournal/ui-encounterjournaltextures.blp",
+  "coords": [
+   0.6328125,
+   0.7265625,
+   0.61816406,
+   0.66015625
+  ]
+ },
+ {
+  "name": "ej-tab-model-up",
+  "file": "interface/encounterjournal/ui-encounterjournaltextures.blp",
+  "coords": [
+   0.90234375,
+   1,
+   0.662109375,
+   0.705078125
+  ]
+ },
+ {
+  "name": "ej-tab-model-down",
+  "file": "interface/encounterjournal/ui-encounterjournaltextures.blp",
+  "coords": [
+   0.8046875,
+   0.900390625,
+   0.662109375,
+   0.705078125
+  ]
+ },
+ {
+  "name": "ej-book",
+  "file": "interface/encounterjournal/ui-ej-journalbg.blp",
+  "coords": [
+   0,
+   0.766601562,
+   0,
+   0.830078125
+  ]
+ },
+ {
+  "name": "ej-home",
+  "atlas": "UI-EJ-Classic"
+ },
+ {
+  "name": "frame-corner-tl",
+  "atlas": "ui-frame-portraitmetal-cornertopleft-c60-2x"
+ },
+ {
+  "name": "frame-corner-tr",
+  "atlas": "ui-frame-metal-cornertopright-c60-2x"
+ },
+ {
+  "name": "frame-corner-bl",
+  "atlas": "ui-frame-metal-cornerbottomleft-c60-2x"
+ },
+ {
+  "name": "frame-corner-br",
+  "atlas": "ui-frame-metal-cornerbottomright-c60-2x"
+ },
+ {
+  "name": "frame-edge-top",
+  "atlas": "_ui-frame-metal-edgetop-c60-2x"
+ },
+ {
+  "name": "frame-edge-bottom",
+  "atlas": "_ui-frame-metal-edgebottom-c60-2x"
+ },
+ {
+  "name": "frame-edge-left",
+  "atlas": "!ui-frame-metal-edgeleft-c60-2x"
+ },
+ {
+  "name": "frame-edge-right",
+  "atlas": "!ui-frame-metal-edgeright-c60-2x"
+ },
+ {
+  "name": "frame-title-streaks",
+  "atlas": "_UI-Frame-TopTileStreaks"
+ },
+ {
+  "name": "close",
+  "atlas": "redbutton-exit-c60-2x"
+ },
+ {
+  "name": "close-pressed",
+  "atlas": "redbutton-exit-pressed-c60-2x"
+ },
+ {
+  "name": "close-highlight",
+  "atlas": "redbutton-highlight-c60-2x"
+ },
+ {
+  "name": "tab-left",
+  "atlas": "uiframe-tab-left-c60"
+ },
+ {
+  "name": "tab-center",
+  "atlas": "_uiframe-tab-center-c60"
+ },
+ {
+  "name": "tab-right",
+  "atlas": "uiframe-tab-right-c60"
+ },
+ {
+  "name": "tab-active-left",
+  "atlas": "uiframe-activetab-left"
+ },
+ {
+  "name": "tab-active-center",
+  "atlas": "_uiframe-activetab-center"
+ },
+ {
+  "name": "tab-active-right",
+  "atlas": "uiframe-activetab-right"
+ },
+ {
+  "name": "btn-left",
+  "atlas": "128-redbutton-left-c60"
+ },
+ {
+  "name": "btn-center",
+  "atlas": "_128-redbutton-center-c60"
+ },
+ {
+  "name": "btn-right",
+  "atlas": "128-redbutton-right-c60"
+ },
+ {
+  "name": "btn-left-pressed",
+  "atlas": "128-redbutton-left-pressed-c60"
+ },
+ {
+  "name": "btn-center-pressed",
+  "atlas": "_128-redbutton-center-pressed-c60"
+ },
+ {
+  "name": "btn-right-pressed",
+  "atlas": "128-redbutton-right-pressed-c60"
+ },
+ {
+  "name": "btn-highlight",
+  "atlas": "128-redbutton-highlight"
+ },
+ {
+  "name": "dropdown",
+  "atlas": "common-dropdown-a-button-c60-2x"
+ },
+ {
+  "name": "dropdown-hover",
+  "atlas": "common-dropdown-a-button-hover-c60-2x"
+ },
+ {
+  "name": "dropdown-open",
+  "atlas": "common-dropdown-a-button-open-c60-2x"
+ },
+ {
+  "name": "dropdown-check",
+  "atlas": "common-dropdown-icon-radialtick-yellow-2x"
+ },
+ {
+  "name": "search-left",
+  "atlas": "common-search-border-left-c60"
+ },
+ {
+  "name": "search-middle",
+  "atlas": "common-search-border-middle-c60"
+ },
+ {
+  "name": "search-right",
+  "atlas": "common-search-border-right-c60"
+ },
+ {
+  "name": "search-glass",
+  "atlas": "common-search-magnifyingglass"
+ },
+ {
+  "name": "search-clear",
+  "atlas": "common-search-clearbutton"
+ },
+ {
+  "name": "scroll-track-top",
+  "atlas": "minimal-scrollbar-track-top-c60"
+ },
+ {
+  "name": "scroll-track-bottom",
+  "atlas": "minimal-scrollbar-track-bottom-c60"
+ },
+ {
+  "name": "scroll-thumb-top",
+  "atlas": "minimal-scrollbar-thumb-top-c60"
+ },
+ {
+  "name": "scroll-thumb-middle",
+  "atlas": "minimal-scrollbar-thumb-middle-c60"
+ },
+ {
+  "name": "scroll-thumb-bottom",
+  "atlas": "minimal-scrollbar-thumb-bottom-c60"
+ },
+ {
+  "name": "scroll-arrow-top",
+  "atlas": "minimal-scrollbar-arrow-top-c60"
+ },
+ {
+  "name": "scroll-arrow-bottom",
+  "atlas": "minimal-scrollbar-arrow-bottom-c60"
+ },
+ {
+  "name": "status-inlog",
+  "atlas": "sideinprogressquesticon"
+ },
+ {
+  "name": "status-done",
+  "atlas": "ui-questtracker-tracker-check-c60-2x"
+ },
+ {
+  "name": "status-blocked",
+  "atlas": "QuestSharing-QuestLog-Padlock"
+ },
+ {
+  "name": "status-repeat",
+  "atlas": "questrepeatableturnin"
+ },
+ {
+  "name": "faction-alliance",
+  "atlas": "questlog-questtypeicon-alliance-2x"
+ },
+ {
+  "name": "faction-horde",
+  "atlas": "questlog-questtypeicon-horde-2x"
+ },
+ {
+  "name": "crest-alliance",
+  "atlas": "communities-create-button-wow-alliance"
+ },
+ {
+  "name": "crest-horde",
+  "atlas": "communities-create-button-wow-horde"
+ },
+ {
+  "name": "boss-iconring",
+  "atlas": "ui-hud-unitframe-target-portraiton-boss-iconring-2x"
+ },
+ {
+  "name": "boss-rare-dragon",
+  "atlas": "ui-hud-unitframe-target-portraiton-boss-rare-silver-c60-2x"
+ },
+ {
+  "name": "elite-silver",
+  "atlas": "nameplates-icon-elite-silver"
+ },
+ {
+  "name": "favorite",
+  "atlas": "PetJournal-FavoritesIcon"
+ },
+ {
+  "name": "tutorial-pane",
+  "atlas": "adventureguide-pane-large"
+ },
+ {
+  "name": "tutorial-divider",
+  "atlas": "adventureguide-tutorial-divider"
+ },
+ {
+  "name": "nav-home",
+  "file": "interface/helpframe/cs_helptextures.blp",
+  "coords": [
+   0.453125,
+   0.703125,
+   0.0078125,
+   0.2421875
+  ]
+ },
+ {
+  "name": "nav-home-down",
+  "file": "interface/helpframe/cs_helptextures.blp",
+  "coords": [
+   0.453125,
+   0.703125,
+   0.2578125,
+   0.4921875
+  ]
+ },
+ {
+  "name": "nav-home-highlight",
+  "file": "interface/helpframe/cs_helptextures.blp",
+  "coords": [
+   0.453125,
+   0.703125,
+   0.5078125,
+   0.7421875
+  ]
+ },
+ {
+  "name": "nav-arrow",
+  "file": "interface/helpframe/cs_helptextures.blp",
+  "coords": [
+   0.88867188,
+   0.9296875,
+   0.296875,
+   0.53125
+  ]
+ },
+ {
+  "name": "nav-arrow-down",
+  "file": "interface/helpframe/cs_helptextures.blp",
+  "coords": [
+   0.6328125,
+   0.67382813,
+   0.7578125,
+   0.9921875
+  ]
+ },
+ {
+  "name": "nav-selection",
+  "file": "interface/helpframe/cs_helptextures.blp",
+  "coords": [
+   0.00195313,
+   0.25195313,
+   0.375,
+   0.640625
+  ]
+ },
+ {
+  "name": "nav-highlight",
+  "file": "interface/helpframe/cs_helptextures.blp",
+  "coords": [
+   0.00195313,
+   0.25195313,
+   0.65625,
+   0.921875
+  ]
+ },
+ {
+  "name": "nav-button",
+  "file": "interface/helpframe/cs_helptextures_tile.blp",
+  "coords": [
+   0.0,
+   1.0,
+   0.0625,
+   0.12109375
+  ]
+ },
+ {
+  "name": "nav-button-down",
+  "file": "interface/helpframe/cs_helptextures_tile.blp",
+  "coords": [
+   0.0,
+   1.0,
+   0.125,
+   0.18359375
+  ]
+ },
+ {
+  "name": "nav-bar",
+  "file": "interface/helpframe/cs_helptextures_tile.blp",
+  "coords": [
+   0.0,
+   1.0,
+   0.1875,
+   0.25390625
+  ]
+ },
+ {
+  "name": "nav-bar-overlay",
+  "file": "interface/helpframe/cs_helptextures_tile.blp",
+  "coords": [
+   0.0,
+   1.0,
+   0.2578125,
+   0.32421875
+  ]
+ },
+ {
+  "name": "bg-rock",
+  "file": "interface/framegeneral/ui-background-rock.blp"
+ },
+ {
+  "name": "icon-frame",
+  "file": "interface/common/whiteiconframe.blp"
+ },
+ {
+  "name": "quest-row-glow",
+  "file": "interface/questframe/ui-questlogtitlehighlight.blp"
+ },
+ {
+  "name": "reward-plate",
+  "file": "interface/questframe/ui-questitemnameframe.blp"
+ },
+ {
+  "name": "page-prev",
+  "file": "interface/buttons/ui-spellbookicon-prevpage-up.blp"
+ },
+ {
+  "name": "page-prev-down",
+  "file": "interface/buttons/ui-spellbookicon-prevpage-down.blp"
+ },
+ {
+  "name": "page-prev-disabled",
+  "file": "interface/buttons/ui-spellbookicon-prevpage-disabled.blp"
+ },
+ {
+  "name": "page-next",
+  "file": "interface/buttons/ui-spellbookicon-nextpage-up.blp"
+ },
+ {
+  "name": "page-next-down",
+  "file": "interface/buttons/ui-spellbookicon-nextpage-down.blp"
+ },
+ {
+  "name": "page-next-disabled",
+  "file": "interface/buttons/ui-spellbookicon-nextpage-disabled.blp"
+ },
+ {
+  "name": "mouse-hilight",
+  "file": "interface/buttons/ui-common-mousehilight.blp"
+ },
+ {
+  "name": "square-hilight",
+  "file": "interface/buttons/buttonhilight-square.blp"
+ },
+ {
+  "name": "check-hilight",
+  "file": "interface/buttons/checkbuttonhilight.blp"
+ },
+ {
+  "name": "checkbox",
+  "file": "interface/buttons/ui-checkbox-up.blp"
+ },
+ {
+  "name": "checkbox-check",
+  "file": "interface/buttons/ui-checkbox-check.blp"
+ },
+ {
+  "name": "tooltip-border",
+  "file": "interface/tooltips/ui-tooltip-border.blp"
+ },
+ {
+  "name": "quest-available",
+  "file": "interface/gossipframe/availablequesticon.blp"
+ },
+ {
+  "name": "quest-active",
+  "file": "interface/gossipframe/activequesticon.blp"
+ },
+ {
+  "name": "readycheck-notready",
+  "file": "interface/raidframe/readycheck-notready.blp"
+ },
+ {
+  "name": "readycheck-ready",
+  "file": "interface/raidframe/readycheck-ready.blp"
+ },
+ {
+  "name": "readycheck-waiting",
+  "file": "interface/raidframe/readycheck-waiting.blp"
+ },
+ {
+  "name": "classes-circles",
+  "file": "interface/targetingframe/ui-classes-circles.blp"
+ },
+ {
+  "name": "classes-create",
+  "file": "interface/glues/charactercreate/ui-charactercreate-classes.blp"
+ },
+ {
+  "name": "lfg-lock",
+  "file": "interface/lfgframe/ui-lfg-icon-lock.blp"
+ },
+ {
+  "name": "lfg-raid",
+  "file": "interface/lfgframe/lfgicon-raid.blp"
+ },
+ {
+  "name": "pet-lock",
+  "file": "interface/petbattles/petbattle-lockicon.blp"
+ },
+ {
+  "name": "tracking-border",
+  "file": "interface/minimap/minimap-trackingborder.blp"
+ },
+ {
+  "name": "zoom-hilight",
+  "file": "interface/minimap/ui-minimap-zoombutton-highlight.blp"
+ },
+ {
+  "name": "statusbar",
+  "file": "interface/targetingframe/ui-statusbar.blp"
+ },
+ {
+  "name": "ej-bg-default",
+  "file": "interface/encounterjournal/ui-ej-background-default.blp"
+ },
+ {
+  "name": "lfg-eye",
+  "file": "interface/lfgframe/lfg-eye.blp",
+  "coords": [
+   0,
+   0.125,
+   0,
+   0.25
+  ]
+ },
+ {
+  "name": "card-RFC",
+  "file": "interface/encounterjournal/ui-ej-dungeonbutton-RagefireChasm.blp",
+  "coords": [
+   0,
+   0.68359375,
+   0,
+   0.75
+  ],
+  "optional": true
+ },
+ {
+  "name": "lore-RFC",
+  "file": "interface/encounterjournal/ui-ej-lorebg-RagefireChasm.blp",
+  "coords": [
+   0,
+   0.7617187,
+   0,
+   0.5
+  ],
+  "optional": true
+ },
+ {
+  "name": "bg-RFC",
+  "file": "interface/encounterjournal/ui-ej-background-RagefireChasm.blp",
+  "coords": [
+   0,
+   0.77,
+   0.25,
+   0.55
+  ],
+  "optional": true
+ },
+ {
+  "name": "card-DM",
+  "file": "interface/encounterjournal/ui-ej-dungeonbutton-Deadmines.blp",
+  "coords": [
+   0,
+   0.68359375,
+   0,
+   0.75
+  ],
+  "optional": true
+ },
+ {
+  "name": "lore-DM",
+  "file": "interface/encounterjournal/ui-ej-lorebg-Deadmines.blp",
+  "coords": [
+   0,
+   0.7617187,
+   0,
+   0.5
+  ],
+  "optional": true
+ },
+ {
+  "name": "bg-DM",
+  "file": "interface/encounterjournal/ui-ej-background-Deadmines.blp",
+  "coords": [
+   0,
+   0.77,
+   0.25,
+   0.55
+  ],
+  "optional": true
+ },
+ {
+  "name": "card-WC",
+  "file": "interface/encounterjournal/ui-ej-dungeonbutton-WailingCaverns.blp",
+  "coords": [
+   0,
+   0.68359375,
+   0,
+   0.75
+  ],
+  "optional": true
+ },
+ {
+  "name": "lore-WC",
+  "file": "interface/encounterjournal/ui-ej-lorebg-WailingCaverns.blp",
+  "coords": [
+   0,
+   0.7617187,
+   0,
+   0.5
+  ],
+  "optional": true
+ },
+ {
+  "name": "bg-WC",
+  "file": "interface/encounterjournal/ui-ej-background-WailingCaverns.blp",
+  "coords": [
+   0,
+   0.77,
+   0.25,
+   0.55
+  ],
+  "optional": true
+ },
+ {
+  "name": "card-SFK",
+  "file": "interface/encounterjournal/ui-ej-dungeonbutton-ShadowfangKeep.blp",
+  "coords": [
+   0,
+   0.68359375,
+   0,
+   0.75
+  ],
+  "optional": true
+ },
+ {
+  "name": "lore-SFK",
+  "file": "interface/encounterjournal/ui-ej-lorebg-ShadowfangKeep.blp",
+  "coords": [
+   0,
+   0.7617187,
+   0,
+   0.5
+  ],
+  "optional": true
+ },
+ {
+  "name": "bg-SFK",
+  "file": "interface/encounterjournal/ui-ej-background-ShadowfangKeep.blp",
+  "coords": [
+   0,
+   0.77,
+   0.25,
+   0.55
+  ],
+  "optional": true
+ },
+ {
+  "name": "card-BFD",
+  "file": "interface/encounterjournal/ui-ej-dungeonbutton-BlackfathomDeeps.blp",
+  "coords": [
+   0,
+   0.68359375,
+   0,
+   0.75
+  ],
+  "optional": true
+ },
+ {
+  "name": "lore-BFD",
+  "file": "interface/encounterjournal/ui-ej-lorebg-BlackfathomDeeps.blp",
+  "coords": [
+   0,
+   0.7617187,
+   0,
+   0.5
+  ],
+  "optional": true
+ },
+ {
+  "name": "bg-BFD",
+  "file": "interface/encounterjournal/ui-ej-background-BlackfathomDeeps.blp",
+  "coords": [
+   0,
+   0.77,
+   0.25,
+   0.55
+  ],
+  "optional": true
+ },
+ {
+  "name": "card-STOCKS",
+  "file": "interface/encounterjournal/ui-ej-dungeonbutton-TheStockade.blp",
+  "coords": [
+   0,
+   0.68359375,
+   0,
+   0.75
+  ],
+  "optional": true
+ },
+ {
+  "name": "lore-STOCKS",
+  "file": "interface/encounterjournal/ui-ej-lorebg-TheStockade.blp",
+  "coords": [
+   0,
+   0.7617187,
+   0,
+   0.5
+  ],
+  "optional": true
+ },
+ {
+  "name": "bg-STOCKS",
+  "file": "interface/encounterjournal/ui-ej-background-TheStockade.blp",
+  "coords": [
+   0,
+   0.77,
+   0.25,
+   0.55
+  ],
+  "optional": true
+ },
+ {
+  "name": "card-GNOMER",
+  "file": "interface/encounterjournal/ui-ej-dungeonbutton-Gnomeregan.blp",
+  "coords": [
+   0,
+   0.68359375,
+   0,
+   0.75
+  ],
+  "optional": true
+ },
+ {
+  "name": "lore-GNOMER",
+  "file": "interface/encounterjournal/ui-ej-lorebg-Gnomeregan.blp",
+  "coords": [
+   0,
+   0.7617187,
+   0,
+   0.5
+  ],
+  "optional": true
+ },
+ {
+  "name": "bg-GNOMER",
+  "file": "interface/encounterjournal/ui-ej-background-Gnomeregan.blp",
+  "coords": [
+   0,
+   0.77,
+   0.25,
+   0.55
+  ],
+  "optional": true
+ },
+ {
+  "name": "card-RFK",
+  "file": "interface/encounterjournal/ui-ej-dungeonbutton-RazorfenKraul.blp",
+  "coords": [
+   0,
+   0.68359375,
+   0,
+   0.75
+  ],
+  "optional": true
+ },
+ {
+  "name": "lore-RFK",
+  "file": "interface/encounterjournal/ui-ej-lorebg-RazorfenKraul.blp",
+  "coords": [
+   0,
+   0.7617187,
+   0,
+   0.5
+  ],
+  "optional": true
+ },
+ {
+  "name": "bg-RFK",
+  "file": "interface/encounterjournal/ui-ej-background-RazorfenKraul.blp",
+  "coords": [
+   0,
+   0.77,
+   0.25,
+   0.55
+  ],
+  "optional": true
+ },
+ {
+  "name": "card-RFD",
+  "file": "interface/encounterjournal/ui-ej-dungeonbutton-RazorfenDowns.blp",
+  "coords": [
+   0,
+   0.68359375,
+   0,
+   0.75
+  ],
+  "optional": true
+ },
+ {
+  "name": "lore-RFD",
+  "file": "interface/encounterjournal/ui-ej-lorebg-RazorfenDowns.blp",
+  "coords": [
+   0,
+   0.7617187,
+   0,
+   0.5
+  ],
+  "optional": true
+ },
+ {
+  "name": "bg-RFD",
+  "file": "interface/encounterjournal/ui-ej-background-RazorfenDowns.blp",
+  "coords": [
+   0,
+   0.77,
+   0.25,
+   0.55
+  ],
+  "optional": true
+ },
+ {
+  "name": "card-ULDA",
+  "file": "interface/encounterjournal/ui-ej-dungeonbutton-Uldaman.blp",
+  "coords": [
+   0,
+   0.68359375,
+   0,
+   0.75
+  ],
+  "optional": true
+ },
+ {
+  "name": "lore-ULDA",
+  "file": "interface/encounterjournal/ui-ej-lorebg-Uldaman.blp",
+  "coords": [
+   0,
+   0.7617187,
+   0,
+   0.5
+  ],
+  "optional": true
+ },
+ {
+  "name": "bg-ULDA",
+  "file": "interface/encounterjournal/ui-ej-background-Uldaman.blp",
+  "coords": [
+   0,
+   0.77,
+   0.25,
+   0.55
+  ],
+  "optional": true
+ },
+ {
+  "name": "card-ZF",
+  "file": "interface/encounterjournal/ui-ej-dungeonbutton-ZulFarrak.blp",
+  "coords": [
+   0,
+   0.68359375,
+   0,
+   0.75
+  ],
+  "optional": true
+ },
+ {
+  "name": "lore-ZF",
+  "file": "interface/encounterjournal/ui-ej-lorebg-ZulFarrak.blp",
+  "coords": [
+   0,
+   0.7617187,
+   0,
+   0.5
+  ],
+  "optional": true
+ },
+ {
+  "name": "bg-ZF",
+  "file": "interface/encounterjournal/ui-ej-background-ZulFarrak.blp",
+  "coords": [
+   0,
+   0.77,
+   0.25,
+   0.55
+  ],
+  "optional": true
+ },
+ {
+  "name": "card-MARA",
+  "file": "interface/encounterjournal/ui-ej-dungeonbutton-Maraudon.blp",
+  "coords": [
+   0,
+   0.68359375,
+   0,
+   0.75
+  ],
+  "optional": true
+ },
+ {
+  "name": "lore-MARA",
+  "file": "interface/encounterjournal/ui-ej-lorebg-Maraudon.blp",
+  "coords": [
+   0,
+   0.7617187,
+   0,
+   0.5
+  ],
+  "optional": true
+ },
+ {
+  "name": "bg-MARA",
+  "file": "interface/encounterjournal/ui-ej-background-Maraudon.blp",
+  "coords": [
+   0,
+   0.77,
+   0.25,
+   0.55
+  ],
+  "optional": true
+ },
+ {
+  "name": "card-ST",
+  "file": "interface/encounterjournal/ui-ej-dungeonbutton-SunkenTemple.blp",
+  "coords": [
+   0,
+   0.68359375,
+   0,
+   0.75
+  ],
+  "optional": true
+ },
+ {
+  "name": "lore-ST",
+  "file": "interface/encounterjournal/ui-ej-lorebg-SunkenTemple.blp",
+  "coords": [
+   0,
+   0.7617187,
+   0,
+   0.5
+  ],
+  "optional": true
+ },
+ {
+  "name": "bg-ST",
+  "file": "interface/encounterjournal/ui-ej-background-SunkenTemple.blp",
+  "coords": [
+   0,
+   0.77,
+   0.25,
+   0.55
+  ],
+  "optional": true
+ },
+ {
+  "name": "card-BRD",
+  "file": "interface/encounterjournal/ui-ej-dungeonbutton-BlackrockDepths.blp",
+  "coords": [
+   0,
+   0.68359375,
+   0,
+   0.75
+  ],
+  "optional": true
+ },
+ {
+  "name": "lore-BRD",
+  "file": "interface/encounterjournal/ui-ej-lorebg-BlackrockDepths.blp",
+  "coords": [
+   0,
+   0.7617187,
+   0,
+   0.5
+  ],
+  "optional": true
+ },
+ {
+  "name": "bg-BRD",
+  "file": "interface/encounterjournal/ui-ej-background-BlackrockDepths.blp",
+  "coords": [
+   0,
+   0.77,
+   0.25,
+   0.55
+  ],
+  "optional": true
+ },
+ {
+  "name": "card-LBRS",
+  "file": "interface/encounterjournal/ui-ej-dungeonbutton-BlackrockSpire.blp",
+  "coords": [
+   0,
+   0.68359375,
+   0,
+   0.75
+  ],
+  "optional": true
+ },
+ {
+  "name": "lore-LBRS",
+  "file": "interface/encounterjournal/ui-ej-lorebg-BlackrockSpire.blp",
+  "coords": [
+   0,
+   0.7617187,
+   0,
+   0.5
+  ],
+  "optional": true
+ },
+ {
+  "name": "bg-LBRS",
+  "file": "interface/encounterjournal/ui-ej-background-BlackrockSpire.blp",
+  "coords": [
+   0,
+   0.77,
+   0.25,
+   0.55
+  ],
+  "optional": true
+ },
+ {
+  "name": "card-UBRS",
+  "file": "interface/encounterjournal/ui-ej-dungeonbutton-UpperBlackrockSpire.blp",
+  "coords": [
+   0,
+   0.68359375,
+   0,
+   0.75
+  ],
+  "optional": true
+ },
+ {
+  "name": "lore-UBRS",
+  "file": "interface/encounterjournal/ui-ej-lorebg-UpperBlackrockSpire.blp",
+  "coords": [
+   0,
+   0.7617187,
+   0,
+   0.5
+  ],
+  "optional": true
+ },
+ {
+  "name": "bg-UBRS",
+  "file": "interface/encounterjournal/ui-ej-background-UpperBlackrockSpire.blp",
+  "coords": [
+   0,
+   0.77,
+   0.25,
+   0.55
+  ],
+  "optional": true
+ },
+ {
+  "name": "card-SCHOLO",
+  "file": "interface/encounterjournal/ui-ej-dungeonbutton-Scholomance.blp",
+  "coords": [
+   0,
+   0.68359375,
+   0,
+   0.75
+  ],
+  "optional": true
+ },
+ {
+  "name": "lore-SCHOLO",
+  "file": "interface/encounterjournal/ui-ej-lorebg-Scholomance.blp",
+  "coords": [
+   0,
+   0.7617187,
+   0,
+   0.5
+  ],
+  "optional": true
+ },
+ {
+  "name": "bg-SCHOLO",
+  "file": "interface/encounterjournal/ui-ej-background-Scholomance.blp",
+  "coords": [
+   0,
+   0.77,
+   0.25,
+   0.55
+  ],
+  "optional": true
+ },
+ {
+  "name": "card-SM",
+  "file": "interface/encounterjournal/ui-ej-dungeonbutton-ScarletMonastery.blp",
+  "coords": [
+   0,
+   0.68359375,
+   0,
+   0.75
+  ],
+  "optional": true
+ },
+ {
+  "name": "lore-SM",
+  "file": "interface/encounterjournal/ui-ej-lorebg-ScarletMonastery.blp",
+  "coords": [
+   0,
+   0.7617187,
+   0,
+   0.5
+  ],
+  "optional": true
+ },
+ {
+  "name": "bg-SM",
+  "file": "interface/encounterjournal/ui-ej-background-ScarletMonastery.blp",
+  "coords": [
+   0,
+   0.77,
+   0.25,
+   0.55
+  ],
+  "optional": true
+ },
+ {
+  "name": "card-DIREMAUL",
+  "file": "interface/encounterjournal/ui-ej-dungeonbutton-DireMaul.blp",
+  "coords": [
+   0,
+   0.68359375,
+   0,
+   0.75
+  ],
+  "optional": true
+ },
+ {
+  "name": "lore-DIREMAUL",
+  "file": "interface/encounterjournal/ui-ej-lorebg-DireMaul.blp",
+  "coords": [
+   0,
+   0.7617187,
+   0,
+   0.5
+  ],
+  "optional": true
+ },
+ {
+  "name": "bg-DIREMAUL",
+  "file": "interface/encounterjournal/ui-ej-background-DireMaul.blp",
+  "coords": [
+   0,
+   0.77,
+   0.25,
+   0.55
+  ],
+  "optional": true
+ },
+ {
+  "name": "card-STRAT",
+  "file": "interface/encounterjournal/ui-ej-dungeonbutton-Stratholme.blp",
+  "coords": [
+   0,
+   0.68359375,
+   0,
+   0.75
+  ],
+  "optional": true
+ },
+ {
+  "name": "lore-STRAT",
+  "file": "interface/encounterjournal/ui-ej-lorebg-Stratholme.blp",
+  "coords": [
+   0,
+   0.7617187,
+   0,
+   0.5
+  ],
+  "optional": true
+ },
+ {
+  "name": "bg-STRAT",
+  "file": "interface/encounterjournal/ui-ej-background-Stratholme.blp",
+  "coords": [
+   0,
+   0.77,
+   0.25,
+   0.55
+  ],
+  "optional": true
+ },
+ {
+  "name": "icon-RFC",
+  "file": "interface/lfgframe/lfgicon-RagefireChasm.blp",
+  "optional": true
+ },
+ {
+  "name": "icon-DM",
+  "file": "interface/lfgframe/lfgicon-Deadmines.blp",
+  "optional": true
+ },
+ {
+  "name": "icon-WC",
+  "file": "interface/lfgframe/lfgicon-WailingCaverns.blp",
+  "optional": true
+ },
+ {
+  "name": "icon-SFK",
+  "file": "interface/lfgframe/lfgicon-ShadowfangKeep.blp",
+  "optional": true
+ },
+ {
+  "name": "icon-BFD",
+  "file": "interface/lfgframe/lfgicon-BlackfathomDeeps.blp",
+  "optional": true
+ },
+ {
+  "name": "icon-STOCKS",
+  "file": "interface/lfgframe/lfgicon-StormwindStockades.blp",
+  "optional": true
+ },
+ {
+  "name": "icon-GNOMER",
+  "file": "interface/lfgframe/lfgicon-Gnomeregan.blp",
+  "optional": true
+ },
+ {
+  "name": "icon-RFK",
+  "file": "interface/lfgframe/lfgicon-RazorfenKraul.blp",
+  "optional": true
+ },
+ {
+  "name": "icon-RFD",
+  "file": "interface/lfgframe/lfgicon-RazorfenDowns.blp",
+  "optional": true
+ },
+ {
+  "name": "icon-ULDA",
+  "file": "interface/lfgframe/lfgicon-Uldaman.blp",
+  "optional": true
+ },
+ {
+  "name": "icon-MARA",
+  "file": "interface/lfgframe/lfgicon-Maraudon.blp",
+  "optional": true
+ },
+ {
+  "name": "icon-ST",
+  "file": "interface/lfgframe/lfgicon-SunkenTemple.blp",
+  "optional": true
+ },
+ {
+  "name": "icon-BRD",
+  "file": "interface/lfgframe/lfgicon-BlackrockDepths.blp",
+  "optional": true
+ },
+ {
+  "name": "icon-LBRS",
+  "file": "interface/lfgframe/lfgicon-BlackrockSpire.blp",
+  "optional": true
+ },
+ {
+  "name": "icon-UBRS",
+  "file": "interface/lfgframe/lfgicon-UpperBlackrockSpire.blp",
+  "optional": true
+ },
+ {
+  "name": "icon-SCHOLO",
+  "file": "interface/lfgframe/lfgicon-Scholomance.blp",
+  "optional": true
+ },
+ {
+  "name": "icon-SM",
+  "file": "interface/lfgframe/lfgicon-ScarletMonastery.blp",
+  "optional": true
+ },
+ {
+  "name": "icon-DIREMAUL",
+  "file": "interface/lfgframe/lfgicon-DireMaul.blp",
+  "optional": true
+ },
+ {
+  "name": "icon-STRAT",
+  "file": "interface/lfgframe/lfgicon-Stratholme.blp",
+  "optional": true
+ },
+ {
+  "name": "icon-LORDAERON",
+  "file": "interface/lfgframe/lfgicon-RuinsOfLordaeron.blp",
+  "optional": true
+ },
+ {
+  "name": "card-ONYXIA",
+  "file": "interface/encounterjournal/ui-ej-dungeonbutton-onyxia.blp",
+  "coords": [
+   0,
+   0.68359375,
+   0,
+   0.75
+  ],
+  "optional": true
+ },
+ {
+  "name": "lore-ONYXIA",
+  "file": "interface/encounterjournal/ui-ej-background-onyxiaslair.blp",
+  "coords": [
+   0,
+   0.77,
+   0.15,
+   0.55
+  ],
+  "optional": true
+ },
+ {
+  "name": "bg-ONYXIA",
+  "file": "interface/encounterjournal/ui-ej-background-onyxiaslair.blp",
+  "coords": [
+   0,
+   0.77,
+   0.25,
+   0.55
+  ],
+  "optional": true
+ },
+ {
+  "name": "card-LORDAERON",
+  "file": "interface/glues/loadingscreens/loadscreenruinsoflordaeronbattlegrounds.blp",
+  "coords": [
+   0,
+   1,
+   0.2,
+   0.75
+  ],
+  "optional": true
+ },
+ {
+  "name": "event-LUNAR",
+  "file": "interface/calendar/holidays/calendar_LunarFestivalStart.blp",
+  "coords": [
+   0,
+   0.7109375,
+   0.16,
+   0.5522413793103448
+  ],
+  "optional": true
+ },
+ {
+  "name": "event-icon-LUNAR",
+  "file": "interface/calendar/holidays/calendar_LunarFestivalStart.blp",
+  "coords": [
+   0,
+   0.711,
+   0,
+   0.711
+  ],
+  "optional": true
+ },
+ {
+  "name": "event-LOVE",
+  "file": "interface/calendar/holidays/calendar_LoveInTheAirStart.blp",
+  "coords": [
+   0,
+   0.7109375,
+   0.16,
+   0.5522413793103448
+  ],
+  "optional": true
+ },
+ {
+  "name": "event-icon-LOVE",
+  "file": "interface/calendar/holidays/calendar_LoveInTheAirStart.blp",
+  "coords": [
+   0,
+   0.711,
+   0,
+   0.711
+  ],
+  "optional": true
+ },
+ {
+  "name": "event-CHILDREN",
+  "file": "interface/calendar/holidays/calendar_ChildrensWeekStart.blp",
+  "coords": [
+   0,
+   0.7109375,
+   0.16,
+   0.5522413793103448
+  ],
+  "optional": true
+ },
+ {
+  "name": "event-icon-CHILDREN",
+  "file": "interface/calendar/holidays/calendar_ChildrensWeekStart.blp",
+  "coords": [
+   0,
+   0.711,
+   0,
+   0.711
+  ],
+  "optional": true
+ },
+ {
+  "name": "event-MIDSUMMER",
+  "file": "interface/calendar/holidays/calendar_MidsummerStart.blp",
+  "coords": [
+   0,
+   0.7109375,
+   0.16,
+   0.5522413793103448
+  ],
+  "optional": true
+ },
+ {
+  "name": "event-icon-MIDSUMMER",
+  "file": "interface/calendar/holidays/calendar_MidsummerStart.blp",
+  "coords": [
+   0,
+   0.711,
+   0,
+   0.711
+  ],
+  "optional": true
+ },
+ {
+  "name": "event-HARVEST",
+  "file": "interface/calendar/holidays/calendar_HarvestFestivalStart.blp",
+  "coords": [
+   0,
+   0.7109375,
+   0.16,
+   0.5522413793103448
+  ],
+  "optional": true
+ },
+ {
+  "name": "event-icon-HARVEST",
+  "file": "interface/calendar/holidays/calendar_HarvestFestivalStart.blp",
+  "coords": [
+   0,
+   0.711,
+   0,
+   0.711
+  ],
+  "optional": true
+ },
+ {
+  "name": "event-HALLOWS",
+  "file": "interface/calendar/holidays/calendar_HallowsEndStart.blp",
+  "coords": [
+   0,
+   0.7109375,
+   0.16,
+   0.5522413793103448
+  ],
+  "optional": true
+ },
+ {
+  "name": "event-icon-HALLOWS",
+  "file": "interface/calendar/holidays/calendar_HallowsEndStart.blp",
+  "coords": [
+   0,
+   0.711,
+   0,
+   0.711
+  ],
+  "optional": true
+ },
+ {
+  "name": "event-WINTER",
+  "file": "interface/calendar/holidays/calendar_WinterVeilStart.blp",
+  "coords": [
+   0,
+   0.7109375,
+   0.16,
+   0.5522413793103448
+  ],
+  "optional": true
+ },
+ {
+  "name": "event-icon-WINTER",
+  "file": "interface/calendar/holidays/calendar_WinterVeilStart.blp",
+  "coords": [
+   0,
+   0.711,
+   0,
+   0.711
+  ],
+  "optional": true
+ },
+ {
+  "name": "event-NEWYEAR",
+  "file": "interface/calendar/holidays/calendar_Fireworks.blp",
+  "coords": [
+   0,
+   0.7109375,
+   0.16,
+   0.5522413793103448
+  ],
+  "optional": true
+ },
+ {
+  "name": "event-icon-NEWYEAR",
+  "file": "interface/calendar/holidays/calendar_Fireworks.blp",
+  "coords": [
+   0,
+   0.711,
+   0,
+   0.711
+  ],
+  "optional": true
+ },
+ {
+  "name": "event-DARKMOON",
+  "file": "interface/calendar/holidays/calendar_DarkmoonFaireElwynnStart.blp",
+  "coords": [
+   0,
+   0.7109375,
+   0.16,
+   0.5522413793103448
+  ],
+  "optional": true
+ },
+ {
+  "name": "event-icon-DARKMOON",
+  "file": "interface/calendar/holidays/calendar_DarkmoonFaireElwynnStart.blp",
+  "coords": [
+   0,
+   0.711,
+   0,
+   0.711
+  ],
+  "optional": true
+ },
+ {
+  "name": "boss-tutenkash",
+  "file": "interface/encounterjournal/ui-ej-boss-tutenkash.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-mordresh-fire-eye",
+  "file": "interface/encounterjournal/ui-ej-boss-mordresh fire eye.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-glutton",
+  "file": "interface/encounterjournal/ui-ej-boss-glutton.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-amnennar-the-coldbringer",
+  "file": "interface/encounterjournal/ui-ej-boss-amnennar the coldbringer.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-herod",
+  "file": "interface/encounterjournal/ui-ej-boss-herod.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-houndmaster-loksey",
+  "file": "interface/encounterjournal/ui-ej-boss-houndmaster loksey.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-arcanist-doan",
+  "file": "interface/encounterjournal/ui-ej-boss-arcanist doan.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-lord-roccor",
+  "file": "interface/encounterjournal/ui-ej-boss-lord roccor.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-high-interrogator-gerstahn",
+  "file": "interface/encounterjournal/ui-ej-boss-high interrogator gerstahn.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-houndmaster-grebmar",
+  "file": "interface/encounterjournal/ui-ej-boss-houndmaster grebmar.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-pyromancer-loregrain",
+  "file": "interface/encounterjournal/ui-ej-boss-pyromancer loregrain.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-warder-stilgiss",
+  "file": "interface/encounterjournal/ui-ej-boss-warder stilgiss.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-fineous-darkvire",
+  "file": "interface/encounterjournal/ui-ej-boss-fineous darkvire.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-lord-incendius",
+  "file": "interface/encounterjournal/ui-ej-boss-lord incendius.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-baelgar",
+  "file": "interface/encounterjournal/ui-ej-boss-baelgar.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-general-angerforge",
+  "file": "interface/encounterjournal/ui-ej-boss-general angerforge.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-golem-lord-argelmach",
+  "file": "interface/encounterjournal/ui-ej-boss-golem lord argelmach.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-phalanx",
+  "file": "interface/encounterjournal/ui-ej-boss-phalanx.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-ambassador-flamelash",
+  "file": "interface/encounterjournal/ui-ej-boss-ambassador flamelash.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-magmus",
+  "file": "interface/encounterjournal/ui-ej-boss-magmus.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-princess-moira-bronzebeard",
+  "file": "interface/encounterjournal/ui-ej-boss-princess moira bronzebeard.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-plugger-spazzring",
+  "file": "interface/encounterjournal/ui-ej-boss-plugger spazzring.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-highlord-omokk",
+  "file": "interface/encounterjournal/ui-ej-boss-highlord omokk.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-shadow-hunter-voshgajin",
+  "file": "interface/encounterjournal/ui-ej-boss-shadow hunter voshgajin.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-war-master-voone",
+  "file": "interface/encounterjournal/ui-ej-boss-war master voone.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-mother-smolderweb",
+  "file": "interface/encounterjournal/ui-ej-boss-mother smolderweb.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-urok-doomhowl",
+  "file": "interface/encounterjournal/ui-ej-boss-urok doomhowl.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-quartermaster-zigris",
+  "file": "interface/encounterjournal/ui-ej-boss-quartermaster zigris.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-halycon",
+  "file": "interface/encounterjournal/ui-ej-boss-halycon.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-gizrul-the-slavener",
+  "file": "interface/encounterjournal/ui-ej-boss-gizrul the slavener.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-overlord-wyrmthalak",
+  "file": "interface/encounterjournal/ui-ej-boss-overlord wyrmthalak.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-aggem-thorncurse",
+  "file": "interface/encounterjournal/ui-ej-boss-aggem thorncurse.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-death-speaker-jargba",
+  "file": "interface/encounterjournal/ui-ej-boss-death speaker jargba.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-roogug",
+  "file": "interface/encounterjournal/ui-ej-boss-roogug.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-overlord-ramtusk",
+  "file": "interface/encounterjournal/ui-ej-boss-overlord ramtusk.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-agathelos-the-raging",
+  "file": "interface/encounterjournal/ui-ej-boss-agathelos the raging.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-charlga-razorflank",
+  "file": "interface/encounterjournal/ui-ej-boss-charlga razorflank.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-baron-silverlaine",
+  "file": "interface/encounterjournal/ui-ej-boss-baron silverlaine.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-commander-springvale",
+  "file": "interface/encounterjournal/ui-ej-boss-commander springvale.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-kirtonos-the-herald",
+  "file": "interface/encounterjournal/ui-ej-boss-kirtonos the herald.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-jandice-barov",
+  "file": "interface/encounterjournal/ui-ej-boss-jandice barov.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-rattlegore",
+  "file": "interface/encounterjournal/ui-ej-boss-rattlegore.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-marduk-blackpool",
+  "file": "interface/encounterjournal/ui-ej-boss-marduk blackpool.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-vectus",
+  "file": "interface/encounterjournal/ui-ej-boss-vectus.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-ras-frostwhisper",
+  "file": "interface/encounterjournal/ui-ej-boss-ras frostwhisper.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-instructor-malicia",
+  "file": "interface/encounterjournal/ui-ej-boss-instructor malicia.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-doctor-theolen-krastinov",
+  "file": "interface/encounterjournal/ui-ej-boss-doctor theolen krastinov.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-lorekeeper-polkelt",
+  "file": "interface/encounterjournal/ui-ej-boss-lorekeeper polkelt.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-the-ravenian",
+  "file": "interface/encounterjournal/ui-ej-boss-the ravenian.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-lord-alexei-barov",
+  "file": "interface/encounterjournal/ui-ej-boss-lord alexei barov.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-lady-illucia-barov",
+  "file": "interface/encounterjournal/ui-ej-boss-lady illucia barov.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-darkmaster-gandling",
+  "file": "interface/encounterjournal/ui-ej-boss-darkmaster gandling.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-kormok",
+  "file": "interface/encounterjournal/ui-ej-boss-kormok.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-pyroguard-emberseer",
+  "file": "interface/encounterjournal/ui-ej-boss-pyroguard emberseer.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-gyth",
+  "file": "interface/encounterjournal/ui-ej-boss-gyth.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-warchief-rend-blackhand",
+  "file": "interface/encounterjournal/ui-ej-boss-warchief rend blackhand.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-the-beast",
+  "file": "interface/encounterjournal/ui-ej-boss-the beast.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-general-drakkisath",
+  "file": "interface/encounterjournal/ui-ej-boss-general drakkisath.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-oggleflint",
+  "file": "interface/encounterjournal/ui-ej-boss-oggleflint.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-taragaman-the-hungerer",
+  "file": "interface/encounterjournal/ui-ej-boss-taragaman the hungerer.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-jergosh-the-invoker",
+  "file": "interface/encounterjournal/ui-ej-boss-jergosh the invoker.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-bazzalan",
+  "file": "interface/encounterjournal/ui-ej-boss-bazzalan.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-guard-moldar",
+  "file": "interface/encounterjournal/ui-ej-boss-guard moldar.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-stomper-kreeg",
+  "file": "interface/encounterjournal/ui-ej-boss-stomper kreeg.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-guard-fengus",
+  "file": "interface/encounterjournal/ui-ej-boss-guard fengus.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-guard-slipkik",
+  "file": "interface/encounterjournal/ui-ej-boss-guard slipkik.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-captain-kromcrush",
+  "file": "interface/encounterjournal/ui-ej-boss-captain kromcrush.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-chorush-the-observer",
+  "file": "interface/encounterjournal/ui-ej-boss-chorush the observer.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-king-gordok",
+  "file": "interface/encounterjournal/ui-ej-boss-king gordok.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-interrogator-vishas",
+  "file": "interface/encounterjournal/ui-ej-boss-interrogator vishas.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-bloodmage-thalnos",
+  "file": "interface/encounterjournal/ui-ej-boss-bloodmage thalnos.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-magmatusk",
+  "file": "interface/encounterjournal/ui-ej-boss-magmatusk.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-magistrate-barthilas",
+  "file": "interface/encounterjournal/ui-ej-boss-magistrate barthilas.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-baroness-anastari",
+  "file": "interface/encounterjournal/ui-ej-boss-baroness anastari.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-nerubenkan",
+  "file": "interface/encounterjournal/ui-ej-boss-nerubenkan.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-maleki-the-pallid",
+  "file": "interface/encounterjournal/ui-ej-boss-maleki the pallid.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-ramstein-the-gorger",
+  "file": "interface/encounterjournal/ui-ej-boss-ramstein the gorger.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-noxxion",
+  "file": "interface/encounterjournal/ui-ej-boss-noxxion.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-razorlash",
+  "file": "interface/encounterjournal/ui-ej-boss-razorlash.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-lord-vyletongue",
+  "file": "interface/encounterjournal/ui-ej-boss-lord vyletongue.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-celebras-the-cursed",
+  "file": "interface/encounterjournal/ui-ej-boss-celebras the cursed.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-landslide",
+  "file": "interface/encounterjournal/ui-ej-boss-landslide.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-tinkerer-gizlock",
+  "file": "interface/encounterjournal/ui-ej-boss-tinkerer gizlock.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-rotgrip",
+  "file": "interface/encounterjournal/ui-ej-boss-rotgrip.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-princess-theradras",
+  "file": "interface/encounterjournal/ui-ej-boss-princess theradras.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-antusul",
+  "file": "interface/encounterjournal/ui-ej-boss-antusul.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-theka-the-martyr",
+  "file": "interface/encounterjournal/ui-ej-boss-theka the martyr.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-witch-doctor-zumrah",
+  "file": "interface/encounterjournal/ui-ej-boss-witch doctor zumrah.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-nekrum-gutchewer",
+  "file": "interface/encounterjournal/ui-ej-boss-nekrum gutchewer.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-hydromancer-velratha",
+  "file": "interface/encounterjournal/ui-ej-boss-hydromancer velratha.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-gahzrilla",
+  "file": "interface/encounterjournal/ui-ej-boss-gahzrilla.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-chief-ukorz-sandscalp",
+  "file": "interface/encounterjournal/ui-ej-boss-chief ukorz sandscalp.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-lord-cobrahn",
+  "file": "interface/encounterjournal/ui-ej-boss-lord cobrahn.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-lady-anacondra",
+  "file": "interface/encounterjournal/ui-ej-boss-lady anacondra.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-kresh",
+  "file": "interface/encounterjournal/ui-ej-boss-kresh.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-lord-pythas",
+  "file": "interface/encounterjournal/ui-ej-boss-lord pythas.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-skum",
+  "file": "interface/encounterjournal/ui-ej-boss-skum.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-lord-serpentis",
+  "file": "interface/encounterjournal/ui-ej-boss-lord serpentis.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-verdan-the-everliving",
+  "file": "interface/encounterjournal/ui-ej-boss-verdan the everliving.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-mutanus-the-devourer",
+  "file": "interface/encounterjournal/ui-ej-boss-mutanus the devourer.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-eric-the-swift",
+  "file": "interface/encounterjournal/ui-ej-boss-eric the swift.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-baelog",
+  "file": "interface/encounterjournal/ui-ej-boss-baelog.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-olaf",
+  "file": "interface/encounterjournal/ui-ej-boss-olaf.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-revelosh",
+  "file": "interface/encounterjournal/ui-ej-boss-revelosh.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-ironaya",
+  "file": "interface/encounterjournal/ui-ej-boss-ironaya.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-obsidian-sentinel",
+  "file": "interface/encounterjournal/ui-ej-boss-obsidian sentinel.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-ancient-stone-keeper",
+  "file": "interface/encounterjournal/ui-ej-boss-ancient stone keeper.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-galgann-firehammer",
+  "file": "interface/encounterjournal/ui-ej-boss-galgann firehammer.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-grimlok",
+  "file": "interface/encounterjournal/ui-ej-boss-grimlok.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-archaedas",
+  "file": "interface/encounterjournal/ui-ej-boss-archaedas.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-ghamoo-ra",
+  "file": "interface/encounterjournal/ui-ej-boss-ghamoo ra.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-lady-sarevess",
+  "file": "interface/encounterjournal/ui-ej-boss-lady sarevess.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-gelihast",
+  "file": "interface/encounterjournal/ui-ej-boss-gelihast.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-lorgus-jett",
+  "file": "interface/encounterjournal/ui-ej-boss-lorgus jett.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-baron-aquanis",
+  "file": "interface/encounterjournal/ui-ej-boss-baron aquanis.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-twilight-lord-kelris",
+  "file": "interface/encounterjournal/ui-ej-boss-twilight lord kelris.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-old-serrakis",
+  "file": "interface/encounterjournal/ui-ej-boss-old serrakis.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-akumai",
+  "file": "interface/encounterjournal/ui-ej-boss-akumai.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-techbot",
+  "file": "interface/encounterjournal/ui-ej-boss-techbot.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-grubbis",
+  "file": "interface/encounterjournal/ui-ej-boss-grubbis.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-viscous-fallout",
+  "file": "interface/encounterjournal/ui-ej-boss-viscous fallout.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-electrocutioner-6000",
+  "file": "interface/encounterjournal/ui-ej-boss-electrocutioner 6000.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-crowd-pummeler-9-60",
+  "file": "interface/encounterjournal/ui-ej-boss-crowd pummeler 9-60.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-mekgineer-thermaplugg",
+  "file": "interface/encounterjournal/ui-ej-boss-mekgineer thermaplugg.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-rhahkzor",
+  "file": "interface/encounterjournal/ui-ej-boss-rhahkzor.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-sneed",
+  "file": "interface/encounterjournal/ui-ej-boss-sneed.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-gilnid",
+  "file": "interface/encounterjournal/ui-ej-boss-gilnid.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-mrsmite",
+  "file": "interface/encounterjournal/ui-ej-boss-mrsmite.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-captaingreenskin",
+  "file": "interface/encounterjournal/ui-ej-boss-captaingreenskin.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-edwinvancleef",
+  "file": "interface/encounterjournal/ui-ej-boss-edwinvancleef.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-cookie",
+  "file": "interface/encounterjournal/ui-ej-boss-cookie.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-avatar-of-hakkar",
+  "file": "interface/encounterjournal/ui-ej-boss-avatar of hakkar.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-jammalan-the-prophet",
+  "file": "interface/encounterjournal/ui-ej-boss-jammalan the prophet.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-dreamscythe",
+  "file": "interface/encounterjournal/ui-ej-boss-dreamscythe.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-shade-of-eranikus",
+  "file": "interface/encounterjournal/ui-ej-boss-shade of eranikus.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-hearthsinger-forresten",
+  "file": "interface/encounterjournal/ui-ej-boss-hearthsinger forresten.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-the-unforgiven",
+  "file": "interface/encounterjournal/ui-ej-boss-the unforgiven.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-postmastermalown",
+  "file": "interface/encounterjournal/ui-ej-boss-postmastermalown.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-timmy-the-cruel",
+  "file": "interface/encounterjournal/ui-ej-boss-timmy the cruel.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-balnazzar",
+  "file": "interface/encounterjournal/ui-ej-boss-balnazzar.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-high-inquisitor-fairbanks",
+  "file": "interface/encounterjournal/ui-ej-boss-high inquisitor fairbanks.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-scarlet-commander-mograine",
+  "file": "interface/encounterjournal/ui-ej-boss-scarlet commander mograine.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-high-inquisitor-whitemane",
+  "file": "interface/encounterjournal/ui-ej-boss-high inquisitor whitemane.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-zevrim-thornhoof",
+  "file": "interface/encounterjournal/ui-ej-boss-zevrim thornhoof.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-hydrospawn",
+  "file": "interface/encounterjournal/ui-ej-boss-hydrospawn.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-lethtendris",
+  "file": "interface/encounterjournal/ui-ej-boss-lethtendris.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-alzzin-the-wildshaper",
+  "file": "interface/encounterjournal/ui-ej-boss-alzzin the wildshaper.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-mana-devourer",
+  "file": "interface/encounterjournal/ui-ej-boss-mana devourer.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-tendris-warpwood",
+  "file": "interface/encounterjournal/ui-ej-boss-tendris warpwood.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-illyanna-ravenoak",
+  "file": "interface/encounterjournal/ui-ej-boss-illyanna ravenoak.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-magister-kalendris",
+  "file": "interface/encounterjournal/ui-ej-boss-magister kalendris.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-immolthar",
+  "file": "interface/encounterjournal/ui-ej-boss-immolthar.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-prince-tortheldrin",
+  "file": "interface/encounterjournal/ui-ej-boss-prince tortheldrin.blp",
+  "optional": true
+ },
+ {
+  "name": "boss-onyxia",
+  "file": "interface/encounterjournal/ui-ej-boss-onyxia.blp",
+  "optional": true
+ }
+]
