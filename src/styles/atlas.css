@@ -2581,3 +2581,28 @@ body.atlas {
 		grid-template-columns: minmax(0, 1fr);
 	}
 }
+/* boss button text against its tan wood: a paler gold and a firm dark outline, so names and lines stand off */
+.boss-row .label {
+	color: #ffe7a3;
+	text-shadow: 0 0 3px #000, 1px 1px 0 #000, -1px -1px 0 rgb(0 0 0 / 0.6);
+}
+.boss-row .meta {
+	color: #fff4dc;
+	text-shadow: 0 0 3px #000, 1px 1px 0 #000;
+}
+.boss-row .label .rare {
+	color: #d4d4ff;
+}
+/* the item page's Wowhead button at a readable size */
+.item-card .redbtn {
+	height: 32px;
+	padding: 0 22px;
+	font-size: 14px;
+}
+/* the item's name in the lighter rare/epic shades used on dark ground */
+.item-head h1.q3 {
+	--title-q: #3d9bff;
+}
+.item-head h1.q4 {
+	--title-q: #c27bff;
+}
