@@ -51,8 +51,8 @@
 				"Legado (WoD a Shadowlands)"
 			]
 		],
-		"downloads": 77796,
-		"version": "2.15"
+		"downloads": 80641,
+		"version": "2.17"
 	},
 	{
 		"id": "dq",
@@ -78,8 +78,8 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 61267,
-		"version": "3.06"
+		"downloads": 64867,
+		"version": "3.13"
 	},
 	{
 		"id": "hn",
@@ -105,8 +105,8 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 44564,
-		"version": "1.03"
+		"downloads": 50484,
+		"version": "1.06"
 	},
 	{
 		"id": "hb",
@@ -115,7 +115,7 @@
 		"repo": "HealthBarTextForever",
 		"url": "https://www.curseforge.com/wow/addons/health-bar-text-forever",
 		"cf": 1700978,
-		"color": "#c77dff",
+		"color": "#ff8000",
 		"cat": [
 			"Interface",
 			"Interfaz"
@@ -132,8 +132,8 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 29073,
-		"version": "1.08"
+		"downloads": 32871,
+		"version": "1.11"
 	},
 	{
 		"id": "st",
@@ -159,8 +159,8 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 14753,
-		"version": "1.11"
+		"downloads": 16733,
+		"version": "1.13"
 	},
 	{
 		"id": "gr",
@@ -186,8 +186,8 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 9384,
-		"version": "1.04"
+		"downloads": 10722,
+		"version": "1.06"
 	},
 	{
 		"id": "rq",
@@ -221,8 +221,8 @@
 				"TBC Classic"
 			]
 		],
-		"downloads": 8555,
-		"version": "1.13"
+		"downloads": 8937,
+		"version": "1.15"
 	},
 	{
 		"id": "tk",
@@ -248,8 +248,8 @@
 				"MoP Classic"
 			]
 		],
-		"downloads": 6583,
-		"version": "1.05"
+		"downloads": 6749,
+		"version": "1.07"
 	},
 	{
 		"id": "dr",
@@ -275,8 +275,8 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 3208,
-		"version": "1.02"
+		"downloads": 3789,
+		"version": "1.05"
 	},
 	{
 		"id": "mf",
@@ -302,8 +302,8 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 2792,
-		"version": "1.02"
+		"downloads": 3011,
+		"version": "1.04"
 	},
 	{
 		"id": "cg",
@@ -357,8 +357,8 @@
 				"Legado (WoD a Shadowlands)"
 			]
 		],
-		"downloads": 1314,
-		"version": "1.06"
+		"downloads": 1383,
+		"version": "1.08"
 	},
 	{
 		"id": "ph",
@@ -396,8 +396,8 @@
 				"TBC Classic"
 			]
 		],
-		"downloads": 1095,
-		"version": "1.08"
+		"downloads": 1112,
+		"version": "1.11"
 	},
 	{
 		"id": "mh",
@@ -431,8 +431,8 @@
 				"Wrath Classic"
 			]
 		],
-		"downloads": 776,
-		"version": "1.08"
+		"downloads": 793,
+		"version": "1.11"
 	},
 	{
 		"id": "vf",
@@ -462,8 +462,8 @@
 				"MoP Classic"
 			]
 		],
-		"downloads": 716,
-		"version": "1.07"
+		"downloads": 748,
+		"version": "1.09"
 	},
 	{
 		"id": "ea",
@@ -493,8 +493,8 @@
 				"TBC Classic"
 			]
 		],
-		"downloads": 693,
-		"version": "1.03"
+		"downloads": 707,
+		"version": "1.05"
 	},
 	{
 		"id": "er",
@@ -520,8 +520,8 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 379,
-		"version": "1.04"
+		"downloads": 454,
+		"version": "1.07"
 	},
 	{
 		"id": "lg",
@@ -547,8 +547,8 @@
 				"MoP Classic"
 			]
 		],
-		"downloads": 295,
-		"version": "1.05"
+		"downloads": 305,
+		"version": "1.07"
 	},
 	{
 		"id": "rg",
@@ -574,8 +574,8 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 226,
-		"version": "1.01"
+		"downloads": 302,
+		"version": "1.05"
 	},
 	{
 		"id": "lr",
@@ -601,8 +601,8 @@
 				"MoP Classic"
 			]
 		],
-		"downloads": 188,
-		"version": "1.06"
+		"downloads": 193,
+		"version": "1.08"
 	},
 	{
 		"id": "tt",
@@ -628,8 +628,8 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 179,
-		"version": "1.04"
+		"downloads": 188,
+		"version": "1.07"
 	},
 	{
 		"id": "ai",
@@ -655,8 +655,8 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 155,
-		"version": "1.02"
+		"downloads": 184,
+		"version": "1.05"
 	},
 	{
 		"id": "cx",
@@ -710,7 +710,7 @@
 				"Legado (WoD a Shadowlands)"
 			]
 		],
-		"downloads": 76,
-		"version": "1.00"
+		"downloads": 97,
+		"version": "1.02"
 	}
 ]
