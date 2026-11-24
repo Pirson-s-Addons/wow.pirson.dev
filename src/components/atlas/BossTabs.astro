@@ -4,7 +4,7 @@
 // (hidden="until-found"), so its loot is indexed and found by the browser's find; #boss-N opens it.
 import { wow, type Lang } from '../../lib/atlas/i18n';
 import { L, name, lootId, lootChance, type Boss } from '../../lib/atlas/data';
-import { portrait, model3d } from '../../lib/atlas/view';
+import { portrait, model3d, camera3d } from '../../lib/atlas/view';
 import BossRow from './BossRow.astro';
 import LootRow from './LootRow.astro';
 
@@ -32,7 +32,7 @@ const info = (b: Boss, i: number) =>
 			<section class="boss-detail" id={`boss-${i + 1}`} data-tab-of="bosses" data-tab={String(i + 1)} role="tabpanel" aria-labelledby={`boss-tab-${i + 1}`} hidden={i ? 'until-found' : undefined}>
 				<div class="boss-stage" style={`--bg: url('${bg}')`}>
 					{model3d(b) ? (
-						<model-viewer src={model3d(b)} poster={portrait(b)} alt={bossName(b)} loading="lazy" camera-controls touch-action="pan-y" auto-rotate rotation-per-second="18deg" interaction-prompt="none" shadow-intensity="1" exposure="1.1" />
+						<model-viewer src={model3d(b)} poster={portrait(b)} alt={bossName(b)} loading="lazy" autoplay {...camera3d(b)} camera-controls touch-action="pan-y" auto-rotate rotation-per-second="18deg" interaction-prompt="none" shadow-intensity="1" exposure="1.1" />
 					) : (
 						<img class:list={['shot', !b.display && 'icon']} src={portrait(b)} alt="" width="300" height="300" loading="lazy" />
 					)}

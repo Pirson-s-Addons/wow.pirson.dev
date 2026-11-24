@@ -1,6 +1,7 @@
 ---
 // A grid of Journal cards (the addon's DungeonList/Raids/Events cards): the art in the Journal frame, the
-// name, levels or players, and the quest count. Dungeons get the filters: kind and faction.
+// name, levels or players, and the quest count. Every grid filters by faction; the dungeons' grid also by kind
+// (classic, Forever's new ones, raids: the raids sit in it too).
 import { wow, LANG, type Lang } from '../../lib/atlas/i18n';
 import { addon, dungeonName, raidName, eventName, eventQuests, href, L } from '../../lib/atlas/data';
 import { art, eventArt, icon } from '../../lib/atlas/view';
@@ -15,38 +16,48 @@ interface Props {
 const { lang, kind, title, headingLevel = 2, first } = Astro.props;
 const H = headingLevel === 1 ? 'h1' : 'h2';
 const date = (d: string) => new Intl.DateTimeFormat(LANG[lang].html, { dateStyle: 'long' }).format(new Date(`${d}T12:00:00Z`));
-type Card = { href: string; name: string; img: string; info: string; isNew?: boolean; prog?: string; lock?: boolean; faction?: string; forever?: boolean };
+type Card = { href: string; name: string; img: string; info: string; isNew?: boolean; prog?: string; lock?: boolean; faction?: string; forever?: boolean; raid?: boolean };
+const raidCards = (): Card[] => addon.Raids.map((r) => ({ href: href(lang, { kind: 'raid', r }), name: raidName(lang, r), img: art(r.key), info: wow(L(lang, 'RAID_PLAYERS'), r.size), isNew: r.isForever, prog: r.unlock ? date(r.unlock) : L(lang, 'RAID_TBA'), lock: true, forever: r.isForever, raid: true }));
+// an event belongs to one side when every quest of it does
+const side = (ids: number[]) => {
+	const f = new Set(ids.map((id) => addon.Quests[id]?.faction ?? 'Both'));
+	return f.size === 1 ? [...f][0] : 'Both';
+};
 const cards: Card[] =
 	kind === 'dungeons'
 		? [...addon.Dungeons]
 				.sort((a, b) => a.minLevel - b.minLevel || a.maxLevel - b.maxLevel)
-				.map((d) => ({ href: href(lang, { kind: 'dungeon', d }), name: dungeonName(lang, d), img: art(d.key), info: `${d.minLevel}–${d.maxLevel}`, isNew: d.isForever, prog: `${d.quests.length}`, faction: d.faction, forever: d.isForever }))
+				.map((d): Card => ({ href: href(lang, { kind: 'dungeon', d }), name: dungeonName(lang, d), img: art(d.key), info: `${d.minLevel}–${d.maxLevel}`, isNew: d.isForever, prog: `${d.quests.length}`, faction: d.faction, forever: d.isForever }))
+				.concat(raidCards())
 		: kind === 'raids'
-			? addon.Raids.map((r) => ({ href: href(lang, { kind: 'raid', r }), name: raidName(lang, r), img: art(r.key), info: wow(L(lang, 'RAID_PLAYERS'), r.size), isNew: r.isForever, prog: r.unlock ? date(r.unlock) : L(lang, 'RAID_TBA'), lock: true }))
-			: addon.EventList.filter((e) => eventQuests(e).length).map((e) => ({ href: href(lang, { kind: 'event', e }), name: eventName(lang, e), img: eventArt(e.key), info: '', prog: `${eventQuests(e).length}` }));
+			? raidCards()
+			: addon.EventList.filter((e) => eventQuests(e).length).map((e) => ({ href: href(lang, { kind: 'event', e }), name: eventName(lang, e), img: eventArt(e.key), info: '', prog: `${eventQuests(e).length}`, faction: side(eventQuests(e)) }));
 ---
 
 <section class="panel-box" data-grid>
 	<H class="panel-title">{title ?? L(lang, kind === 'dungeons' ? 'TAB_DUNGEONS' : kind === 'raids' ? 'TAB_RAIDS' : 'TAB_EVENTS')}</H>
-	{
-		kind === 'dungeons' && (
-			<div class="filters">
+	<div class="filters">
+		{
+			kind === 'dungeons' && (
+				<>
 				<button type="button" class="round" data-filter="kind:all" aria-pressed="true" title={L(lang, 'KIND_ALL')} style="background-image:url(/atlas/art/logo_dqa.webp)"><span class="sr-only">{L(lang, 'KIND_ALL')}</span></button>
 				<button type="button" class="round" data-filter="kind:classic" aria-pressed="false" title={L(lang, 'KIND_CLASSIC')} style={`background-image:url(${icon('inv_misc_book_09', 'large')})`}><span class="sr-only">{L(lang, 'KIND_CLASSIC')}</span></button>
 				<button type="button" class="round" data-filter="kind:forever" aria-pressed="false" title={L(lang, 'KIND_FOREVER')} style={`background-image:url(${art('THANES')})`}><span class="sr-only">{L(lang, 'KIND_FOREVER')}</span></button>
+				<button type="button" class="round" data-filter="kind:raids" aria-pressed="false" title={L(lang, 'TAB_RAIDS')} style={`background-image:url(${icon('inv_misc_head_dragon_01', 'large')})`}><span class="sr-only">{L(lang, 'TAB_RAIDS')}</span></button>
 				<span class="sep" />
-				<div class="toggle" role="group" aria-label={L(lang, 'FACTION_ALL')}>
-					<button type="button" class="both" data-filter="faction:Both" aria-pressed="true" title={L(lang, 'FACTION_ALL')}><i /><i /></button>
-					<button type="button" class="alliance" data-filter="faction:Alliance" aria-pressed="false" title={L(lang, 'FACTION_ALLIANCE')}><i /></button>
-					<button type="button" class="horde" data-filter="faction:Horde" aria-pressed="false" title={L(lang, 'FACTION_HORDE')}><i /></button>
-				</div>
-			</div>
-		)
-	}
+				</>
+			)
+		}
+		<div class="toggle" role="group" aria-label={L(lang, 'FACTION_ALL')}>
+			<button type="button" class="both" data-filter="faction:Both" aria-pressed="true" title={L(lang, 'FACTION_ALL')}><i /><i /></button>
+			<button type="button" class="alliance" data-filter="faction:Alliance" aria-pressed="false" title={L(lang, 'FACTION_ALLIANCE')}><i /></button>
+			<button type="button" class="horde" data-filter="faction:Horde" aria-pressed="false" title={L(lang, 'FACTION_HORDE')}><i /></button>
+		</div>
+	</div>
 	<ul class="cards">
 		{
 			cards.map((c, i) => (
-				<li data-faction={c.faction} data-forever={c.forever ? 'true' : 'false'}>
+				<li data-faction={c.faction} data-forever={c.forever ? 'true' : 'false'} data-kind={c.raid ? 'raid' : undefined}>
 					<a class="card" href={c.href}>
 						<img src={c.img} alt="" width="224" height="118" loading={first && i < 6 ? undefined : 'lazy'} fetchpriority={first && i === 0 ? 'high' : undefined} />
 						<span class="name">{c.name}</span>
@@ -54,7 +65,7 @@ const cards: Card[] =
 							{c.info}
 							{c.isNew && <span class="new">{L(lang, 'NEW_TAG')}</span>}
 						</span>
-						{c.prog && <span class="prog">{kind === 'raids' ? c.prog : <><span class="st" /> {c.prog}</>}</span>}
+						{c.prog && <span class="prog">{c.raid ? c.prog : <><span class="st" /> {c.prog}</>}</span>}
 						{c.lock && <span class="lock" />}
 					</a>
 				</li>

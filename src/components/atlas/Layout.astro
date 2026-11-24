@@ -284,7 +284,12 @@ const nav: { key: Section; label: string; href: string }[] = [
 				const apply = () => {
 					for (const li of grid.querySelectorAll<HTMLElement>('.cards > li')) {
 						const f = li.dataset.faction ?? 'Both';
-						li.hidden = (state.faction !== 'Both' && f !== 'Both' && f !== state.faction) || (state.kind === 'classic' && li.dataset.forever === 'true') || (state.kind === 'forever' && li.dataset.forever !== 'true');
+						const raid = li.dataset.kind === 'raid';
+						li.hidden =
+							(state.faction !== 'Both' && f !== 'Both' && f !== state.faction) ||
+							(state.kind === 'classic' && (raid || li.dataset.forever === 'true')) ||
+							(state.kind === 'forever' && li.dataset.forever !== 'true') ||
+							(state.kind === 'raids' && !raid);
 					}
 				};
 				for (const b of grid.querySelectorAll<HTMLButtonElement>('[data-filter]')) {

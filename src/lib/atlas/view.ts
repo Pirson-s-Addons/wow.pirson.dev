@@ -105,6 +105,18 @@ export const portrait = (b: { name: string; display?: number; kind?: string }) =
 // The boss's model in 3D (scripts/atlas/models.py), when it was converted; humanoids are a character model
 const kinds: Record<string, string> = pub('../src/data/atlas/models.json') ? JSON.parse(readFileSync(join(process.cwd(), 'src/data/atlas/models.json'), 'utf8')) : {};
 export const humanoid = (b: { display?: number }) => kinds[b.display ?? 0] === 'humanoid';
+// The camera for a boss's model: aimed at the centre of its Stand pose, back far enough for its largest side,
+// so a dragon and a gnome fill the stage alike (frames.json, from models.py)
+const frames: Record<string, number[]> = pub('../src/data/atlas/frames.json') ? JSON.parse(readFileSync(join(process.cwd(), 'src/data/atlas/frames.json'), 'utf8')) : {};
+export function camera3d(b: { display?: number }) {
+	const f = frames[b.display ?? 0];
+	if (!f) return {};
+	const [x, y, z, half, reach] = f;
+	// 30° high field of view; the stage is about 1.7 times wider than high; some air around it
+	const t = Math.tan((15 * Math.PI) / 180);
+	const far = Math.max(half / t, reach / (t * 1.7)) * 1.15 + reach * 0.2;
+	return { 'camera-target': `${x}m ${y}m ${z}m`, 'camera-orbit': `0deg 80deg ${far.toFixed(2)}m`, 'field-of-view': '30deg', 'min-camera-orbit': `auto auto ${(far * 0.35).toFixed(2)}m`, 'max-camera-orbit': `auto auto ${(far * 1.6).toFixed(2)}m` };
+}
 export const model3d = (b: { display?: number }) => (b.display && pub(`atlas/models/npc-${b.display}.glb`) ? `/atlas/models/npc-${b.display}.glb` : undefined);
 
 // The slot and type line of an item ("Two-Hand, Axe"), from its tooltip

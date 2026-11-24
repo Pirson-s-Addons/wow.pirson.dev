@@ -2453,3 +2453,35 @@ body.atlas {
 		font-size: 24px;
 	}
 }
+/* journeys: a card grows with its lines (zone, dungeon, rewards) instead of spilling out */
+.renown li {
+	height: auto;
+	min-height: 84px;
+	padding: 14px 40px 14px 82px;
+	overflow-wrap: anywhere;
+}
+.renown small {
+	line-height: 1.5;
+}
+/* upcoming: the date and "in N days" on their own lines need a taller row */
+.timeline li {
+	height: auto;
+	min-height: 34px;
+	padding-block: 6px;
+	gap: 12px;
+}
+.timeline .when {
+	flex: none;
+	line-height: 1.4;
+}
+.timeline .soon {
+	display: block;
+}
+@media (max-width: 520px) {
+	.timeline li {
+		flex-wrap: wrap;
+	}
+	.timeline .when {
+		width: 100%;
+	}
+}
