@@ -763,7 +763,7 @@ body.atlas {
 .boss-row[aria-pressed='true'] {
 	background-image: url('/atlas/ui/ej-boss-button-down.webp'), url('/atlas/ui/ej-boss-button-down.webp');
 }
-.boss-row:hover::after {
+a.boss-row:hover::after {
 	content: '';
 	position: absolute;
 	inset: 0;
@@ -880,9 +880,6 @@ body.atlas {
 	border: 2px solid var(--qc, #9d9d9d);
 	border-radius: 3px;
 	box-shadow: inset 0 0 0 1px #000;
-}
-.loot-row:hover .icon40 img {
-	filter: brightness(1.25);
 }
 .loot-row .nm {
 	position: absolute;
@@ -1644,7 +1641,8 @@ body.atlas {
 	background: rgb(0 0 0 / 0.55);
 	border: 3px solid transparent;
 	border-image: url('/atlas/ui/tooltip-9slice.webp') 16 / 8px stretch;
-	filter: saturate(0) brightness(0.7);
+	/* not fully grey: the red Horde crest went black */
+	filter: saturate(0.35) brightness(0.8);
 }
 .toggle button[aria-pressed='true'] {
 	filter: none;
@@ -1737,7 +1735,8 @@ body.atlas {
 	height: 68px;
 }
 .reward .nm {
-	left: 54px;
+	left: 66px;
+	right: 10px;
 	font-size: 13px;
 }
 .reward .cnt {
@@ -1981,9 +1980,6 @@ body.atlas {
 	color: var(--gold);
 	text-decoration: none;
 	text-shadow: 1px 1px 0 #000;
-}
-.atlas .redbtn:hover {
-	color: #fff;
 }
 .site-foot .legal {
 	color: #8a7f6c;
@@ -2231,4 +2227,140 @@ body.atlas {
 }
 .copy-menu:is(:popover-open, .\:popover-open) {
 	display: block;
+}
+
+/* ---------- hovers: every piece reacts, in the tone of the surface under it ---------- */
+/* the language list: the game's dropdown menu (dark, tooltip rim), over the page, not in its flow */
+.dropdown ul {
+	position: absolute;
+	z-index: 20;
+	min-width: 100%;
+	margin: 4px 0 0;
+	padding: 6px;
+	list-style: none;
+	background: #0a0805;
+	border: 4px solid transparent;
+	border-image: url('/atlas/ui/tooltip-9slice.webp') 16 / 8px stretch;
+	box-shadow: 0 10px 30px rgb(0 0 0 / 0.6);
+}
+.dropdown ul a {
+	display: block;
+	padding: 4px 8px;
+	color: #fff;
+	font: 13px var(--friz);
+	white-space: nowrap;
+	border-radius: 3px;
+}
+.dropdown ul a[aria-current] {
+	color: var(--gold);
+}
+.dropdown ul a:hover,
+.dropdown ul a:focus-visible {
+	color: #fff;
+	background: rgb(255 209 0 / 0.14);
+}
+/* dark ground: light up */
+.btn-icon:hover {
+	border-color: var(--gold);
+}
+.btn-icon:hover svg {
+	fill: #fff;
+}
+.brand:hover {
+	filter: brightness(1.15);
+}
+.intro a:hover,
+.next-link:hover,
+.panel-title a:hover,
+.timeline a:hover,
+.site-main small > a:hover {
+	color: #fff;
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+/* red buttons and tabs: the button's own highlight added over it (UIPanelButtonTemplate) */
+.redbtn {
+	position: relative;
+}
+.redbtn::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: url('/atlas/ui/btn-highlight.webp') center / 100% 100%;
+	mix-blend-mode: plus-lighter;
+	opacity: 0;
+	pointer-events: none;
+}
+.redbtn:hover::after {
+	opacity: 0.55;
+}
+/* filters: lit a step on hover, fully when pressed */
+.round:hover,
+.toggle button:hover {
+	filter: saturate(0.6) brightness(0.95);
+}
+.round[aria-pressed='true']:hover,
+.toggle button[aria-pressed='true']:hover {
+	filter: brightness(1.1);
+}
+/* the quest list: the selected row's glow, fainter */
+.qrow:hover::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: url('/atlas/ui/quest-row-glow.webp') 0 0 / 100% 100%;
+	mix-blend-mode: plus-lighter;
+	opacity: 0.4;
+}
+.qrow[aria-current]:hover::before {
+	opacity: 0.6;
+}
+/* item frames (loot rows, rewards, tier pieces, map pins): the frame brightens, as the game's icons do */
+.loot-row:hover {
+	filter: brightness(1.18);
+}
+.reward:hover .icon40 img,
+.tier-row a:hover img,
+.pin:hover img {
+	filter: brightness(1.3);
+}
+/* a hovered item glows in its quality colour around the icon frame */
+.reward:hover .icon40::after,
+.loot-row:hover .icon40::after,
+.tier-row a:hover::after {
+	box-shadow: inset 0 0 0 1px #000, 0 0 8px var(--qc, #9d9d9d);
+}
+/* the name plate is a 33 % black wash: on the light parchment it went grey under green and white names;
+   three layers of it make it the dark plate the names were coloured for */
+.reward .plate {
+	background-image: url('/atlas/ui/reward-plate.webp'), url('/atlas/ui/reward-plate.webp'), url('/atlas/ui/reward-plate.webp');
+	background-size: 100% 100%;
+}
+.pin:hover::after {
+	filter: brightness(1.35);
+}
+.pin:hover {
+	z-index: 2;
+}
+/* parchment: dark ink, so a hover darkens instead of lighting up */
+.where a:hover {
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+/* tabs: an unchosen tab wakes up under the pointer */
+.tabs button:not([aria-selected='true']):hover {
+	filter: saturate(0.7) brightness(0.95);
+}
+/* "Loot: Boss" sits under the frame, on the dark stone: parchment ink there was unreadable */
+.loot-row .from {
+	color: #b3a68d;
+}
+/* a static boss row (the Bosses tab) is not a link: no hand, no highlight */
+div.boss-row {
+	cursor: default;
+}
+/* the creature art (128 px from -76) ends 52 px into the body: the name starts past it, not on top of it */
+.boss-row .creature ~ .label,
+.boss-row .creature ~ .meta {
+	left: 50px;
 }
