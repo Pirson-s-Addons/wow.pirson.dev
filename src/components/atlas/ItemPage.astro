@@ -42,9 +42,12 @@ const html = tooltipHtml(lang, `item:${id}`);
 						<ul class="boss-list">
 							{drops.map((s) => {
 								const where = s.dungeon ? { kind: 'dungeon' as const, d: s.dungeon } : { kind: 'raid' as const, r: s.raid! };
+								// straight to that boss: its panel in the Bosses tab (#boss-N)
+								const list = (s.dungeon ? addon.Bosses[s.dungeon.key] : s.raid!.bosses) ?? [];
+								const n = list.indexOf(s.boss) + 1;
 								return (
 									<li>
-										<a class="boss-row" href={href(lang, where)}>
+										<a class="boss-row" href={href(lang, where) + (n ? `#boss-${n}` : '')}>
 											<img class="hole" src={portrait(s.boss as { name: string; display?: number; kind?: string })} alt="" width="46" height="46" loading="lazy" />
 											<span class="label">{bossName(s.boss)}</span>
 											<span class="meta">
