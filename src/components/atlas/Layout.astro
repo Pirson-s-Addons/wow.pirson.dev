@@ -157,48 +157,80 @@ const nav: { key: Section; label: string; href: string }[] = [
 					true,
 				);
 			}
-			// copy buttons (command="--copy" commandfor=<the text>): the /way waypoints for the game chat
+			// copy menus (CopyMenu.astro): each item copies its format of the map point for the game chat
 			const timers = new WeakMap<Element, number>();
-			const report = (button: HTMLElement, ok: boolean) => {
-				const tip = button.nextElementSibling as HTMLElement;
-				clearTimeout(timers.get(button));
-				button.removeAttribute('data-copied');
-				button.removeAttribute('data-failed');
+			const report = (box: HTMLElement, ok: boolean) => {
+				const tip = box.querySelector<HTMLElement>(':scope > .tip')!;
+				const trigger = box.querySelector<HTMLElement>(':scope > button')!;
+				clearTimeout(timers.get(box));
+				trigger.removeAttribute('data-copied');
+				trigger.removeAttribute('data-failed');
 				tip.textContent = '';
-				void button.offsetWidth;
-				button.setAttribute(ok ? 'data-copied' : 'data-failed', '');
+				void trigger.offsetWidth;
+				trigger.setAttribute(ok ? 'data-copied' : 'data-failed', '');
 				requestAnimationFrame(() => (tip.textContent = ok ? document.body.dataset.copied! : document.body.dataset.copyFailed!));
-				timers.set(
-					button,
-					window.setTimeout(() => {
-						button.removeAttribute('data-copied');
-						button.removeAttribute('data-failed');
-						tip.textContent = '';
-					}, 2500),
-				);
+				timers.set(box, window.setTimeout(() => (trigger.removeAttribute('data-copied'), trigger.removeAttribute('data-failed'), (tip.textContent = '')), 2500));
 			};
-			const copy = async (button: HTMLElement, target: HTMLElement) => {
-				const text = target.innerText.trim();
-				if (!text) return;
-				try {
-					await navigator.clipboard.writeText(text);
-					report(button, true);
-				} catch {
-					report(button, false);
-				}
-			};
-			if ('CommandEvent' in window) {
-				document.addEventListener('command', (e) => {
-					const ev = e as Event & { command: string; source: HTMLElement };
-					if (ev.command === '--copy') copy(ev.source, e.target as HTMLElement);
-				}, true);
-			} else {
-				document.addEventListener('click', (e) => {
-					if (e.defaultPrevented) return;
-					const button = (e.target as Element).closest<HTMLElement>('button[command="--copy"]');
-					const target = button && document.getElementById(button.getAttribute('commandfor')!);
-					if (button && target) copy(button, target);
+			// without invoker commands, command="toggle-popover" does nothing: popovertarget does the same
+			if (!('CommandEvent' in window)) {
+				for (const b of document.querySelectorAll<HTMLButtonElement>('button[command="toggle-popover"]')) b.setAttribute('popovertarget', b.getAttribute('commandfor')!);
+			}
+			const menus = [...document.querySelectorAll<HTMLElement>('.copy-menu')];
+			const items = (menu: HTMLElement) => [...menu.querySelectorAll<HTMLButtonElement>('button[data-copy]')];
+			const keyboardOpen = new WeakSet<HTMLElement>();
+			for (const menu of menus) {
+				const box = menu.parentElement!;
+				const trigger = box.querySelector<HTMLButtonElement>(':scope > button')!;
+				menu.addEventListener('click', async (e) => {
+					const item = (e.target as Element).closest<HTMLButtonElement>('button[data-copy]');
+					if (!item) return;
+					let ok = true;
+					try {
+						await navigator.clipboard.writeText(item.dataset.copy!);
+					} catch {
+						ok = false;
+					}
+					trigger.focus();
+					menu.hidePopover();
+					report(box, ok);
 				});
+				// opening from the keyboard enters the menu; from the pointer it does not
+				trigger.addEventListener('keydown', (e) => {
+					if (e.key === 'Enter' || e.key === ' ') keyboardOpen.add(menu);
+					if (e.key === 'ArrowDown') {
+						e.preventDefault();
+						keyboardOpen.add(menu);
+						if (!menu.matches(':popover-open')) trigger.click();
+						else items(menu)[0]?.focus();
+					}
+				});
+				menu.addEventListener('toggle', (e) => {
+					const open = (e as ToggleEvent).newState === 'open';
+					trigger.ariaExpanded = String(open);
+					if (open && keyboardOpen.has(menu)) items(menu)[0]?.focus();
+					keyboardOpen.delete(menu);
+					// no anchor positioning: under the trigger, kept inside the screen
+					if (open && !CSS.supports('position-area: block-end')) {
+						const r = trigger.getBoundingClientRect();
+						const w = menu.offsetWidth;
+						Object.assign(menu.style, { position: 'fixed', inset: 'auto', margin: '0', top: `${r.bottom + 4}px`, left: `${Math.max(4, Math.min(r.left, innerWidth - w - 4))}px` });
+					}
+				});
+				// browsers without focusgroup: menu roles and arrow keys by script
+				if (!('focusgroup' in HTMLElement.prototype)) {
+					const group = menu.querySelector<HTMLElement>('[focusgroup]')!;
+					group.setAttribute('role', 'menu');
+					for (const b of items(menu)) b.setAttribute('role', 'menuitem');
+					group.addEventListener('keydown', (e) => {
+						if (!['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(e.key)) return;
+						const list = items(menu);
+						const i = list.indexOf(document.activeElement as HTMLButtonElement);
+						if (i < 0) return;
+						e.preventDefault();
+						const n = e.key === 'Home' ? 0 : e.key === 'End' ? list.length - 1 : (i + (e.key === 'ArrowUp' ? -1 : 1) + list.length) % list.length;
+						list[n].focus({ preventScroll: true });
+					});
+				}
 			}
 
 			// the tabs of a page: selection follows focus; panels hidden="until-found" stay searchable

@@ -1,0 +1,77 @@
+---
+// "Copy" menu of a map point, as Wowhead offers it: the coordinates, the game's own map pin (a /run line
+// for the client, no addon needed), TomTom's /way, and Dungeon Quest Atlas's own pin (/dqa way, with the
+// guide the player chose). "Copy all" gives the same for every point of the page, one per line.
+// Menu pattern: a command invoker toggles a popover="auto" holding a focusgroup="menu".
+import type { Lang } from '../../lib/atlas/i18n';
+
+export type Point = { label: string; mapID: number; x: number; y: number };
+interface Props {
+	lang: Lang;
+	id: string;
+	point: Point;
+	all?: Point[]; // every point of the page, for "Copy all"
+	button?: string; // a red button with this text (and icon) instead of the small one
+	icon?: string;
+}
+const { lang, id, point, all = [], button, icon } = Astro.props;
+const COPY: Record<Lang, [copy: string, all: string, coords: string, pin: string, tomtom: string, dqa: string]> = {
+	en: ['Copy', 'Copy all', 'Coordinates', 'In-game map pin', 'TomTom command', 'Dungeon Quest Atlas pin'],
+	es: ['Copiar', 'Copiar todo', 'Coordenadas', 'Marcador de mapa del juego', 'Comando de TomTom', 'Pin de Dungeon Quest Atlas'],
+	de: ['Kopieren', 'Alle kopieren', 'Koordinaten', 'Kartenmarkierung im Spiel', 'TomTom-Befehl', 'Dungeon-Quest-Atlas-Pin'],
+	fr: ['Copier', 'Tout copier', 'Coordonnées', 'Repère de carte en jeu', 'Commande TomTom', 'Repère Dungeon Quest Atlas'],
+	it: ['Copia', 'Copia tutto', 'Coordinate', 'Segnalino mappa del gioco', 'Comando TomTom', 'Segnalino di Dungeon Quest Atlas'],
+	pt: ['Copiar', 'Copiar tudo', 'Coordenadas', 'Marcador de mapa do jogo', 'Comando do TomTom', 'Marcador do Dungeon Quest Atlas'],
+	ru: ['Копировать', 'Копировать все', 'Координаты', 'Метка на карте игры', 'Команда TomTom', 'Метка Dungeon Quest Atlas'],
+	ko: ['복사', '모두 복사', '좌표', '게임 지도 표시', 'TomTom 명령어', 'Dungeon Quest Atlas 표시'],
+	zh: ['复制', '全部复制', '坐标', '游戏地图标记', 'TomTom 命令', 'Dungeon Quest Atlas 标记'],
+	tw: ['複製', '全部複製', '座標', '遊戲地圖標記', 'TomTom 指令', 'Dungeon Quest Atlas 標記'],
+};
+const t = COPY[lang];
+const f = (n: number) => n.toFixed(1);
+const formats = [
+	[t[2], (p: Point) => `${f(p.x)}, ${f(p.y)}`],
+	[t[3], (p: Point) => `/run C_Map.SetUserWaypoint(UiMapPoint.CreateFromCoordinates(${p.mapID}, ${(p.x / 100).toFixed(4)}, ${(p.y / 100).toFixed(4)})) C_SuperTrack.SetSuperTrackedUserWaypoint(true)`],
+	[t[4], (p: Point) => `/way #${p.mapID} ${f(p.x)} ${f(p.y)} ${p.label}`],
+	[t[5], (p: Point) => `/dqa way ${p.mapID} ${f(p.x)} ${f(p.y)} ${p.label}`],
+] as const;
+const many = all.length > 1;
+---
+
+<span class="copy">
+	{
+		button ? (
+			<button type="button" class="redbtn" id={`${id}-t`} commandfor={id} command="toggle-popover" aria-haspopup="menu" aria-expanded="false">
+				{icon && <img src={icon} alt="" width="16" height="16" />}
+				{button} ▾
+			</button>
+		) : (
+			<button type="button" class="copy-button" id={`${id}-t`} commandfor={id} command="toggle-popover" aria-haspopup="menu" aria-expanded="false" aria-label={`${t[0]}: ${point.label}`}>
+				<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3h9a2 2 0 0 1 2 2v12h-2V5H8V3Zm-3 4h9a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Zm0 2v11h9V9H5Z" /></svg>
+			</button>
+		)
+	}
+	<!-- spans, not divs: the menu also sits inside a paragraph (the "Where" lines) -->
+	<span id={id} popover="auto" class="copy-menu">
+		<span focusgroup="menu nomemory" aria-labelledby={`${id}-t`}>
+			<span role="group" aria-label={t[0]}>
+				<span class="menu-head" aria-hidden="true">{t[0]}</span>
+				{formats.map(([label, make]) => <button type="button" data-copy={make(point)}>{label}</button>)}
+			</span>
+			{
+				many && (
+					<>
+						<span class="sep" role="separator" />
+						<span role="group" aria-label={t[1]}>
+							<span class="menu-head" aria-hidden="true">{t[1]}</span>
+							{formats.map(([label, make]) => (
+								<button type="button" data-copy={all.map(make).join('\n')}>{label}</button>
+							))}
+						</span>
+					</>
+				)
+			}
+		</span>
+	</span>
+	<span class="tip" role="status"></span>
+</span>

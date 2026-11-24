@@ -57,16 +57,13 @@ export function tooltipHtml(lang: Lang, key: string) {
 export function place(lang: Lang, key: string) {
 	const p = addon.Places[key];
 	const [type, id] = key.split(':');
-	if (type === 'item') return { name: itemName(lang, id), href: href(lang, { kind: 'item', id: +id }), where: '', way: '' };
+	if (type === 'item') return { name: itemName(lang, id), href: href(lang, { kind: 'item', id: +id }), where: '', point: undefined };
 	const label = type === 'name' ? id : name(lang, key, p?.name);
 	const where = p?.inside ? '' : [zoneName(lang, key), p?.x != null && `${p.x}, ${p.y}`].filter(Boolean).join(' · ');
-	return { name: label, href: undefined, where, way: p && !p.inside ? way(p.mapID, p.x, p.y, label) : '' };
+	// a map point to copy for the game (CopyMenu): only places outside the dungeon have coordinates
+	const point = p && !p.inside && p.mapID && p.x != null && p.y != null ? { label, mapID: p.mapID, x: p.x, y: p.y } : undefined;
+	return { name: label, href: undefined, where, point };
 }
-
-// The game's waypoint command (TomTom and the client's /way): "/way #mapID x y Name"; the map id keeps
-// it right whatever the client's language
-export const way = (mapID: number | undefined, x: number | undefined, y: number | undefined, label: string) =>
-	mapID && x != null && y != null ? `/way #${mapID} ${x.toFixed(1)} ${y.toFixed(1)} ${label}` : '';
 
 export const quality = (lang: Lang, id: number) => tip(lang, `item:${id}`)?.q ?? tip('en', `item:${id}`)?.q ?? 1;
 export const itemIcon = (id: number) => tip('en', `item:${id}`)?.i;

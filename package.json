@@ -33,5 +33,8 @@
     "react-dom": "^19.3.1",
     "sharp": "^0.35.5",
     "starlight-blog": "^0.30.2"
+  },
+  "devDependencies": {
+    "wasmoon": "^1.16.0"
   }
 }

@@ -2141,3 +2141,94 @@ body.atlas {
 	height: 90px;
 	background-size: 100% 100%;
 }
+
+/* ---------- the copy menu of a map point (Wowhead's "Copy" menu) ---------- */
+.copy-menu {
+	min-width: 240px;
+	margin: 0;
+	padding: 6px;
+	color: #fff;
+	font: 13px var(--friz);
+	background: rgb(20 20 24 / 0.98);
+	border: 1px solid #4a4a55;
+	border-radius: 6px;
+	box-shadow: 0 10px 30px rgb(0 0 0 / 0.6);
+}
+@supports (position-area: block-end) {
+	.copy-menu {
+		inset: auto;
+		margin-top: 4px;
+		position-area: block-end span-inline-end;
+		position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
+	}
+}
+.copy-menu .menu-head {
+	display: block;
+	padding: 4px 8px 2px;
+	color: #fff;
+	font-size: 14px;
+}
+.copy-menu button {
+	display: block;
+	width: 100%;
+	padding: 5px 8px 5px 18px;
+	color: var(--gold);
+	font: 13px var(--friz);
+	text-align: left;
+	background: none;
+	border: 0;
+	border-radius: 3px;
+	cursor: pointer;
+}
+.copy-menu button:hover,
+.copy-menu button:focus-visible {
+	color: #fff;
+	background: rgb(255 209 0 / 0.14);
+	outline: none;
+}
+.copy-menu [focusgroup],
+.copy-menu [role='group'] {
+	display: block;
+}
+.copy-menu .sep {
+	display: block;
+	margin: 6px 0;
+	border-top: 1px solid #3a3a44;
+}
+.btns .copy {
+	display: flex;
+}
+.btns .copy .redbtn {
+	flex: 1;
+}
+.page-head .copy {
+	margin-left: auto;
+}
+.page-head .copy .redbtn {
+	height: 30px;
+	padding: 0 14px;
+	font-size: 13px;
+}
+.where .copy {
+	margin-left: 6px;
+	vertical-align: middle;
+}
+@media (prefers-reduced-motion: no-preference) {
+	.copy-menu {
+		opacity: 0;
+		transition: opacity, display, overlay;
+		transition-duration: 0.12s;
+		transition-behavior: allow-discrete;
+	}
+	.copy-menu:is(:popover-open, .\:popover-open) {
+		opacity: 1;
+	}
+	@starting-style {
+		.copy-menu:is(:popover-open, .\:popover-open) {
+			opacity: 0;
+		}
+	}
+}
+.copy-menu:is(:popover-open, .\:popover-open) {
+	display: block;
+}

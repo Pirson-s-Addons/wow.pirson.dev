@@ -5,7 +5,7 @@ import { T, wow, className, type Lang } from '../../lib/atlas/i18n';
 import { addon, questName, href, chainOf, L } from '../../lib/atlas/data';
 import { questText, place, money } from '../../lib/atlas/view';
 import Reward from './Reward.astro';
-import Way from './Way.astro';
+import CopyMenu from './CopyMenu.astro';
 
 interface Props {
 	lang: Lang;
@@ -17,8 +17,10 @@ const { objective, needs } = questText(lang, id);
 const chain = chainOf(id);
 const count = (i: number) => q.counts?.[i];
 const where = (keys: string[] | undefined) => (keys ?? []).map((k) => place(lang, k));
-const startWay = where(q.starts)[0]?.way;
-const endWay = where(q.ends)[0]?.way;
+const startPoint = where(q.starts)[0]?.point;
+const endPoint = where(q.ends)[0]?.point;
+// every point of the sheet, for "Copy all"
+const points = [...where(q.starts), ...where(q.ends)].flatMap((p) => (p.point ? [p.point] : []));
 const faction = q.faction === 'Alliance' ? 'ALLIANCE' : q.faction === 'Horde' ? 'HORDE' : null;
 // Wowhead puts the language first: /es/forever/quest=…; Simplified Chinese is "cn"
 const wowhead = `https://www.wowhead.com/${lang === 'en' ? '' : `${lang === 'zh' ? 'cn' : lang}/`}forever/quest=${id}`;
@@ -100,7 +102,7 @@ const wowhead = `https://www.wowhead.com/${lang === 'en' ? '' : `${lang === 'zh'
 							<p>
 								{wow(L(lang, k))} {p.href ? <a href={p.href}>{p.name}</a> : <strong>{p.name}</strong>}
 								{p.where && ` (${p.where})`}
-								{p.way && <Way id={`way-${id}-${tag}${i}`} text={p.way} label={`${L(lang, k === 'STARTS' ? 'MARK_START' : 'MARK_END')}: ${p.name}`} />}
+								{p.point && <CopyMenu lang={lang} id={`way-${id}-${tag}${i}`} point={p.point} all={points} />}
 							</p>
 						)),
 					)}
@@ -110,8 +112,8 @@ const wowhead = `https://www.wowhead.com/${lang === 'en' ? '' : `${lang === 'zh'
 	}
 
 	<div class="btns">
-		{startWay && <Way id={`way-${id}-s0`} text={startWay} label={L(lang, 'MARK_START')} button={L(lang, 'MARK_START')} icon="/atlas/ui/quest-available.webp" />}
-		{endWay && <Way id={`way-${id}-e0`} text={endWay} label={L(lang, 'MARK_END')} button={L(lang, 'MARK_END')} icon="/atlas/ui/quest-active.webp" />}
+		{startPoint && <CopyMenu lang={lang} id={`mark-${id}-s`} point={startPoint} all={points} button={L(lang, 'MARK_START')} icon="/atlas/ui/quest-available.webp" />}
+		{endPoint && <CopyMenu lang={lang} id={`mark-${id}-e`} point={endPoint} all={points} button={L(lang, 'MARK_END')} icon="/atlas/ui/quest-active.webp" />}
 		<a class="redbtn" href={wowhead} rel="noopener"><img src="https://wow.zamimg.com/images/wow/icons/small/inv_misc_note_01.jpg" alt="" width="16" height="16" />{L(lang, 'WOWHEAD')}</a>
 		{chain && <a class="redbtn" href={href(lang, { kind: 'chain', steps: chain })}>{T[lang].wholeChain}</a>}
 	</div>
