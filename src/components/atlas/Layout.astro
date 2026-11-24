@@ -239,6 +239,10 @@ const nav: { key: Section; label: string; href: string }[] = [
 				}
 			}
 
+			// one tooltip per item and page, written where the item first shows: often in a tab or boss panel that is
+			// hidden, and a popover inside a hidden subtree never shows. Out of the panels, every link can show it.
+			for (const tip of document.querySelectorAll('.gtt[popover]')) document.body.append(tip);
+
 			// the tabs of a page: selection follows focus; panels hidden="until-found" stay searchable
 			for (const tabs of document.querySelectorAll<HTMLElement>('[data-tabs]')) {
 				const buttons = [...tabs.querySelectorAll<HTMLButtonElement>('button')];
