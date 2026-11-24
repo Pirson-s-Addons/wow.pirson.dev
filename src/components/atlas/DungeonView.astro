@@ -1,0 +1,98 @@
+---
+// A dungeon: its quests, its bosses with their loot, and its map floors with the bosses pinned.
+import { T, fmt, wow, type Lang } from '../../lib/atlas/i18n';
+import { addon, dungeonName, name, L, lootId, lootChance, type Boss } from '../../lib/atlas/data';
+import { art } from '../../lib/atlas/view';
+import QuestRow from './QuestRow.astro';
+import ItemLink from './ItemLink.astro';
+import Faction from './Faction.astro';
+
+interface Props {
+	lang: Lang;
+	d: (typeof addon.Dungeons)[number];
+}
+const { lang, d } = Astro.props;
+const t = T[lang];
+const bosses = addon.Bosses[d.key] ?? [];
+const floors = addon.Maps[d.key] ?? [];
+const quests = [...d.quests].sort((a, b) => (addon.Quests[a]?.level ?? 0) - (addon.Quests[b]?.level ?? 0));
+const bossName = (b: Boss) => {
+	if (b.kind === 'trash') return L(lang, 'TRASH');
+	if (b.kind === 'recipes') return L(lang, 'RECIPES');
+	return b.npcID ? name(lang, `npc:${b.npcID}`, b.name) : b.name;
+};
+---
+
+<section class="atlas-hero dungeon-hero">
+	<img src={art(d.key)} alt="" width="512" height="256" fetchpriority="high" />
+	<div>
+		<h1>{dungeonName(lang, d)}</h1>
+		<p class="meta">
+			{wow(L(lang, 'LEVEL'))} <strong>{d.minLevel}-{d.maxLevel}</strong>
+			{' · '}{quests.length} {L(lang, 'TAB_QUESTS')}
+			{' · '}{wow(L(lang, 'BOSS_COUNT'), bosses.filter((b) => !b.kind || b.kind === 'rare').length)}
+			<Faction lang={lang} faction={d.faction} />
+		</p>
+		<nav class="jump" aria-label={dungeonName(lang, d)}>
+			<a href="#quests">{L(lang, 'TAB_QUESTS')}</a>
+			<a href="#bosses">{L(lang, 'TAB_BOSSES')}</a>
+			{floors.length > 0 && <a href="#map">{L(lang, 'MAP')}</a>}
+		</nav>
+	</div>
+</section>
+
+<section id="quests" class="page">
+	<h2>{L(lang, 'TAB_QUESTS')}</h2>
+	<ul class="quest-list">
+		{quests.map((id) => <QuestRow lang={lang} id={id} />)}
+	</ul>
+</section>
+
+<section id="bosses" class="page">
+	<h2>{L(lang, 'TAB_BOSSES')}</h2>
+	{
+		bosses.map((b, i) => (
+			<article class="boss" id={`boss-${i + 1}`}>
+				<h3>
+					{!b.kind && <span class="pin-n">{i + 1}</span>}
+					{bossName(b)}
+					{b.level && <small>{wow(L(lang, 'LEVEL'))} {b.level}</small>}
+					{b.kind === 'rare' && <small class="tag">{L(lang, 'RARE')}</small>}
+					<Faction lang={lang} faction={b.faction} />
+				</h3>
+				<ul class="loot">
+					{(b.loot ?? []).map((e) => {
+						const c = lootChance(e);
+						return (
+							<li>
+								<ItemLink lang={lang} id={lootId(e)} note={c ? `${c}%` : undefined} />
+							</li>
+						);
+					})}
+				</ul>
+			</article>
+		))
+	}
+</section>
+
+{
+	floors.length > 0 && (
+		<section id="map" class="page">
+			<h2>{L(lang, 'MAP')}</h2>
+			{floors.map((f, n) => (
+				<figure class="floor">
+					<div class="floor-map">
+						<img src={`/atlas/maps/${f.id}.webp`} alt={`${dungeonName(lang, d)}: ${wow(L(lang, 'MAP_FLOOR_SHORT'), n + 1)}`} width="1002" height="668" loading="lazy" />
+						{(f.pins ?? []).map(([i, x, y]) => (
+							<a class="pin" href={`#boss-${i}`} style={`left:${x * 100}%;top:${y * 100}%`} title={bosses[i - 1] && bossName(bosses[i - 1])}>
+								{i}
+							</a>
+						))}
+					</div>
+					{floors.length > 1 && <figcaption>{wow(L(lang, 'MAP_FLOOR_SHORT'), n + 1)}</figcaption>}
+				</figure>
+			))}
+		</section>
+	)
+}
+<p class="source">{fmt('Dungeon Quest Atlas %1', addon.version)}</p>

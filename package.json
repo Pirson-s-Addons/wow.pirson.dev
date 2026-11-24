@@ -10,7 +10,11 @@
     "astro": "astro",
     "sync": "node scripts/sync-data.mjs",
     "images": "node scripts/localize-images.mjs",
-    "seed": "node scripts/seed-addons.mjs"
+    "seed": "node scripts/seed-addons.mjs",
+    "atlas:extract": "node scripts/atlas/extract.mjs",
+    "atlas:names": "node scripts/atlas/names.mjs",
+    "atlas:maps": "python3 -I scripts/atlas/maps.py",
+    "atlas:check": "node --experimental-strip-types scripts/atlas/check.ts"
   },
   "dependencies": {
     "@astrojs/react": "^7.1.9",

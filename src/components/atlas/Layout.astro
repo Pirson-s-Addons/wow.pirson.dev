@@ -1,0 +1,113 @@
+---
+// The Atlas pages' own frame (not Starlight): the addon's journal look, the language switcher with each
+// page's URL in every language, and the CurseForge + Discord call to action at the end of every page.
+import '../../styles/custom.css';
+import '../../styles/atlas.css';
+import { LANGS, LANG, T, type Lang } from '../../lib/atlas/i18n';
+import { url, type Page } from '../../lib/atlas/data';
+import addons from '../../data/addons.json';
+
+interface Props {
+	lang: Lang;
+	page: Page;
+	title: string;
+	description: string;
+	image?: string;
+	crumbs?: { label: string; href?: string }[];
+}
+const { lang, page, title, description, image, crumbs = [] } = Astro.props;
+const t = T[lang];
+const site = 'https://wow.pirson.dev';
+const alternates = LANGS.flatMap((l) => {
+	const u = url(l, page);
+	return u ? [{ lang: l, href: u }] : [];
+});
+const canonical = site + url(lang, page);
+const og = image ?? `${site}/og/dungeon-quest-atlas-${lang === 'es' ? 'es' : 'en'}.jpg`;
+const curse = addons.find((a) => a.id === 'dq')?.url ?? 'https://www.curseforge.com/members/pirson/projects';
+const home = url(lang, { kind: 'home' })!;
+---
+
+<!doctype html>
+<html lang={LANG[lang].html} dir="ltr">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<link rel="canonical" href={canonical} />
+		{alternates.map((a) => <link rel="alternate" hreflang={LANG[a.lang].html} href={site + a.href} />)}
+		{alternates.some((a) => a.lang === 'en') && <link rel="alternate" hreflang="x-default" href={site + url('en', page)} />}
+		<link rel="icon" href="/favicon.png" />
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="Pirson's Addons" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:locale" content={LANG[lang].og} />
+		<meta property="og:image" content={og} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<script defer src="/_vercel/insights/script.js"></script>
+	</head>
+	<body class="atlas">
+		<header class="atlas-top">
+			<a class="atlas-brand" href={lang === 'es' ? '/es/' : '/'}>
+				<img src="/favicon.png" alt="" width="28" height="28" />
+				<span>Pirson's Addons</span>
+			</a>
+			<a class="atlas-home" href={home}>{t.atlas}</a>
+			<details class="atlas-langs">
+				<summary aria-label={t.language}>{LANG[lang].name}</summary>
+				<ul>
+					{
+						alternates.map((a) => (
+							<li>
+								<a href={a.href} hreflang={LANG[a.lang].html} lang={LANG[a.lang].html} aria-current={a.lang === lang ? 'page' : undefined}>
+									{LANG[a.lang].name}
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</details>
+		</header>
+
+		{
+			crumbs.length > 0 && (
+				<nav class="atlas-crumbs" aria-label="Breadcrumb">
+					<ol>
+						<li>
+							<a href={home}>{t.atlas}</a>
+						</li>
+						{crumbs.map((c) => (
+							<li>{c.href ? <a href={c.href}>{c.label}</a> : <span aria-current="page">{c.label}</span>}</li>
+						))}
+					</ol>
+				</nav>
+			)
+		}
+
+		<main class="atlas-main">
+			<slot />
+		</main>
+
+		<aside class="atlas-cta">
+			<img src="/logos/dq.webp" alt="" width="72" height="72" loading="lazy" />
+			<div>
+				<h2>{t.ctaTitle}</h2>
+				<p>{t.ctaText}</p>
+			</div>
+			<div class="atlas-cta-actions">
+				<a class="btn btn-gold" href={curse} rel="noopener">{t.ctaCurse}</a>
+				<a class="btn btn-glass" href="https://discord.gg/BM3hXNZXTh" rel="noopener">{t.ctaDiscord}</a>
+			</div>
+		</aside>
+
+		<footer class="atlas-foot">
+			<p>
+				Dungeon Quest Atlas · World of Warcraft® is a trademark of Blizzard Entertainment, Inc. Item, quest and NPC names: Blizzard
+				Entertainment, via Wowhead.
+			</p>
+		</footer>
+	</body>
+</html>

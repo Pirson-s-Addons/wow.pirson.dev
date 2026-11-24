@@ -1,0 +1,77 @@
+---
+// An item: its tooltip, the bosses that drop it (with chance), the quests that give it or need it.
+import { T, type Lang } from '../../lib/atlas/i18n';
+import { addon, itemName, itemDrops, itemRewards, itemNeeded, dungeonName, href, name, questName, L } from '../../lib/atlas/data';
+import { icon, itemIcon, quality, tooltipHtml } from '../../lib/atlas/view';
+
+interface Props {
+	lang: Lang;
+	id: number;
+}
+const { lang, id } = Astro.props;
+const t = T[lang];
+const drops = itemDrops.get(id) ?? [];
+const rewards = [...new Set(itemRewards.get(id) ?? [])];
+const needed = [...new Set(itemNeeded.get(id) ?? [])];
+const bossName = (b: (typeof drops)[number]['boss']) =>
+	b.kind === 'trash' ? L(lang, 'TRASH') : b.npcID ? name(lang, `npc:${b.npcID}`, b.name) : b.name;
+const quests = (list: number[]) => list.map((q) => ({ id: q, level: addon.Quests[q]?.level }));
+---
+
+<section class="atlas-hero item-hero">
+	<img src={icon(itemIcon(id), 'large')} alt="" width="56" height="56" fetchpriority="high" />
+	<h1 class={`q${quality(lang, id)}`}>{itemName(lang, id)}</h1>
+</section>
+
+<div class="page">
+	<div class="wh-tooltip" set:html={tooltipHtml(lang, `item:${id}`)} />
+
+	{
+		drops.length > 0 && (
+			<section>
+				<h2>{t.droppedBy}</h2>
+				<table class="drops">
+					<thead>
+						<tr>
+							<th scope="col">{L(lang, 'TAB_BOSSES')}</th>
+							<th scope="col">{t.inDungeon}</th>
+							<th scope="col">{t.chance}</th>
+						</tr>
+					</thead>
+					<tbody>
+						{drops.map((s) => (
+							<tr>
+								<td>{bossName(s.boss)}</td>
+								<td>
+									<a href={href(lang, { kind: 'dungeon', d: s.dungeon })}>{dungeonName(lang, s.dungeon)}</a>
+								</td>
+								<td>{s.chance ? `${s.chance}%` : '—'}</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+			</section>
+		)
+	}
+
+	{
+		[
+			[t.rewardOf, quests(rewards)],
+			[t.neededFor, quests(needed)],
+		].map(([title, list]) =>
+			(list as ReturnType<typeof quests>).length ? (
+				<section>
+					<h2>{title as string}</h2>
+					<ul class="quest-list">
+						{(list as ReturnType<typeof quests>).map((q) => (
+							<li class="quest-row">
+								<span class="lvl">{q.level ?? ''}</span>
+								<a href={href(lang, { kind: 'quest', id: q.id })}>{questName(lang, q.id)}</a>
+							</li>
+						))}
+					</ul>
+				</section>
+			) : null,
+		)
+	}
+</div>

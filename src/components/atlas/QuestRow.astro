@@ -1,0 +1,23 @@
+---
+// One quest in a list: level, name and link, faction, and its step in a chain.
+import type { Lang } from '../../lib/atlas/i18n';
+import { addon, href, questName, L } from '../../lib/atlas/data';
+import { wow } from '../../lib/atlas/i18n';
+import Faction from './Faction.astro';
+
+interface Props {
+	lang: Lang;
+	id: number;
+}
+const { lang, id } = Astro.props;
+const q = addon.Quests[id] ?? {};
+const chain = Array.isArray(q.chain) ? q.chain : null;
+---
+
+<li class="quest-row">
+	<span class="lvl">{q.level ?? ''}</span>
+	<a href={href(lang, { kind: 'quest', id })}>{questName(lang, id)}</a>
+	{q.minLevel && <small>{wow(L(lang, 'REQUIRES_LEVEL'), q.minLevel)}</small>}
+	{chain && <small class="chain">{wow(L(lang, 'CHAIN_SHORT'), chain.indexOf(id) + 1, chain.length)}</small>}
+	<Faction lang={lang} faction={q.faction} />
+</li>

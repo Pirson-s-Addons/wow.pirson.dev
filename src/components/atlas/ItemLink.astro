@@ -1,0 +1,19 @@
+---
+// An item: its icon, its name in its quality colour, a link to its page and an optional note (count, chance).
+import type { Lang } from '../../lib/atlas/i18n';
+import { href, itemName } from '../../lib/atlas/data';
+import { icon, itemIcon, quality } from '../../lib/atlas/view';
+
+interface Props {
+	lang: Lang;
+	id: number;
+	note?: string;
+}
+const { lang, id, note } = Astro.props;
+---
+
+<a class="item" href={href(lang, { kind: 'item', id })}>
+	<img src={icon(itemIcon(id))} alt="" width="36" height="36" loading="lazy" />
+	<span class={`q${quality(lang, id)}`}>{itemName(lang, id)}</span>
+	{note && <small>{note}</small>}
+</a>

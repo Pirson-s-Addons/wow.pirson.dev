@@ -1,0 +1,56 @@
+---
+// Every Atlas page in every language: /dungeons/…, /es/mazmorras/…, /de/dungeons/… (src/lib/atlas/data.ts
+// builds the paths). Starlight keeps the other URLs: its pages and these never share a path.
+import assert from 'node:assert/strict';
+import { T, fmt, type Lang } from '../lib/atlas/i18n';
+import { pages, dungeonName, questName, itemName, href, addon, type Page } from '../lib/atlas/data';
+import Layout from '../components/atlas/Layout.astro';
+import Home from '../components/atlas/Home.astro';
+import DungeonView from '../components/atlas/DungeonView.astro';
+import QuestView from '../components/atlas/QuestView.astro';
+import ItemView from '../components/atlas/ItemView.astro';
+import ChainView from '../components/atlas/ChainView.astro';
+
+export function getStaticPaths() {
+	const list = pages();
+	const seen = new Set<string>();
+	const dupes = list.filter((p) => seen.size === seen.add(p.path).size).map((p) => p.path);
+	assert.deepEqual(dupes, [], 'two Atlas pages share a URL');
+	return list.map(({ lang, path, page }) => ({ params: { atlas: path }, props: { lang, page } }));
+}
+
+const { lang, page } = Astro.props as { lang: Lang; page: Page };
+const t = T[lang];
+const head = (() => {
+	switch (page.kind) {
+		case 'home':
+			return { title: t.homeTitle, description: t.homeDesc, crumbs: [] };
+		case 'dungeon': {
+			const n = dungeonName(lang, page.d);
+			const lv = `${page.d.minLevel}-${page.d.maxLevel}`;
+			const bosses = (addon.Bosses[page.d.key] ?? []).filter((b) => !b.kind || b.kind === 'rare').length;
+			return { title: fmt(t.dungeonTitle, n, lv), description: fmt(t.dungeonDesc, page.d.quests.length, bosses, n, lv), crumbs: [{ label: n }] };
+		}
+		case 'quest': {
+			const n = questName(lang, page.id);
+			return { title: fmt(t.questTitle, n), description: fmt(t.questDesc, n, addon.Quests[page.id]?.level ?? '?'), crumbs: [{ label: n }] };
+		}
+		case 'item': {
+			const n = itemName(lang, page.id);
+			return { title: fmt(t.itemTitle, n), description: fmt(t.itemDesc, n), crumbs: [{ label: n }] };
+		}
+		case 'chain': {
+			const n = questName(lang, page.steps.at(-1)!);
+			return { title: fmt(t.chainTitle, n), description: fmt(t.chainDesc, n, page.steps.length), crumbs: [{ label: n }] };
+		}
+	}
+})();
+---
+
+<Layout lang={lang} page={page} title={head.title} description={head.description} crumbs={head.crumbs}>
+	{page.kind === 'home' && <Home lang={lang} />}
+	{page.kind === 'dungeon' && <DungeonView lang={lang} d={page.d} />}
+	{page.kind === 'quest' && <QuestView lang={lang} id={page.id} />}
+	{page.kind === 'item' && <ItemView lang={lang} id={page.id} />}
+	{page.kind === 'chain' && <ChainView lang={lang} steps={page.steps} />}
+</Layout>

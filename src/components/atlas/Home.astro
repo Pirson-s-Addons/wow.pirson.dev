@@ -1,0 +1,49 @@
+---
+// Atlas home: every dungeon, the new Forever ones first, by level.
+import { T, fmt, wow, type Lang } from '../../lib/atlas/i18n';
+import { addon, dungeonName, href, L } from '../../lib/atlas/data';
+import { art } from '../../lib/atlas/view';
+
+interface Props {
+	lang: Lang;
+}
+const { lang } = Astro.props;
+const t = T[lang];
+const byLevel = [...addon.Dungeons].sort((a, b) => a.minLevel - b.minLevel || a.maxLevel - b.maxLevel);
+const groups = [
+	{ title: t.newDungeons, list: byLevel.filter((d) => d.isForever) },
+	{ title: t.classicDungeons, list: byLevel.filter((d) => !d.isForever) },
+];
+---
+
+<section class="atlas-hero">
+	<h1>{t.homeTitle}</h1>
+	<p>{t.homeLead}</p>
+</section>
+{
+	groups.map((g, gi) => (
+		<section class="atlas-section">
+			<h2>{g.title}</h2>
+			<ul class="dungeon-grid">
+				{g.list.map((d, i) => (
+					<li>
+						<a class="dungeon-card" href={href(lang, { kind: 'dungeon', d })}>
+							<img
+								src={art(d.key)}
+								alt=""
+								width="512"
+								height="256"
+								loading={gi === 0 && i < 4 ? undefined : 'lazy'}
+								fetchpriority={gi === 0 && i === 0 ? 'high' : undefined}
+							/>
+							<span class="name">{dungeonName(lang, d)}</span>
+							<span class="meta">
+								{wow(L(lang, 'LEVEL'))} {d.minLevel}-{d.maxLevel} · {fmt('%1', d.quests.length)} {L(lang, 'TAB_QUESTS')}
+							</span>
+						</a>
+					</li>
+				))}
+			</ul>
+		</section>
+	))
+}
