@@ -671,9 +671,12 @@ body.atlas {
 	content: '';
 	position: absolute;
 	inset: 0;
-	background: url('/atlas/ui/ej-dungeon-button-highlight.webp') 0 0 / 100% 100%;
+	/* the Journal's blue rim, cut in nine: it stays a rim at any card size instead of washing the art */
+	border: 14px solid transparent;
+	border-image: url('/atlas/ui/ej-dungeon-button-highlight.webp') 16 / 14px stretch;
 	mix-blend-mode: plus-lighter;
 	opacity: 0;
+	pointer-events: none;
 }
 .card:hover::after,
 .card:focus-visible::after {
@@ -753,10 +756,15 @@ body.atlas {
 :is(a, button).boss-row:hover::after {
 	content: '';
 	position: absolute;
-	inset: 0;
-	background: url('/atlas/ui/ej-boss-button-highlight.webp') 0 0 / 100% 100%;
+	/* over the whole button, cap included (the button's 72 px cap and 14 px end are its border),
+	   cut in nine like the button so the glow follows its round cap instead of stretching */
+	inset: 0 -14px 0 -72px;
+	border-style: solid;
+	border-width: 0 14px 0 72px;
+	border-image: url('/atlas/ui/ej-boss-button-highlight.webp') 0 14 0 72 fill / 0 14px 0 72px stretch;
 	mix-blend-mode: plus-lighter;
 	opacity: 0.8;
+	pointer-events: none;
 }
 .boss-row .creature {
 	position: absolute;
@@ -2335,40 +2343,6 @@ body.atlas {
 	/* every panel in the same cell: the hidden ones take no room */
 	grid-area: 1 / 2;
 }
-.boss-head {
-	display: flex;
-	align-items: center;
-	gap: 18px;
-	margin: 0 0 14px;
-	padding: 0 0 14px;
-	border-bottom: 1px solid #3a2c18;
-}
-.boss-shot {
-	flex: none;
-	width: 160px;
-	height: 160px;
-	object-fit: contain;
-	background: radial-gradient(circle at 50% 60%, #3a2c1c, #0b0907 72%);
-	border: 1px solid #5a4424;
-	border-radius: 6px;
-	box-shadow: inset 0 0 0 1px #000, 0 6px 18px rgb(0 0 0 / 0.5);
-}
-.boss-shot.icon {
-	padding: 48px;
-	box-sizing: border-box;
-}
-.boss-head h3 {
-	margin: 0;
-	color: var(--gold);
-	font: 28px var(--morpheus);
-	font-variant-caps: small-caps;
-	text-shadow: 1px 1px 0 #000;
-}
-.boss-head p {
-	margin: 6px 0 0;
-	color: #b3a68d;
-	font: 14px var(--friz);
-}
 .loot-cols {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
@@ -2388,22 +2362,94 @@ body.atlas {
 		overflow-x: auto;
 		padding-bottom: 6px;
 	}
-	.boss-shot {
-		width: 110px;
-		height: 110px;
-	}
-	.boss-head h3 {
-		font-size: 22px;
-	}
-}
-/* the item's name and type a clear step away from the icon frame */
-.loot-row .nm,
-.loot-row .ty,
-.loot-row .from {
-	left: 58px;
 }
 /* the model thumbnail is the whole body: show its head and shoulders, as the game's portrait does
    (browsers without object-view-box keep the whole body) */
 .boss-row .hole.model {
 	object-view-box: inset(4% 25% 46% 25%);
+}
+/* the hole of the Journal's boss button is a 56 px circle at (7, 8), cut flat by the rim at y 50:
+   the portrait fills exactly that (padding-box coordinates: the 72 px left border is the cap) */
+.boss-row .hole {
+	left: -65px;
+	top: 8px;
+	width: 56px;
+	height: 56px;
+	clip-path: inset(0 0 14px 0);
+}
+/* item text inside the name plate of the loot frame, not on its edge */
+.loot-row .nm,
+.loot-row .ty,
+.loot-row .from {
+	left: 66px;
+}
+/* the chosen boss: a stage over the dungeon's art, the model turning in it, its name at the foot */
+.boss-stage {
+	position: relative;
+	height: 440px;
+	overflow: hidden;
+	background:
+		radial-gradient(ellipse at 50% 65%, rgb(0 0 0 / 0.1), rgb(0 0 0 / 0.8) 75%),
+		var(--bg) center / cover no-repeat,
+		#0b0907;
+	border: 1px solid #5a4424;
+	border-radius: 6px;
+	box-shadow: inset 0 0 0 1px #000, inset 0 0 90px rgb(0 0 0 / 0.75), 0 8px 24px rgb(0 0 0 / 0.5);
+}
+.boss-stage model-viewer {
+	position: absolute;
+	inset: 0 0 56px;
+	width: 100%;
+	height: auto;
+	--poster-color: transparent;
+}
+.boss-stage .shot {
+	position: absolute;
+	left: 50%;
+	top: 44%;
+	translate: -50% -50%;
+	width: 300px;
+	height: 300px;
+	object-fit: contain;
+}
+.boss-stage .shot.icon {
+	width: 96px;
+	height: 96px;
+	border: 2px solid #5a4424;
+	border-radius: 6px;
+}
+.boss-title {
+	position: absolute;
+	inset: auto 0 0;
+	padding: 48px 22px 16px;
+	background: linear-gradient(transparent, rgb(0 0 0 / 0.88));
+	pointer-events: none;
+}
+.boss-title h3 {
+	margin: 0;
+	color: var(--gold);
+	font: 30px var(--morpheus);
+	font-variant-caps: small-caps;
+	text-shadow: 1px 1px 0 #000, 0 0 12px #000;
+}
+.boss-title p {
+	margin: 4px 0 0;
+	color: #d8ccb5;
+	font: 14px var(--friz);
+	text-shadow: 1px 1px 0 #000;
+}
+.boss-detail .loot-cols {
+	margin-top: 14px;
+}
+@media (max-width: 900px) {
+	.boss-stage {
+		height: 340px;
+	}
+	.boss-stage .shot {
+		width: 220px;
+		height: 220px;
+	}
+	.boss-title h3 {
+		font-size: 24px;
+	}
 }

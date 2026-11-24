@@ -4,7 +4,7 @@
 // (hidden="until-found"), so its loot is indexed and found by the browser's find; #boss-N opens it.
 import { wow, type Lang } from '../../lib/atlas/i18n';
 import { L, name, lootId, lootChance, type Boss } from '../../lib/atlas/data';
-import { portrait } from '../../lib/atlas/view';
+import { portrait, model3d } from '../../lib/atlas/view';
 import BossRow from './BossRow.astro';
 import LootRow from './LootRow.astro';
 
@@ -12,14 +12,17 @@ interface Props {
 	lang: Lang;
 	bosses: (Boss & { display?: number })[];
 	label: string; // the list's accessible name
+	bg: string; // the dungeon's art, behind the model
 	meta?: (i: number) => string; // the line under a boss name (default: level, rare, items)
 }
-const { lang, bosses, label, meta } = Astro.props;
+const { lang, bosses, label, bg, meta } = Astro.props;
 const bossName = (b: Boss) => (b.kind === 'trash' ? L(lang, 'TRASH') : b.kind === 'recipes' ? L(lang, 'RECIPES') : b.npcID ? name(lang, `npc:${b.npcID}`, b.name) : b.name);
 const info = (b: Boss, i: number) =>
 	meta?.(i) ?? [b.level && `${wow(L(lang, 'LEVEL'))} ${b.level}`, b.kind === 'rare' && L(lang, 'RARE'), b.loot?.length && wow(L(lang, 'ITEMS'), b.loot.length)].filter(Boolean).join('  ·  ');
 ---
 
+{/* the 3D viewer only where a boss has a model; panels load theirs when shown (loading="lazy") */}
+{bosses.some((b) => model3d(b)) && <script is:inline type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@4.0.0/dist/model-viewer.min.js" />}
 <div class="bosses">
 	<div class="boss-list" data-tabs="bosses" focusgroup="tablist nomemory" aria-label={label}>
 		{bosses.map((b, i) => <BossRow lang={lang} boss={b} index={i + 1} meta={info(b, i)} tab={i === 0 ? 'selected' : 'tab'} />)}
@@ -27,13 +30,17 @@ const info = (b: Boss, i: number) =>
 	{
 		bosses.map((b, i) => (
 			<section class="boss-detail" id={`boss-${i + 1}`} data-tab-of="bosses" data-tab={String(i + 1)} role="tabpanel" aria-labelledby={`boss-tab-${i + 1}`} hidden={i ? 'until-found' : undefined}>
-				<header class="boss-head">
-					<img class:list={['boss-shot', !b.display && 'icon']} src={portrait(b)} alt="" width="300" height="300" loading="lazy" />
-					<div>
+				<div class="boss-stage" style={`--bg: url('${bg}')`}>
+					{model3d(b) ? (
+						<model-viewer src={model3d(b)} poster={portrait(b)} alt={bossName(b)} loading="lazy" camera-controls touch-action="pan-y" auto-rotate rotation-per-second="18deg" interaction-prompt="none" shadow-intensity="1" exposure="1.1" />
+					) : (
+						<img class:list={['shot', !b.display && 'icon']} src={portrait(b)} alt="" width="300" height="300" loading="lazy" />
+					)}
+					<div class="boss-title">
 						<h3>{bossName(b)}</h3>
 						<p>{info(b, i)}</p>
 					</div>
-				</header>
+				</div>
 				{!!b.loot?.length && (
 					<ul class="loot loot-cols">
 						{b.loot.map((e) => (

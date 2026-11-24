@@ -102,6 +102,11 @@ export const portrait = (b: { name: string; display?: number; kind?: string }) =
 	return icon(i ?? 'inv_misc_questionmark', 'large');
 };
 
+// The boss's model in 3D (scripts/atlas/models.py), when it was converted; humanoids are a character model
+const kinds: Record<string, string> = pub('../src/data/atlas/models.json') ? JSON.parse(readFileSync(join(process.cwd(), 'src/data/atlas/models.json'), 'utf8')) : {};
+export const humanoid = (b: { display?: number }) => kinds[b.display ?? 0] === 'humanoid';
+export const model3d = (b: { display?: number }) => (b.display && pub(`atlas/models/npc-${b.display}.glb`) ? `/atlas/models/npc-${b.display}.glb` : undefined);
+
 // The slot and type line of an item ("Two-Hand, Axe"), from its tooltip
 export function itemType(lang: Lang, id: number) {
 	const t = tip(lang, `item:${id}`)?.t ?? tip('en', `item:${id}`)?.t ?? '';
