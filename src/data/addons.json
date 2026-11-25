@@ -51,7 +51,7 @@
 				"Legado (WoD a Shadowlands)"
 			]
 		],
-		"downloads": 80641,
+		"downloads": 81366,
 		"version": "2.17"
 	},
 	{
@@ -78,7 +78,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 64867,
+		"downloads": 65897,
 		"version": "3.13"
 	},
 	{
@@ -105,7 +105,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 50484,
+		"downloads": 51659,
 		"version": "1.06"
 	},
 	{
@@ -132,7 +132,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 32871,
+		"downloads": 33997,
 		"version": "1.11"
 	},
 	{
@@ -159,7 +159,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 16733,
+		"downloads": 17361,
 		"version": "1.13"
 	},
 	{
@@ -186,7 +186,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 10722,
+		"downloads": 12030,
 		"version": "1.06"
 	},
 	{
@@ -221,7 +221,7 @@
 				"TBC Classic"
 			]
 		],
-		"downloads": 8937,
+		"downloads": 9036,
 		"version": "1.15"
 	},
 	{
@@ -248,7 +248,7 @@
 				"MoP Classic"
 			]
 		],
-		"downloads": 6749,
+		"downloads": 6789,
 		"version": "1.07"
 	},
 	{
@@ -275,7 +275,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 3789,
+		"downloads": 3908,
 		"version": "1.05"
 	},
 	{
@@ -302,7 +302,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 3011,
+		"downloads": 3063,
 		"version": "1.04"
 	},
 	{
@@ -357,7 +357,7 @@
 				"Legado (WoD a Shadowlands)"
 			]
 		],
-		"downloads": 1383,
+		"downloads": 1401,
 		"version": "1.08"
 	},
 	{
@@ -396,7 +396,7 @@
 				"TBC Classic"
 			]
 		],
-		"downloads": 1112,
+		"downloads": 1121,
 		"version": "1.11"
 	},
 	{
@@ -431,7 +431,7 @@
 				"Wrath Classic"
 			]
 		],
-		"downloads": 793,
+		"downloads": 796,
 		"version": "1.11"
 	},
 	{
@@ -462,7 +462,7 @@
 				"MoP Classic"
 			]
 		],
-		"downloads": 748,
+		"downloads": 761,
 		"version": "1.09"
 	},
 	{
@@ -493,7 +493,7 @@
 				"TBC Classic"
 			]
 		],
-		"downloads": 707,
+		"downloads": 710,
 		"version": "1.05"
 	},
 	{
@@ -520,34 +520,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 454,
-		"version": "1.07"
-	},
-	{
-		"id": "lg",
-		"slug": "leave-instance-group",
-		"name": "Leave Instance Group",
-		"repo": "LeaveInstanceGroup",
-		"url": "https://www.curseforge.com/wow/addons/leave-instance-group",
-		"cf": 1349365,
-		"color": "#1eff00",
-		"cat": [
-			"Utility",
-			"Utilidad"
-		],
-		"one": [
-			"Leave instance groups from your portrait",
-			"Sal del grupo de instancia desde el retrato"
-		],
-		"en": "Adds the missing Leave Instance Group option to your portrait menu.",
-		"es": "Añade la opción que falta para salir del grupo de instancia en tu retrato.",
-		"clients": [
-			[
-				"MoP Classic",
-				"MoP Classic"
-			]
-		],
-		"downloads": 305,
+		"downloads": 476,
 		"version": "1.07"
 	},
 	{
@@ -574,61 +547,34 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 302,
+		"downloads": 325,
 		"version": "1.05"
 	},
 	{
-		"id": "lr",
-		"slug": "loot-a-rang-classic",
-		"name": "Loot-A-Rang Classic",
-		"repo": "Loot-A-Rang-Classic",
-		"url": "https://www.curseforge.com/wow/addons/loot-a-rang-classic",
-		"cf": 1331866,
+		"id": "lg",
+		"slug": "leave-instance-group",
+		"name": "Leave Instance Group",
+		"repo": "LeaveInstanceGroup",
+		"url": "https://www.curseforge.com/wow/addons/leave-instance-group",
+		"cf": 1349365,
 		"color": "#1eff00",
 		"cat": [
-			"Quality of Life",
-			"Calidad de vida"
+			"Utility",
+			"Utilidad"
 		],
 		"one": [
-			"Loot-A-Rang with a double right-click",
-			"Loot-A-Rang con doble clic derecho"
+			"Leave instance groups from your portrait",
+			"Sal del grupo de instancia desde el retrato"
 		],
-		"en": "Double right-click to use the Loot-A-Rang and loot from a distance. No bar slot.",
-		"es": "Doble clic derecho para usar el Loot-A-Rang y despojar a distancia. Sin ranura.",
+		"en": "Adds the missing Leave Instance Group option to your portrait menu.",
+		"es": "Añade la opción que falta para salir del grupo de instancia en tu retrato.",
 		"clients": [
 			[
 				"MoP Classic",
 				"MoP Classic"
 			]
 		],
-		"downloads": 193,
-		"version": "1.08"
-	},
-	{
-		"id": "tt",
-		"slug": "azeroth-tic-tac-toe",
-		"name": "Azeroth Tic-Tac-Toe",
-		"repo": "AzerothTicTacToe",
-		"url": "https://www.curseforge.com/wow/addons/azeroth-tic-tac-toe",
-		"cf": 1476012,
-		"color": "#1eff00",
-		"cat": [
-			"Games",
-			"Juegos"
-		],
-		"one": [
-			"Tic-Tac-Toe with gold bets",
-			"Tres en raya apostando oro"
-		],
-		"en": "Play Tic-Tac-Toe against another player betting gold, with ranking and ledger.",
-		"es": "Juega al tres en raya contra otro jugador apostando oro, con ranking e historial.",
-		"clients": [
-			[
-				"WoW Forever",
-				"WoW Forever"
-			]
-		],
-		"downloads": 188,
+		"downloads": 306,
 		"version": "1.07"
 	},
 	{
@@ -655,8 +601,62 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 184,
+		"downloads": 198,
 		"version": "1.05"
+	},
+	{
+		"id": "lr",
+		"slug": "loot-a-rang-classic",
+		"name": "Loot-A-Rang Classic",
+		"repo": "Loot-A-Rang-Classic",
+		"url": "https://www.curseforge.com/wow/addons/loot-a-rang-classic",
+		"cf": 1331866,
+		"color": "#1eff00",
+		"cat": [
+			"Quality of Life",
+			"Calidad de vida"
+		],
+		"one": [
+			"Loot-A-Rang with a double right-click",
+			"Loot-A-Rang con doble clic derecho"
+		],
+		"en": "Double right-click to use the Loot-A-Rang and loot from a distance. No bar slot.",
+		"es": "Doble clic derecho para usar el Loot-A-Rang y despojar a distancia. Sin ranura.",
+		"clients": [
+			[
+				"MoP Classic",
+				"MoP Classic"
+			]
+		],
+		"downloads": 194,
+		"version": "1.08"
+	},
+	{
+		"id": "tt",
+		"slug": "azeroth-tic-tac-toe",
+		"name": "Azeroth Tic-Tac-Toe",
+		"repo": "AzerothTicTacToe",
+		"url": "https://www.curseforge.com/wow/addons/azeroth-tic-tac-toe",
+		"cf": 1476012,
+		"color": "#1eff00",
+		"cat": [
+			"Games",
+			"Juegos"
+		],
+		"one": [
+			"Tic-Tac-Toe with gold bets",
+			"Tres en raya apostando oro"
+		],
+		"en": "Play Tic-Tac-Toe against another player betting gold, with ranking and ledger.",
+		"es": "Juega al tres en raya contra otro jugador apostando oro, con ranking e historial.",
+		"clients": [
+			[
+				"WoW Forever",
+				"WoW Forever"
+			]
+		],
+		"downloads": 190,
+		"version": "1.07"
 	},
 	{
 		"id": "cx",
@@ -710,7 +710,7 @@
 				"Legado (WoD a Shadowlands)"
 			]
 		],
-		"downloads": 97,
+		"downloads": 99,
 		"version": "1.02"
 	}
 ]
