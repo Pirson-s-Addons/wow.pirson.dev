@@ -51,7 +51,7 @@
 				"Legado (WoD a Shadowlands)"
 			]
 		],
-		"downloads": 81366,
+		"downloads": 83770,
 		"version": "2.17"
 	},
 	{
@@ -78,7 +78,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 65897,
+		"downloads": 68669,
 		"version": "3.13"
 	},
 	{
@@ -105,7 +105,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 51659,
+		"downloads": 52376,
 		"version": "1.06"
 	},
 	{
@@ -132,7 +132,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 33997,
+		"downloads": 34724,
 		"version": "1.11"
 	},
 	{
@@ -159,7 +159,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 17361,
+		"downloads": 17704,
 		"version": "1.13"
 	},
 	{
@@ -186,7 +186,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 12030,
+		"downloads": 12695,
 		"version": "1.06"
 	},
 	{
@@ -221,7 +221,7 @@
 				"TBC Classic"
 			]
 		],
-		"downloads": 9036,
+		"downloads": 9353,
 		"version": "1.15"
 	},
 	{
@@ -248,7 +248,7 @@
 				"MoP Classic"
 			]
 		],
-		"downloads": 6789,
+		"downloads": 6827,
 		"version": "1.07"
 	},
 	{
@@ -275,7 +275,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 3908,
+		"downloads": 4003,
 		"version": "1.05"
 	},
 	{
@@ -302,7 +302,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 3063,
+		"downloads": 3105,
 		"version": "1.04"
 	},
 	{
@@ -357,7 +357,7 @@
 				"Legado (WoD a Shadowlands)"
 			]
 		],
-		"downloads": 1401,
+		"downloads": 1417,
 		"version": "1.08"
 	},
 	{
@@ -396,7 +396,7 @@
 				"TBC Classic"
 			]
 		],
-		"downloads": 1121,
+		"downloads": 1122,
 		"version": "1.11"
 	},
 	{
@@ -431,7 +431,7 @@
 				"Wrath Classic"
 			]
 		],
-		"downloads": 796,
+		"downloads": 799,
 		"version": "1.11"
 	},
 	{
@@ -462,7 +462,7 @@
 				"MoP Classic"
 			]
 		],
-		"downloads": 761,
+		"downloads": 770,
 		"version": "1.09"
 	},
 	{
@@ -493,7 +493,7 @@
 				"TBC Classic"
 			]
 		],
-		"downloads": 710,
+		"downloads": 716,
 		"version": "1.05"
 	},
 	{
@@ -520,7 +520,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 476,
+		"downloads": 486,
 		"version": "1.07"
 	},
 	{
@@ -547,7 +547,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 325,
+		"downloads": 405,
 		"version": "1.05"
 	},
 	{
@@ -601,7 +601,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 198,
+		"downloads": 218,
 		"version": "1.05"
 	},
 	{
@@ -655,7 +655,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 190,
+		"downloads": 192,
 		"version": "1.07"
 	},
 	{
@@ -710,7 +710,62 @@
 				"Legado (WoD a Shadowlands)"
 			]
 		],
-		"downloads": 99,
+		"downloads": 103,
 		"version": "1.02"
+	},
+	{
+		"id": "pr",
+		"slug": "profession-reagents",
+		"name": "Profession Reagents",
+		"repo": "ProfessionReagents",
+		"url": "https://www.curseforge.com/wow/addons/profession-reagents",
+		"cf": 1831424,
+		"color": "#1eff00",
+		"cat": [
+			"Professions",
+			"Profesiones"
+		],
+		"one": [
+			"Which professions use each reagent",
+			"Qué profesiones usan cada componente"
+		],
+		"en": "Which professions use each reagent and at what skill, plus disenchant results.",
+		"es": "Qué profesiones usan cada componente y en qué nivel, y qué da al desencantar.",
+		"clients": [
+			[
+				"Retail",
+				"Retail"
+			],
+			[
+				"WoW Forever",
+				"WoW Forever"
+			],
+			[
+				"MoP Classic",
+				"MoP Classic"
+			],
+			[
+				"Cataclysm Classic",
+				"Cataclysm Classic"
+			],
+			[
+				"Wrath Classic",
+				"Wrath Classic"
+			],
+			[
+				"TBC Classic",
+				"TBC Classic"
+			],
+			[
+				"Classic Era",
+				"Classic Era"
+			],
+			[
+				"Legacy (WoD to Shadowlands)",
+				"Legado (WoD a Shadowlands)"
+			]
+		],
+		"downloads": 2,
+		"version": "1.01"
 	}
 ]
