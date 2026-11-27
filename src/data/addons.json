@@ -51,7 +51,7 @@
 				"Legado (WoD a Shadowlands)"
 			]
 		],
-		"downloads": 83770,
+		"downloads": 85038,
 		"version": "2.17"
 	},
 	{
@@ -78,7 +78,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 68669,
+		"downloads": 71945,
 		"version": "3.13"
 	},
 	{
@@ -105,7 +105,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 52376,
+		"downloads": 56653,
 		"version": "1.06"
 	},
 	{
@@ -132,7 +132,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 34724,
+		"downloads": 37397,
 		"version": "1.11"
 	},
 	{
@@ -159,7 +159,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 17704,
+		"downloads": 17904,
 		"version": "1.13"
 	},
 	{
@@ -186,7 +186,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 12695,
+		"downloads": 13841,
 		"version": "1.06"
 	},
 	{
@@ -221,7 +221,7 @@
 				"TBC Classic"
 			]
 		],
-		"downloads": 9353,
+		"downloads": 9498,
 		"version": "1.15"
 	},
 	{
@@ -248,7 +248,7 @@
 				"MoP Classic"
 			]
 		],
-		"downloads": 6827,
+		"downloads": 6941,
 		"version": "1.07"
 	},
 	{
@@ -275,7 +275,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 4003,
+		"downloads": 4071,
 		"version": "1.05"
 	},
 	{
@@ -302,7 +302,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 3105,
+		"downloads": 3141,
 		"version": "1.04"
 	},
 	{
@@ -357,7 +357,7 @@
 				"Legado (WoD a Shadowlands)"
 			]
 		],
-		"downloads": 1417,
+		"downloads": 1424,
 		"version": "1.08"
 	},
 	{
@@ -396,7 +396,7 @@
 				"TBC Classic"
 			]
 		],
-		"downloads": 1122,
+		"downloads": 1125,
 		"version": "1.11"
 	},
 	{
@@ -462,7 +462,7 @@
 				"MoP Classic"
 			]
 		],
-		"downloads": 770,
+		"downloads": 796,
 		"version": "1.09"
 	},
 	{
@@ -493,7 +493,34 @@
 				"TBC Classic"
 			]
 		],
-		"downloads": 716,
+		"downloads": 718,
+		"version": "1.05"
+	},
+	{
+		"id": "rg",
+		"slug": "rotation-guide",
+		"name": "Rotation Guide",
+		"repo": "RotationGuide",
+		"url": "https://www.curseforge.com/wow/addons/rotation-guide",
+		"cf": 1806190,
+		"color": "#1eff00",
+		"cat": [
+			"Combat",
+			"Combate"
+		],
+		"one": [
+			"Your class rotation, all 27 specs",
+			"La rotación de tu clase, 27 especializaciones"
+		],
+		"en": "Your class rotation on WoW Forever, for all 27 specs.",
+		"es": "La rotación de tu clase en WoW Forever, para las 27 especializaciones.",
+		"clients": [
+			[
+				"WoW Forever",
+				"WoW Forever"
+			]
+		],
+		"downloads": 495,
 		"version": "1.05"
 	},
 	{
@@ -520,35 +547,8 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 486,
+		"downloads": 492,
 		"version": "1.07"
-	},
-	{
-		"id": "rg",
-		"slug": "rotation-guide",
-		"name": "Rotation Guide",
-		"repo": "RotationGuide",
-		"url": "https://www.curseforge.com/wow/addons/rotation-guide",
-		"cf": 1806190,
-		"color": "#1eff00",
-		"cat": [
-			"Combat",
-			"Combate"
-		],
-		"one": [
-			"Your class rotation, all 27 specs",
-			"La rotación de tu clase, 27 especializaciones"
-		],
-		"en": "Your class rotation on WoW Forever, for all 27 specs.",
-		"es": "La rotación de tu clase en WoW Forever, para las 27 especializaciones.",
-		"clients": [
-			[
-				"WoW Forever",
-				"WoW Forever"
-			]
-		],
-		"downloads": 405,
-		"version": "1.05"
 	},
 	{
 		"id": "lg",
@@ -574,7 +574,7 @@
 				"MoP Classic"
 			]
 		],
-		"downloads": 306,
+		"downloads": 307,
 		"version": "1.07"
 	},
 	{
@@ -601,7 +601,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 218,
+		"downloads": 250,
 		"version": "1.05"
 	},
 	{
@@ -655,7 +655,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 192,
+		"downloads": 194,
 		"version": "1.07"
 	},
 	{
@@ -710,7 +710,7 @@
 				"Legado (WoD a Shadowlands)"
 			]
 		],
-		"downloads": 103,
+		"downloads": 106,
 		"version": "1.02"
 	},
 	{
@@ -765,7 +765,7 @@
 				"Legado (WoD a Shadowlands)"
 			]
 		],
-		"downloads": 2,
+		"downloads": 24,
 		"version": "1.01"
 	}
 ]
