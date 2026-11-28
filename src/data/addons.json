@@ -51,7 +51,7 @@
 				"Legado (WoD a Shadowlands)"
 			]
 		],
-		"downloads": 85038,
+		"downloads": 85720,
 		"version": "2.17"
 	},
 	{
@@ -78,7 +78,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 71945,
+		"downloads": 73664,
 		"version": "3.13"
 	},
 	{
@@ -105,7 +105,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 56653,
+		"downloads": 59252,
 		"version": "1.06"
 	},
 	{
@@ -132,7 +132,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 37397,
+		"downloads": 39322,
 		"version": "1.11"
 	},
 	{
@@ -159,7 +159,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 17904,
+		"downloads": 18066,
 		"version": "1.13"
 	},
 	{
@@ -186,7 +186,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 13841,
+		"downloads": 14533,
 		"version": "1.06"
 	},
 	{
@@ -205,8 +205,8 @@
 			"Abandon quests in bulk, in one click",
 			"Abandona misiones en bloque con un clic"
 		],
-		"en": "Abandon all quests, or only the ones you tick, from the quest log in one click.",
-		"es": "Abandona todas las misiones, o solo las que marques, desde el registro en un clic.",
+		"en": "Abandon or untrack quests in bulk: all, the ones you tick or a whole zone.",
+		"es": "Abandona o deja de seguir misiones: todas, las que marques o las de una zona.",
 		"clients": [
 			[
 				"WoW Forever",
@@ -221,7 +221,7 @@
 				"TBC Classic"
 			]
 		],
-		"downloads": 9498,
+		"downloads": 9570,
 		"version": "1.15"
 	},
 	{
@@ -248,7 +248,7 @@
 				"MoP Classic"
 			]
 		],
-		"downloads": 6941,
+		"downloads": 7016,
 		"version": "1.07"
 	},
 	{
@@ -275,7 +275,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 4071,
+		"downloads": 4131,
 		"version": "1.05"
 	},
 	{
@@ -302,7 +302,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 3141,
+		"downloads": 3166,
 		"version": "1.04"
 	},
 	{
@@ -357,7 +357,7 @@
 				"Legado (WoD a Shadowlands)"
 			]
 		],
-		"downloads": 1424,
+		"downloads": 1434,
 		"version": "1.08"
 	},
 	{
@@ -396,8 +396,39 @@
 				"TBC Classic"
 			]
 		],
-		"downloads": 1125,
+		"downloads": 1126,
 		"version": "1.11"
+	},
+	{
+		"id": "vf",
+		"slug": "vendor-item-filter",
+		"name": "Vendor Item Filter",
+		"repo": "VendorItemFilter",
+		"url": "https://www.curseforge.com/wow/addons/vendor-item-filter",
+		"cf": 1343504,
+		"color": "#1eff00",
+		"cat": [
+			"Utility",
+			"Utilidad"
+		],
+		"one": [
+			"Filter vendor items by type and slot",
+			"Filtra objetos del vendedor por tipo"
+		],
+		"en": "Filter vendor items by armor type, slot, weapon type, jewelry and more.",
+		"es": "Filtra los objetos del vendedor por armadura, ranura, tipo de arma, joyería y más.",
+		"clients": [
+			[
+				"WoW Forever",
+				"WoW Forever"
+			],
+			[
+				"MoP Classic",
+				"MoP Classic"
+			]
+		],
+		"downloads": 806,
+		"version": "1.09"
 	},
 	{
 		"id": "mh",
@@ -431,39 +462,8 @@
 				"Wrath Classic"
 			]
 		],
-		"downloads": 799,
+		"downloads": 803,
 		"version": "1.11"
-	},
-	{
-		"id": "vf",
-		"slug": "vendor-item-filter",
-		"name": "Vendor Item Filter",
-		"repo": "VendorItemFilter",
-		"url": "https://www.curseforge.com/wow/addons/vendor-item-filter",
-		"cf": 1343504,
-		"color": "#1eff00",
-		"cat": [
-			"Utility",
-			"Utilidad"
-		],
-		"one": [
-			"Filter vendor items by type and slot",
-			"Filtra objetos del vendedor por tipo"
-		],
-		"en": "Filter vendor items by armor type, slot, weapon type, jewelry and more.",
-		"es": "Filtra los objetos del vendedor por armadura, ranura, tipo de arma, joyería y más.",
-		"clients": [
-			[
-				"WoW Forever",
-				"WoW Forever"
-			],
-			[
-				"MoP Classic",
-				"MoP Classic"
-			]
-		],
-		"downloads": 796,
-		"version": "1.09"
 	},
 	{
 		"id": "ea",
@@ -493,7 +493,7 @@
 				"TBC Classic"
 			]
 		],
-		"downloads": 718,
+		"downloads": 720,
 		"version": "1.05"
 	},
 	{
@@ -520,7 +520,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 495,
+		"downloads": 541,
 		"version": "1.05"
 	},
 	{
@@ -547,7 +547,7 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 492,
+		"downloads": 499,
 		"version": "1.07"
 	},
 	{
@@ -574,7 +574,7 @@
 				"MoP Classic"
 			]
 		],
-		"downloads": 307,
+		"downloads": 308,
 		"version": "1.07"
 	},
 	{
@@ -601,8 +601,35 @@
 				"WoW Forever"
 			]
 		],
-		"downloads": 250,
+		"downloads": 259,
 		"version": "1.05"
+	},
+	{
+		"id": "tt",
+		"slug": "azeroth-tic-tac-toe",
+		"name": "Azeroth Tic-Tac-Toe",
+		"repo": "AzerothTicTacToe",
+		"url": "https://www.curseforge.com/wow/addons/azeroth-tic-tac-toe",
+		"cf": 1476012,
+		"color": "#1eff00",
+		"cat": [
+			"Games",
+			"Juegos"
+		],
+		"one": [
+			"Tic-Tac-Toe with gold bets",
+			"Tres en raya apostando oro"
+		],
+		"en": "Play Tic-Tac-Toe against another player betting gold, with ranking and ledger.",
+		"es": "Juega al tres en raya contra otro jugador apostando oro, con ranking e historial.",
+		"clients": [
+			[
+				"WoW Forever",
+				"WoW Forever"
+			]
+		],
+		"downloads": 195,
+		"version": "1.07"
 	},
 	{
 		"id": "lr",
@@ -630,33 +657,6 @@
 		],
 		"downloads": 194,
 		"version": "1.08"
-	},
-	{
-		"id": "tt",
-		"slug": "azeroth-tic-tac-toe",
-		"name": "Azeroth Tic-Tac-Toe",
-		"repo": "AzerothTicTacToe",
-		"url": "https://www.curseforge.com/wow/addons/azeroth-tic-tac-toe",
-		"cf": 1476012,
-		"color": "#1eff00",
-		"cat": [
-			"Games",
-			"Juegos"
-		],
-		"one": [
-			"Tic-Tac-Toe with gold bets",
-			"Tres en raya apostando oro"
-		],
-		"en": "Play Tic-Tac-Toe against another player betting gold, with ranking and ledger.",
-		"es": "Juega al tres en raya contra otro jugador apostando oro, con ranking e historial.",
-		"clients": [
-			[
-				"WoW Forever",
-				"WoW Forever"
-			]
-		],
-		"downloads": 194,
-		"version": "1.07"
 	},
 	{
 		"id": "cx",
@@ -710,7 +710,7 @@
 				"Legado (WoD a Shadowlands)"
 			]
 		],
-		"downloads": 106,
+		"downloads": 111,
 		"version": "1.02"
 	},
 	{
@@ -765,7 +765,7 @@
 				"Legado (WoD a Shadowlands)"
 			]
 		],
-		"downloads": 24,
+		"downloads": 65,
 		"version": "1.01"
 	}
 ]
